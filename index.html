@@ -4,6 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Super Mini | المنصة المالية الرقمية المشفرة</title>
+  
+  <!-- خط تجوال الرسمي فائق النقاء لراحة العين -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+
   <style>
     :root {
       --bg-main: #070a12;
@@ -24,11 +30,66 @@
       --shadow-lux: 0 12px 35px -5px rgba(0, 0, 0, 0.8), 0 0 20px rgba(245, 158, 11, 0.2);
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; transition: background-color 0.2s, border-color 0.2s, transform 0.15s; }
-    body { background-color: var(--bg-main); color: var(--text-main); display: flex; justify-content: center; min-height: 100vh; overflow-x: hidden; -webkit-tap-highlight-color: transparent; }
+    * { 
+      box-sizing: border-box; 
+      margin: 0; 
+      padding: 0; 
+      font-family: 'Tajawal', system-ui, -apple-system, sans-serif; 
+      transition: background-color 0.2s, border-color 0.2s, transform 0.15s; 
+    }
     
-    .app-container { width: 100%; max-width: 440px; background: var(--bg-main); position: relative; padding-bottom: 95px; min-height: 100vh; border-left: 1px solid var(--card-border); border-right: 1px solid var(--card-border); display: none; }
+    body { 
+      background-color: var(--bg-main); 
+      color: var(--text-main); 
+      display: flex; 
+      justify-content: center; 
+      min-height: 100vh; 
+      overflow-x: hidden; 
+      -webkit-tap-highlight-color: transparent; 
+    }
+    
+    .app-container { 
+      width: 100%; 
+      max-width: 440px; 
+      background: var(--bg-main); 
+      position: relative; 
+      padding-bottom: 95px; 
+      min-height: 100vh; 
+      border-left: 1px solid var(--card-border); 
+      border-right: 1px solid var(--card-border); 
+      display: none; 
+    }
     .app-container.logged-in { display: block; }
+
+    /* شريط تثبيت التطبيق الثابت العلوي */
+    .install-app-banner {
+      position: sticky;
+      top: 0;
+      z-index: 150;
+      background: linear-gradient(90deg, #1e1b4b, #111827, #1e1b4b);
+      border-bottom: 1px solid var(--accent-gold);
+      padding: 10px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    }
+    .install-info { display: flex; align-items: center; gap: 10px; }
+    .install-icon {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, var(--accent-gold), #b45309);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      color: #fff;
+      font-size: 16px;
+      box-shadow: 0 0 10px var(--accent-gold-glow);
+    }
+    .install-title { font-size: 13px; font-weight: 800; color: #fff; }
+    .install-sub { font-size: 10px; color: var(--text-muted); }
 
     .live-ticker { background: linear-gradient(90deg, #111827, #1e1b4b, #111827); border-bottom: 1px solid var(--card-border); padding: 8px 12px; font-size: 11px; color: var(--accent-gold); overflow: hidden; white-space: nowrap; font-weight: 700; position: relative; }
     .ticker-content { display: inline-block; animation: ticker 25s linear infinite; }
@@ -36,6 +97,28 @@
 
     .login-overlay { position: fixed; inset: 0; background: rgba(3, 7, 18, 0.98); backdrop-filter: blur(25px); display: flex; justify-content: center; align-items: center; padding: 20px; z-index: 5000; }
     .login-card { width: 100%; max-width: 370px; background: var(--glass-bg); border: 1px solid var(--card-border); padding: 32px 24px; border-radius: 28px; text-align: center; box-shadow: var(--shadow-lux); position: relative; }
+    
+    /* زر الدعم في زاوية شاشة تسجيل الدخول */
+    .login-support-btn {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid var(--accent-gold);
+      color: var(--accent-gold);
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 800;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 0 10px rgba(245, 158, 11, 0.2);
+    }
+    .login-support-btn:active { transform: scale(0.95); }
+
     .brand-badge { font-size: 28px; font-weight: 900; letter-spacing: 1px; color: var(--accent-gold); margin-bottom: 4px; text-shadow: 0 0 15px var(--accent-gold-glow); }
     .login-card p { font-size: 12px; color: var(--text-muted); margin-bottom: 22px; }
 
@@ -81,8 +164,8 @@
     .btn-outline:hover { border-color: var(--accent-gold); color: var(--accent-gold); }
 
     .input-group { margin-bottom: 16px; text-align: right; }
-    .input-group label { display: block; font-size: 11px; font-weight: 700; margin-bottom: 6px; color: var(--text-muted); }
-    .input-group input, .select-css { width: 100%; padding: 14px; border: 1px solid var(--card-border); border-radius: 12px; font-size: 13px; background: rgba(0,0,0,0.5); color: var(--text-main); outline: none; }
+    .input-group label { display: block; font-size: 12px; font-weight: 800; margin-bottom: 6px; color: var(--text-muted); }
+    .input-group input, .select-css { width: 100%; padding: 14px; border: 1px solid var(--card-border); border-radius: 12px; font-size: 13px; background: rgba(0,0,0,0.5); color: var(--text-main); outline: none; font-weight: 700; }
     .input-group input:focus, .select-css:focus { border-color: var(--accent-gold); box-shadow: 0 0 12px var(--accent-gold-glow); }
 
     .header { display: flex; justify-content: center; align-items: center; padding: 16px 20px; background: var(--card-bg); border-bottom: 1px solid var(--card-border); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(12px); }
@@ -196,50 +279,69 @@
 </head>
 <body>
 
-  <!-- نافذة تسجيل الدخول -->
+  <!-- نافذة تسجيل الدخول (مريحة للعين ومعاد تصميمهما بالكامل) -->
   <div class="login-overlay" id="loginModal">
     <div class="login-card">
-      <div class="brand-badge">Super Mini</div>
-      <p>منصة الاستثمار وحماية الحساب المشفرة</p>
       
-      <div class="error-msg" id="loginError">⚠️ اسم المستخدم أو كلمة المرور غير صحيحة!</div>
+      <!-- زر الدعم في زاوية الشاشة لتسجيل الدخول -->
+      <a href="https://t.me/oosbsu" target="_blank" class="login-support-btn">
+        💬 الدعم الفني
+      </a>
+
+      <div class="brand-badge">Super Mini</div>
+      <p>المنصة الاستثمارية الآمنة والمشفرة</p>
+      
+      <div class="error-msg" id="loginError">⚠️ رقم الهاتف أو كلمة السر غير صحيحة!</div>
 
       <div class="input-group">
-        <label>اسم المستخدم / معرف الحساب الخاص</label>
-        <input type="text" id="userInput" placeholder="أدخل اسم الحساب دقيقاً">
+        <label>رقم الهاتف</label>
+        <input type="tel" id="userInput" placeholder="أدخل رقم الهاتف (مثال: 07800000000)">
       </div>
       <div class="input-group">
-        <label>كلمة المرور (الباسورد)</label>
-        <input type="password" id="passInput" placeholder="أدخل كلمة المرور الحصرية">
+        <label>كلمة السر</label>
+        <input type="password" id="passInput" placeholder="أدخل كلمة السر الخاصة بك">
       </div>
       
       <button class="btn-ultra btn-gold" id="loginBtn" onclick="handleSecureLogin()">تسجيل الدخول الآمن</button>
-      <button class="btn-ultra btn-outline" style="margin-top:10px;" onclick="openRegisterModal()">إنشاء حساب جديد فوراً</button>
+      <button class="btn-ultra btn-outline" style="margin-top:10px;" onclick="openRegisterModal()">إنشاء حساب جديد</button>
     </div>
   </div>
 
-  <!-- نافذة إنشاء الحساب -->
+  <!-- نافذة إنشاء حساب جديد (برقم الهاتف) -->
   <div class="modal-overlay" id="registerModal">
     <div class="modal-card">
       <div class="brand-badge" style="font-size: 22px;">حساب جديد</div>
-      <p style="margin-bottom: 16px;">أنشئ حسابك واستخدم المنصة فوراً</p>
+      <p style="margin-bottom: 16px;">أنشئ حسابك برقم الهاتف واستثمر فوراً</p>
       <div class="error-msg" id="regError"></div>
       
       <div class="input-group">
-        <label>اختر اسم الحساب / المعرف الخاص بك</label>
-        <input type="text" id="regUser" placeholder="مثال: Ahmed99 أو رقم معرف">
+        <label>رقم الهاتف</label>
+        <input type="tel" id="regUser" placeholder="أدخل رقم الهاتف الخاص بك">
       </div>
       <div class="input-group">
-        <label>اختر كلمة المرور</label>
-        <input type="password" id="regPass" placeholder="كلمة المرور">
+        <label>كلمة السر</label>
+        <input type="password" id="regPass" placeholder="اختر كلمة السر">
       </div>
       <div class="input-group">
-        <label>تأكيد كلمة المرور</label>
-        <input type="password" id="regPassConfirm" placeholder="أعِد كتابة كلمة المرور">
+        <label>تأكيد كلمة السر</label>
+        <input type="password" id="regPassConfirm" placeholder="أعِد كتابة كلمة السر">
       </div>
 
       <button class="btn-ultra btn-green" onclick="handleRegister()">تأكيد وإنشاء الحساب</button>
       <button class="btn-ultra btn-outline" style="margin-top:10px;" onclick="closeModal('registerModal')">إلغاء والعودة</button>
+    </div>
+  </div>
+
+  <!-- نافذة تثبيت التطبيق وتنزيله لشعار وحجم الخاص بالمنصة -->
+  <div class="modal-overlay" id="customInstallModal">
+    <div class="modal-card">
+      <div class="install-icon" style="width: 60px; height: 60px; font-size: 28px; margin: 0 auto 12px auto;">⚡</div>
+      <h3 style="color: var(--accent-gold);">تثبيت تطبيق Super Mini</h3>
+      <p style="font-size: 13px; color: var(--text-main); margin-bottom: 16px;">
+        هل ترغب بتثبيت التطبيق مباشرة على شاشة هاتفك الرئيسية للوصول السريع بدون متجر؟
+      </p>
+      <button class="btn-ultra btn-gold" onclick="confirmAppDownload()">تأكيد التثبيت الآن</button>
+      <button class="btn-ultra btn-outline" style="margin-top:10px;" onclick="closeModal('customInstallModal')">إلغاء</button>
     </div>
   </div>
 
@@ -276,11 +378,24 @@
     تم العملية بنجاح!
   </div>
 
+  <!-- التطبيق الرئيسي -->
   <div class="app-container" id="appContent">
     
+    <!-- زر تثبيت تطبيق ثابت علوي ينزل بدون أي شعارات خارجية -->
+    <div class="install-app-banner">
+      <div class="install-info">
+        <div class="install-icon">⚡</div>
+        <div>
+          <div class="install-title">تطبيق Super Mini</div>
+          <div class="install-sub">تثبيت مباشر وسريع على هاتفك</div>
+        </div>
+      </div>
+      <button class="btn-ultra btn-gold" style="width:auto; padding:8px 16px; font-size:12px;" onclick="openCustomInstallPrompt()">تثبيت التطبيق</button>
+    </div>
+
     <div class="live-ticker">
       <div class="ticker-content">
-        🔥 تم سحب 380,000 IQD عبر زين كاش للحساب 5143... • تم سحب 122,000 IQD عبر كي كارد للحساب 7781... • تم شحن 250,000 IQD بنجاح...
+        🔥 تم سحب 380,000 IQD عبر زين كاش للحساب 0770... • تم سحب 122,000 IQD عبر كي كارد للحساب 0780... • تم شحن 250,000 IQD بنجاح...
       </div>
     </div>
 
@@ -302,7 +417,7 @@
       <div class="account-card">
         <div class="acc-header">
           <div class="acc-id">
-            <span>المشترك: <strong id="userDisplay">--</strong></span>
+            <span>رقم الهاتف: <strong id="userDisplay">--</strong></span>
             <span class="verified-mark">✓</span>
           </div>
           <div class="status-badge">حساب مشفر VIP</div>
@@ -423,7 +538,7 @@
         <h4 style="font-size:14px; color:var(--accent-gold); margin-bottom:14px; text-align:center;">إرفاق لقطة الشاشة وتأكيد الإيداع</h4>
         
         <div class="input-group">
-          <label>رمز المستثمر / اسم الحساب الخاص بك</label>
+          <label>رقم الهاتف الخاص بك</label>
           <input type="text" id="payUserId" readonly style="opacity:0.8; background:rgba(0,0,0,0.5);">
         </div>
 
@@ -463,7 +578,7 @@
 
         <div class="info-list">
           <div class="info-item">
-            <span style="color:var(--text-muted);">معرف الحساب الشخصي:</span>
+            <span style="color:var(--text-muted);">رقم الهاتف المسجل:</span>
             <strong id="profId">--</strong>
           </div>
           <div class="info-item">
@@ -487,6 +602,7 @@
         <span>الرئيسية</span>
       </button>
       
+      <!-- زر الدعم المباشر الفوري للتحويل لتليجرام -->
       <button class="nav-btn" onclick="openTelegramSupport()">
         <svg class="nav-svg" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
         <span>الدعم</span>
@@ -577,7 +693,7 @@
         document.getElementById('appContent').classList.add('logged-in');
         updateUserData();
       } else {
-        showLoginError("⚠️ اسم المستخدم أو كلمة المرور غير صحيحة!");
+        showLoginError("⚠️ رقم الهاتف أو كلمة السر غير صحيحة!");
       }
     }
 
@@ -595,10 +711,10 @@
       const p2 = document.getElementById('regPassConfirm').value.trim();
 
       if (!u || !p1 || !p2) { showRegError("⚠️ يرجى ملء كافة الحقول!"); return; }
-      if (p1 !== p2) { showRegError("⚠️ كلمات المرور غير متطابقة!"); return; }
+      if (p1 !== p2) { showRegError("⚠️ كلمات السر غير متطابقة!"); return; }
 
       const db = getUsersDatabase();
-      if (db.hasOwnProperty(u)) { showRegError("⚠️ اسم المستخدم هذا حُجز بالفعل، اختر اسماً آخر!"); return; }
+      if (db.hasOwnProperty(u)) { showRegError("⚠️ رقم الهاتف هذا مسجل بالفعل، يرجى تسجيل الدخول!"); return; }
 
       db[u] = p1;
       localStorage.setItem('SUPER_MINI_USERS', JSON.stringify(db));
@@ -663,6 +779,21 @@
       } else {
         adminPanel.style.display = 'none';
       }
+    }
+
+    /* تحويل زر الدعم فوراً لرابط التليجرام الخاص بك */
+    function openTelegramSupport() {
+      window.open('https://t.me/oosbsu', '_blank');
+    }
+
+    /* نظام تثبيت التطبيق المخصص دون شعار جوجل */
+    function openCustomInstallPrompt() {
+      document.getElementById('customInstallModal').style.display = 'flex';
+    }
+
+    function confirmAppDownload() {
+      closeModal('customInstallModal');
+      showToast("جاري تثبيت تطبيق Super Mini على هاتفك...");
     }
 
     function processWithdrawalRequest() {
@@ -762,7 +893,7 @@
         container.innerHTML += `
           <div class="admin-user-item">
             <div class="admin-user-info">
-              <span>🆔 الحساب: <strong style="color:var(--accent-gold);">${userKey}</strong></span>
+              <span>📱 رقم الهاتف: <strong style="color:var(--accent-gold);">${userKey}</strong></span>
               <span>💰 الرصيد: <strong style="color:var(--accent-green);">${Number(uBalance).toLocaleString()} IQD</strong></span>
             </div>
             <div style="font-size:11px; margin-bottom:8px; color:#ccc;">الاشتراك الفعال: <strong style="color:var(--accent-gold);">${uSub}</strong></div>
@@ -813,7 +944,7 @@
         return;
       }
       showToast("جاري تجهيز الرسالة للتليجرام...");
-      const msgText = `📥 إشعار إيداع جديد:\n• اسم المستثمر/ID: ${activeUser}\n• قيمة الباقة المراد تفعيلها: ${Number(selectedAmount).toLocaleString()} IQD`;
+      const msgText = `📥 إشعار إيداع جديد:\n• رقم الهاتف المسجل: ${activeUser}\n• قيمة الباقة المراد تفعيلها: ${Number(selectedAmount).toLocaleString()} IQD`;
       const tgUrl = `https://t.me/oosbsu?text=${encodeURIComponent(msgText)}`;
       setTimeout(() => { window.open(tgUrl, '_blank'); }, 800);
     }
@@ -823,10 +954,6 @@
       document.querySelectorAll('.nav-btn').forEach(n => n.classList.remove('active'));
       document.getElementById(tabId).classList.add('active');
       if(btn) btn.classList.add('active');
-    }
-
-    function openTelegramSupport() {
-      window.open('https://t.me/oosbsu', '_blank');
     }
 
     function renderPackages() {
@@ -910,27 +1037,4 @@
     function copyRef() {
       const link = document.getElementById('refLink').innerText;
       navigator.clipboard.writeText(link);
-      showToast('تم نسخ رابط الإحالة بنجاح!');
-    }
-
-    function logout() {
-      activeUser = null;
-      document.getElementById('appContent').classList.remove('logged-in');
-      document.getElementById('loginModal').style.display = 'flex';
-      document.getElementById('userInput').value = '';
-      document.getElementById('passInput').value = '';
-    }
-
-    // إصلاح حركة السلايدر التلقائي بالتوافق مع اتجاه RTL
-    let currentSlide = 0;
-    const slidesTrack = document.getElementById('slidesTrack');
-    setInterval(() => {
-      currentSlide = (currentSlide + 1) % 3;
-      slidesTrack.style.transform = `translateX(${currentSlide * 100}%)`;
-    }, 4000);
-
-    renderPackages();
-  </script>
-</body>
-</html>
-
+   
