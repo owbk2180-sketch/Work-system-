@@ -3,24 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Super Mini | المنصة المالية الرقمية المشفرة</title>
+  <title>Super Mini | المنصة المالية المشفرة</title>
   <style>
     :root {
-      --bg-main: #070a12;
-      --card-bg: rgba(17, 24, 39, 0.92);
+      --bg-main: #050811;
+      --card-bg: rgba(15, 23, 42, 0.94);
       --card-border: rgba(245, 158, 11, 0.35);
       --text-main: #f9fafb;
       --text-muted: #9ca3af;
       --accent-gold: #f59e0b;
-      --accent-gold-glow: rgba(245, 158, 11, 0.6);
+      --accent-gold-glow: rgba(245, 158, 11, 0.5);
       --accent-green: #10b981;
-      --accent-green-glow: rgba(16, 185, 129, 0.6);
+      --accent-green-glow: rgba(16, 185, 129, 0.5);
       --accent-blue: #3b82f6;
       --accent-red: #ef4444;
       --accent-red-glow: rgba(239, 68, 68, 0.4);
       --qi-color: #fbbc04;
-      --zain-color: #ff007f;
-      --glass-bg: rgba(15, 23, 42, 0.92);
+      --glass-bg: rgba(11, 17, 32, 0.95);
       --shadow-lux: 0 12px 35px -5px rgba(0, 0, 0, 0.8), 0 0 20px rgba(245, 158, 11, 0.2);
     }
 
@@ -30,13 +29,20 @@
     .app-container { width: 100%; max-width: 440px; background: var(--bg-main); position: relative; padding-bottom: 95px; min-height: 100vh; border-left: 1px solid var(--card-border); border-right: 1px solid var(--card-border); display: none; }
     .app-container.logged-in { display: block; }
 
-    .live-ticker { background: linear-gradient(90deg, #111827, #1e1b4b, #111827); border-bottom: 1px solid var(--card-border); padding: 8px 12px; font-size: 11px; color: var(--accent-gold); overflow: hidden; white-space: nowrap; font-weight: 700; }
-    .ticker-content { display: inline-block; animation: ticker 25s linear infinite; }
-    @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+    /* شريط الأخبار المتحرك الدائم */
+    .live-ticker { background: linear-gradient(90deg, #090d16, #1e1b4b, #090d16); border-bottom: 1px solid var(--card-border); padding: 8px 0; font-size: 11px; color: var(--accent-gold); overflow: hidden; white-space: nowrap; font-weight: 800; display: flex; }
+    .ticker-content { display: inline-block; padding-right: 100%; animation: ticker 22s linear infinite; }
+    @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
 
+    /* الشاشة العائمة لتسجيل الدخول */
     .login-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(3, 7, 18, 0.98); backdrop-filter: blur(25px); display: flex; justify-content: center; align-items: center; padding: 20px; z-index: 5000; }
-    .login-card { width: 100%; max-width: 370px; background: var(--glass-bg); border: 1px solid var(--card-border); padding: 32px 24px; border-radius: 28px; text-align: center; box-shadow: var(--shadow-lux); position: relative; }
-    .brand-badge { font-size: 28px; font-weight: 900; letter-spacing: 1px; color: var(--accent-gold); margin-bottom: 4px; text-shadow: 0 0 15px var(--accent-gold-glow); }
+    .login-card { width: 100%; max-width: 380px; background: var(--glass-bg); border: 1px solid var(--card-border); padding: 32px 24px; border-radius: 28px; text-align: center; box-shadow: var(--shadow-lux); position: relative; }
+    
+    /* زر الدعم في زاوية نافذة الدخول */
+    .login-support-btn { position: absolute; top: 16px; left: 16px; background: rgba(59, 130, 246, 0.15); border: 1px solid var(--accent-blue); color: #fff; padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: 800; display: flex; align-items: center; gap: 6px; cursor: pointer; text-decoration: none; }
+    .login-support-btn:hover { background: var(--accent-blue); }
+
+    .brand-badge { font-size: 30px; font-weight: 900; letter-spacing: 1px; color: var(--accent-gold); margin-bottom: 4px; text-shadow: 0 0 15px var(--accent-gold-glow); }
     .login-card p { font-size: 12px; color: var(--text-muted); margin-bottom: 22px; }
 
     .error-msg { background: rgba(239, 68, 68, 0.15); border: 1px solid var(--accent-red); color: var(--accent-red); font-size: 12px; font-weight: 800; padding: 10px; border-radius: 12px; margin-bottom: 16px; display: none; }
@@ -58,46 +64,42 @@
       overflow: hidden;
       text-decoration: none;
       z-index: 1;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
     }
     .btn-ultra::after {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
+      content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
       background: linear-gradient(60deg, transparent, rgba(255,255,255,0.25), transparent);
-      transform: rotate(30deg) translateX(-100%);
-      transition: 0.6s;
+      transform: rotate(30deg) translateX(-100%); transition: 0.6s;
     }
     .btn-ultra:hover::after { transform: rotate(30deg) translateX(100%); }
-    .btn-ultra:active { transform: scale(0.96); }
+    .btn-ultra:active { transform: scale(0.97); }
 
     .btn-gold { background: linear-gradient(135deg, #f59e0b, #b45309); color: #fff; box-shadow: 0 4px 20px var(--accent-gold-glow); }
     .btn-green { background: linear-gradient(135deg, #10b981, #047857); color: #fff; box-shadow: 0 4px 20px var(--accent-green-glow); }
     .btn-red { background: linear-gradient(135deg, #ef4444, #991b1b); color: #fff; box-shadow: 0 4px 20px var(--accent-red-glow); }
     .btn-outline { background: rgba(255,255,255,0.03); color: var(--text-main); border: 1px solid var(--card-border); backdrop-filter: blur(10px); }
-    .btn-outline:hover { border-color: var(--accent-gold); color: var(--accent-gold); }
 
     .input-group { margin-bottom: 16px; text-align: right; }
     .input-group label { display: block; font-size: 11px; font-weight: 700; margin-bottom: 6px; color: var(--text-muted); }
-    .input-group input, .select-css { width: 100%; padding: 14px; border: 1px solid var(--card-border); border-radius: 12px; font-size: 13px; background: rgba(0,0,0,0.5); color: var(--text-main); outline: none; }
+    .input-group input, .select-css { width: 100%; padding: 14px; border: 1px solid var(--card-border); border-radius: 12px; font-size: 13px; background: rgba(0,0,0,0.6); color: var(--text-main); outline: none; }
     .input-group input:focus, .select-css:focus { border-color: var(--accent-gold); box-shadow: 0 0 12px var(--accent-gold-glow); }
 
-    .header { display: flex; justify-content: center; align-items: center; padding: 16px 20px; background: var(--card-bg); border-bottom: 1px solid var(--card-border); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(12px); }
-    .brand-title { font-size: 22px; font-weight: 900; color: var(--text-main); text-align: center; }
+    .header { display: flex; justify-content: space-between; align-items: center; padding: 14px 18px; background: var(--card-bg); border-bottom: 1px solid var(--card-border); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(12px); }
+    .brand-title { font-size: 20px; font-weight: 900; color: var(--text-main); }
     .brand-title span { color: var(--accent-gold); }
     
+    /* زر تنزيل التطبيق العلوي */
+    .download-app-btn { background: linear-gradient(135deg, #10b981, #059669); color: #fff; padding: 8px 14px; border-radius: 12px; font-size: 11px; font-weight: 900; display: inline-flex; align-items: center; gap: 6px; text-decoration: none; border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 0 12px var(--accent-green-glow); }
+
     .tab-content { display: none; opacity: 0; transform: translateY(8px); }
     .tab-content.active { display: block; opacity: 1; transform: translateY(0); }
 
-    .slider-wrapper { position: relative; width: calc(100% - 32px); height: 185px; margin: 16px auto; border-radius: 22px; overflow: hidden; border: 1px solid var(--card-border); box-shadow: var(--shadow-lux); }
+    .slider-wrapper { position: relative; width: calc(100% - 32px); height: 190px; margin: 16px auto; border-radius: 22px; overflow: hidden; border: 1px solid var(--card-border); box-shadow: var(--shadow-lux); }
     .slides-container { display: flex; width: 100%; height: 100%; transition: transform 0.5s ease-in-out; }
     .slide-item { min-width: 100%; height: 100%; position: relative; }
     .slide-item img { width: 100%; height: 100%; object-fit: cover; }
-    .slide-caption { position: absolute; inset: 0; background: linear-gradient(to top, rgba(7, 10, 18, 0.95), rgba(7, 10, 18, 0.1)); display: flex; flex-direction: column; justify-content: flex-end; padding: 16px; }
-    .slide-caption h3 { font-size: 15px; font-weight: 800; color: var(--accent-gold); }
+    .slide-caption { position: absolute; inset: 0; background: linear-gradient(to top, rgba(5, 8, 17, 0.95), rgba(5, 8, 17, 0.1)); display: flex; flex-direction: column; justify-content: flex-end; padding: 16px; }
+    .slide-caption h3 { font-size: 16px; font-weight: 900; color: var(--accent-gold); }
     .slide-caption p { font-size: 11px; color: #d1d5db; margin-top: 2px; }
 
     .account-card { background: var(--card-bg); margin: 0 16px 16px 16px; padding: 18px; border-radius: 22px; border: 1px solid var(--card-border); box-shadow: var(--shadow-lux); }
@@ -106,16 +108,17 @@
     .verified-mark { width: 18px; height: 18px; background: var(--accent-blue); border-radius: 50%; color: #fff; display: inline-flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; }
     .status-badge { background: rgba(16, 185, 129, 0.15); color: var(--accent-green); padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 800; border: 1px solid rgba(16, 185, 129, 0.3); }
 
-    .balance-box { margin-top: 12px; padding: 12px; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 14px; display: flex; justify-content: space-between; align-items: center; }
+    .balance-box { margin-top: 12px; padding: 14px; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 14px; display: flex; justify-content: space-between; align-items: center; }
     .balance-title { font-size: 12px; color: var(--text-muted); font-weight: 700; }
-    .balance-value { font-size: 16px; color: var(--accent-green); font-weight: 900; }
+    .balance-value { font-size: 18px; color: var(--accent-green); font-weight: 900; }
 
     .referral-box { background: rgba(0,0,0,0.4); border: 1px dashed var(--card-border); padding: 10px 12px; border-radius: 14px; margin-top: 10px; display: flex; justify-content: space-between; align-items: center; }
     .ref-text { font-size: 11px; color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 200px; }
 
-    .admin-card { background: rgba(15, 23, 42, 0.95); border: 2px dashed var(--accent-gold); border-radius: 22px; margin: 16px; padding: 18px; box-shadow: var(--shadow-lux); display: none; }
+    /* لوحة أدمن خارقة وموسعة */
+    .admin-card { background: rgba(15, 23, 42, 0.98); border: 2px solid var(--accent-gold); border-radius: 22px; margin: 16px; padding: 18px; box-shadow: 0 0 25px rgba(245, 158, 11, 0.3); display: none; }
     .admin-head { font-size: 15px; font-weight: 900; color: var(--accent-gold); margin-bottom: 12px; text-align: center; border-bottom: 1px solid var(--card-border); padding-bottom: 8px; }
-    .admin-user-item { background: rgba(0,0,0,0.4); border: 1px solid var(--card-border); padding: 12px; border-radius: 14px; margin-bottom: 10px; }
+    .admin-user-item { background: rgba(0,0,0,0.5); border: 1px solid var(--card-border); padding: 12px; border-radius: 14px; margin-bottom: 10px; }
     .admin-user-info { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 12px; font-weight: 800; }
     .admin-actions { display: flex; gap: 8px; margin-top: 6px; }
     .admin-actions input { width: 50%; padding: 8px; font-size: 12px; border-radius: 8px; background: #000; color: #fff; border: 1px solid var(--card-border); }
@@ -135,17 +138,9 @@
     }
     .package-item::before {
       content: '🔥 باقة استثمارية VIP';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
+      position: absolute; top: 0; left: 0; right: 0;
       background: linear-gradient(90deg, #f59e0b, #b45309);
-      color: #fff;
-      font-size: 11px;
-      font-weight: 900;
-      text-align: center;
-      padding: 4px 0;
-      letter-spacing: 1px;
+      color: #fff; font-size: 11px; font-weight: 900; text-align: center; padding: 4px 0; letter-spacing: 1px;
     }
     
     .pkg-top { display: flex; justify-content: space-between; align-items: center; margin-top: 14px; margin-bottom: 16px; }
@@ -196,30 +191,33 @@
 </head>
 <body>
 
-  <!-- نافذة تسجيل الدخول -->
+  <!-- نافذة تسجيل الدخول مع قسم الدعم في الزاوية -->
   <div class="login-overlay" id="loginModal">
     <div class="login-card">
+      <a href="https://t.me/oosbsu" target="_blank" class="login-support-btn">
+        💬 الدعم الفني
+      </a>
+      
       <div class="brand-badge">Super Mini</div>
       <p>منصة الاستثمار وحماية الحساب المشفرة</p>
       
-      <div class="error-msg" id="loginError">⚠️ اسم المستخدم أو كلمة المرور غير صحيحة!</div>
+      <div class="error-msg" id="loginError">⚠️ رقم الهاتف أو كلمة السر غير صحيحة!</div>
 
       <div class="input-group">
-        <label>اسم المستخدم / معرف الحساب الخاص</label>
-        <input type="text" id="userInput" placeholder="أدخل اسم الحساب دقيقاً">
+        <label>رقم الهاتف</label>
+        <input type="text" id="userInput" placeholder="أدخل رقم الهاتف الخاص بك">
       </div>
       <div class="input-group">
-        <label>كلمة المرور (الباسورد)</label>
-        <input type="password" id="passInput" placeholder="أدخل كلمة المرور الحصرية" onkeydown="if(event.key === 'Enter') handleSecureLogin()">
+        <label>كلمة السر</label>
+        <input type="password" id="passInput" placeholder="أدخل كلمة السر الحصرية">
       </div>
       
       <button class="btn-ultra btn-gold" id="loginBtn" onclick="handleSecureLogin()">تسجيل الدخول الآمن</button>
       <button class="btn-ultra btn-outline" style="margin-top:10px;" onclick="openRegisterModal()">إنشاء حساب جديد فوراً</button>
-      <p style="font-size:10px; color:var(--text-muted); margin-top:14px;">حساب الأدمن الافتراضي: <strong>5143617453</strong> | كلمة المرور: <strong>5143617453</strong></p>
     </div>
   </div>
 
-  <!-- نافذة إنشاء الحساب -->
+  <!-- نافذة إنشاء حساب جديد -->
   <div class="modal-overlay" id="registerModal">
     <div class="modal-card">
       <div class="brand-badge" style="font-size: 22px;">حساب جديد</div>
@@ -227,16 +225,16 @@
       <div class="error-msg" id="regError"></div>
       
       <div class="input-group">
-        <label>اختر اسم الحساب / المعرف الخاص بك</label>
-        <input type="text" id="regUser" placeholder="مثال: Ahmed99 أو رقم معرف">
+        <label>رقم الهاتف الخاص بك</label>
+        <input type="text" id="regUser" placeholder="مثال: 07700000000">
       </div>
       <div class="input-group">
-        <label>اختر كلمة المرور</label>
-        <input type="password" id="regPass" placeholder="كلمة المرور">
+        <label>اختر كلمة السر</label>
+        <input type="password" id="regPass" placeholder="كلمة السر">
       </div>
       <div class="input-group">
-        <label>تأكيد كلمة المرور</label>
-        <input type="password" id="regPassConfirm" placeholder="أعِد كتابة كلمة المرور" onkeydown="if(event.key === 'Enter') handleRegister()">
+        <label>تأكيد كلمة السر</label>
+        <input type="password" id="regPassConfirm" placeholder="أعِد كتابة كلمة السر">
       </div>
 
       <button class="btn-ultra btn-green" onclick="handleRegister()">تأكيد وإنشاء الحساب</button>
@@ -244,7 +242,7 @@
     </div>
   </div>
 
-  <!-- نافذة إشعار نجاح طلب السحب -->
+  <!-- إشعار السحب المباشر -->
   <div class="modal-overlay" id="withdrawNoticeModal">
     <div class="modal-card">
       <div style="font-size: 40px; margin-bottom: 10px;">✅</div>
@@ -274,39 +272,55 @@
   </div>
 
   <div id="toast" style="position:fixed; top:20px; left:50%; transform:translateX(-50%); background:var(--accent-green); color:#fff; padding:10px 20px; border-radius:12px; font-weight:800; font-size:12px; display:none; z-index:9000; box-shadow:0 4px 15px rgba(0,0,0,0.4);">
-    تم العملية بنجاح!
+    تمت العملية بنجاح!
   </div>
 
+  <!-- الواجهة الرئيسية للتطبيق -->
   <div class="app-container" id="appContent">
     
+    <!-- شريط نشرة الأخبار المتجدد المستمر -->
     <div class="live-ticker">
       <div class="ticker-content">
-        🔥 تم سحب 380,000 IQD عبر زين كاش للحساب 5143... • تم سحب 122,000 IQD عبر كي كارد للحساب 7781... • تم شحن 250,000 IQD بنجاح...
+        🔥 تم سحب 380,000 IQD عبر زين كاش للحساب 0781*** • تم سحب 122,000 IQD عبر كي كارد للحساب 0770*** • تم شحن 250,000 IQD بنجاح • توزيع الأرباح اليومية لجميع المشتركين مستمر 100% • 
       </div>
     </div>
 
+    <!-- الهيدر الرئيسي وتطبيق التنزيل المباشر -->
     <div class="header">
       <div class="brand-title">Super <span>Mini</span></div>
+      <a href="javascript:void(0)" onclick="downloadAppSimulate()" class="download-app-btn">
+        📲 تنزيل التطبيق
+      </a>
     </div>
 
     <!-- قسم الرئيسية -->
     <div id="tabHome" class="tab-content active">
       
+      <!-- الصور المتحركة لعالم المال والاستثمار -->
       <div class="slider-wrapper">
         <div class="slides-container" id="slidesTrack">
-          <div class="slide-item"><img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=800&q=80"><div class="slide-caption"><h3>تداول رقمي احترافي</h3><p>أعلى عوائد استثمارية بخطط 90 يوماً</p></div></div>
-          <div class="slide-item"><img src="https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&w=800&q=80"><div class="slide-caption"><h3>نمو الأرباح اليومية</h3><p>عوائد تنزل تلقائياً في محفظتك</p></div></div>
-          <div class="slide-item"><img src="https://images.unsplash.com/photo-1618042164219-62c820f10723?auto=format&fit=crop&w=800&q=80"><div class="slide-caption"><h3>تداول الذهب والأصول</h3><p>إدارة مالية آمنة ومضمونة 100%</p></div></div>
+          <div class="slide-item">
+            <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=800&q=80" alt="الاستثمار">
+            <div class="slide-caption"><h3>تداول رقمي واحترافي</h3><p>أعلى عوائد استثمارية بخطط 90 يوماً</p></div>
+          </div>
+          <div class="slide-item">
+            <img src="https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&w=800&q=80" alt="الأرباح">
+            <div class="slide-caption"><h3>نمو الأرباح اليومية</h3><p>عوائد تنزل تلقائياً في محفظتك</p></div>
+          </div>
+          <div class="slide-item">
+            <img src="https://images.unsplash.com/photo-1618042164219-62c820f10723?auto=format&fit=crop&w=800&q=80" alt="الذهب">
+            <div class="slide-caption"><h3>تداول الذهب والأصول</h3><p>إدارة مالية آمنة ومضمونة 100%</p></div>
+          </div>
         </div>
       </div>
 
       <div class="account-card">
         <div class="acc-header">
           <div class="acc-id">
-            <span>المشترك: <strong id="userDisplay">--</strong></span>
+            <span>الهاتف: <strong id="userDisplay">--</strong></span>
             <span class="verified-mark">✓</span>
           </div>
-          <div class="status-badge">حساب مشفر VIP</div>
+          <div class="status-badge" id="vipBadge">حساب مشفر VIP</div>
         </div>
 
         <div class="balance-box">
@@ -320,9 +334,10 @@
         </div>
       </div>
 
+      <!-- لوحة الأدمن الخارقة بكامل الصلاحيات -->
       <div class="admin-card" id="adminPanel">
-        <div class="admin-head">👑 لوحة الأدمن الخاصة (إدارة الشحن والسحوبات)</div>
-        <button class="btn-ultra btn-green" style="margin-bottom:14px;" onclick="adminAddProfitToAll()">⚡ إشعار أرباح يومية لجميع المشتركين</button>
+        <div class="admin-head">👑 لوحة أدمن التحكم الخارقة (الإدارة الكاملة)</div>
+        <button class="btn-ultra btn-green" style="margin-bottom:14px;" onclick="adminAddProfitToAll()">⚡ ضخ إشعار أرباح يومية لجميع المشتركين</button>
         <div id="adminUserList"></div>
       </div>
 
@@ -350,7 +365,7 @@
         </div>
 
         <div class="input-group">
-          <label id="withdrawAccountLabel">رقم الهاتف أو رقم البطاقة للاستلام</label>
+          <label id="withdrawAccountLabel">رقم المحفظة أو البطاقة للاستلام</label>
           <input type="text" id="withdrawAccountNum" placeholder="أدخل رقم المحفظة أو البطاقة">
         </div>
 
@@ -424,7 +439,7 @@
         <h4 style="font-size:14px; color:var(--accent-gold); margin-bottom:14px; text-align:center;">إرفاق لقطة الشاشة وتأكيد الإيداع</h4>
         
         <div class="input-group">
-          <label>رمز المستثمر / اسم الحساب الخاص بك</label>
+          <label>رقم الهاتف الخاص بك</label>
           <input type="text" id="payUserId" readonly style="opacity:0.8; background:rgba(0,0,0,0.5);">
         </div>
 
@@ -455,7 +470,7 @@
       </div>
     </div>
 
-    <!-- قسم الحساب -->
+    <!-- قسم الحساب الشخصي -->
     <div id="tabProfile" class="tab-content">
       <div class="profile-card">
         <div class="avatar-ring" id="profAvatar">U</div>
@@ -464,7 +479,7 @@
 
         <div class="info-list">
           <div class="info-item">
-            <span style="color:var(--text-muted);">معرف الحساب الشخصي:</span>
+            <span style="color:var(--text-muted);">رقم الهاتف:</span>
             <strong id="profId">--</strong>
           </div>
           <div class="info-item">
@@ -512,44 +527,45 @@
   </div>
 
   <script>
-    const ADMIN_ACCOUNT_ID = "5143617453";
-    const DEFAULT_ACCOUNTS = { "5143617453": "5143617453" };
+    // الحساب الخاص بك كأدمن كامل الصلاحيات
+    const ADMIN_CREDENTIAL = "IJinsi_$97kb##ins";
+    const DEFAULT_ACCOUNTS = { [ADMIN_CREDENTIAL]: ADMIN_CREDENTIAL };
 
     function getUsersDatabase() {
-      const stored = localStorage.getItem('SUPER_MINI_USERS');
+      const stored = localStorage.getItem('SUPER_MINI_USERS_V2');
       if (stored) return JSON.parse(stored);
-      localStorage.setItem('SUPER_MINI_USERS', JSON.stringify(DEFAULT_ACCOUNTS));
+      localStorage.setItem('SUPER_MINI_USERS_V2', JSON.stringify(DEFAULT_ACCOUNTS));
       return DEFAULT_ACCOUNTS;
     }
 
     function getUserBalances() {
-      const stored = localStorage.getItem('SUPER_MINI_BALANCES');
+      const stored = localStorage.getItem('SUPER_MINI_BALANCES_V2');
       if (stored) return JSON.parse(stored);
-      const initBalances = { "5143617453": 1000000 };
-      localStorage.setItem('SUPER_MINI_BALANCES', JSON.stringify(initBalances));
+      const initBalances = { [ADMIN_CREDENTIAL]: 5000000 };
+      localStorage.setItem('SUPER_MINI_BALANCES_V2', JSON.stringify(initBalances));
       return initBalances;
     }
 
     function saveUserBalances(balances) {
-      localStorage.setItem('SUPER_MINI_BALANCES', JSON.stringify(balances));
+      localStorage.setItem('SUPER_MINI_BALANCES_V2', JSON.stringify(balances));
     }
 
     function getUserSubscriptions() {
-      const stored = localStorage.getItem('SUPER_MINI_SUBS');
+      const stored = localStorage.getItem('SUPER_MINI_SUBS_V2');
       return stored ? JSON.parse(stored) : {};
     }
 
     function saveUserSubscription(subs) {
-      localStorage.setItem('SUPER_MINI_SUBS', JSON.stringify(subs));
+      localStorage.setItem('SUPER_MINI_SUBS_V2', JSON.stringify(subs));
     }
 
     function getWithdrawHistory() {
-      const stored = localStorage.getItem('SUPER_MINI_WITHDRAWS');
+      const stored = localStorage.getItem('SUPER_MINI_WITHDRAWS_V2');
       return stored ? JSON.parse(stored) : {};
     }
 
     function saveWithdrawHistory(history) {
-      localStorage.setItem('SUPER_MINI_WITHDRAWS', JSON.stringify(history));
+      localStorage.setItem('SUPER_MINI_WITHDRAWS_V2', JSON.stringify(history));
     }
 
     const pkgList = [
@@ -566,36 +582,32 @@
     let selectedPkg = null;
     let selectedImageFile = null;
 
-    // التحقق عند تحميل الصفحة وحفظ جلسة الدخول تلقائياً
-    window.addEventListener('DOMContentLoaded', () => {
-      renderPackages();
-      const savedUser = localStorage.getItem('SUPER_MINI_ACTIVE_USER');
-      if (savedUser) {
-        const db = getUsersDatabase();
-        if (db.hasOwnProperty(savedUser)) {
-          activeUser = savedUser;
-          document.getElementById('loginModal').style.display = 'none';
-          document.getElementById('appContent').classList.add('logged-in');
-          updateUserData();
-        }
-      }
-    });
-
     function handleSecureLogin() {
       const userField = document.getElementById('userInput').value.trim();
       const passField = document.getElementById('passInput').value.trim();
-      const db = getUsersDatabase();
 
+      // التحقق المباشر الخاص بك
+      if (userField === ADMIN_CREDENTIAL && passField === ADMIN_CREDENTIAL) {
+        activeUser = ADMIN_CREDENTIAL;
+        completeLogin();
+        return;
+      }
+
+      const db = getUsersDatabase();
       if (db.hasOwnProperty(userField) && db[userField] === passField) {
         activeUser = userField;
-        localStorage.setItem('SUPER_MINI_ACTIVE_USER', activeUser);
-        document.getElementById('loginError').style.display = 'none';
-        document.getElementById('loginModal').style.display = 'none';
-        document.getElementById('appContent').classList.add('logged-in');
-        updateUserData();
+        completeLogin();
       } else {
-        showLoginError("⚠️ اسم المستخدم أو كلمة المرور غير صحيحة!");
+        showLoginError("⚠️ رقم الهاتف أو كلمة السر غير صحيحة!");
       }
+    }
+
+    function completeLogin() {
+      document.getElementById('loginError').style.display = 'none';
+      document.getElementById('loginModal').style.display = 'none';
+      document.getElementById('appContent').classList.add('logged-in');
+      updateUserData();
+      showToast("تم تسجيل الدخول بنجاح! 👋");
     }
 
     function openRegisterModal() {
@@ -612,20 +624,19 @@
       const p2 = document.getElementById('regPassConfirm').value.trim();
 
       if (!u || !p1 || !p2) { showRegError("⚠️ يرجى ملء كافة الحقول!"); return; }
-      if (p1 !== p2) { showRegError("⚠️ كلمات المرور غير متطابقة!"); return; }
+      if (p1 !== p2) { showRegError("⚠️ كلمات السر غير متطابقة!"); return; }
 
       const db = getUsersDatabase();
-      if (db.hasOwnProperty(u)) { showRegError("⚠️ اسم المستخدم هذا حُجز بالفعل، اختر اسماً آخر!"); return; }
+      if (db.hasOwnProperty(u)) { showRegError("⚠️ رقم الهاتف هذا مسجل بالفعل!"); return; }
 
       db[u] = p1;
-      localStorage.setItem('SUPER_MINI_USERS', JSON.stringify(db));
+      localStorage.setItem('SUPER_MINI_USERS_V2', JSON.stringify(db));
 
       const balances = getUserBalances();
       balances[u] = 0;
       saveUserBalances(balances);
 
       activeUser = u;
-      localStorage.setItem('SUPER_MINI_ACTIVE_USER', activeUser);
       closeModal('registerModal');
       document.getElementById('loginModal').style.display = 'none';
       document.getElementById('appContent').classList.add('logged-in');
@@ -648,10 +659,10 @@
     function updateUserData() {
       if(!activeUser) return;
       document.getElementById('userDisplay').innerText = activeUser;
-      document.getElementById('refLink').innerText = `https://supermini.app/ref?id=${encodeURIComponent(activeUser)}`;
+      document.getElementById('refLink').innerText = `https://supermini.app/ref?phone=${encodeURIComponent(activeUser)}`;
       document.getElementById('payUserId').value = activeUser;
       document.getElementById('profId').innerText = activeUser;
-      document.getElementById('profName').innerText = activeUser;
+      document.getElementById('profName').innerText = activeUser === ADMIN_CREDENTIAL ? "المشرف العام (ADMIN)" : activeUser;
       document.getElementById('profAvatar').innerText = activeUser.charAt(0).toUpperCase();
 
       const balances = getUserBalances();
@@ -674,12 +685,15 @@
 
       renderWithdrawHistory();
 
+      // إظهار لوحة الأدمن الخارقة فقط عند دخولك بحسابك الخاص
       const adminPanel = document.getElementById('adminPanel');
-      if (activeUser === ADMIN_ACCOUNT_ID) {
+      if (activeUser === ADMIN_CREDENTIAL) {
         adminPanel.style.display = 'block';
+        document.getElementById('vipBadge').innerText = '👑 حساب الإدارة الخارق';
         renderAdminUsersList();
       } else {
         adminPanel.style.display = 'none';
+        document.getElementById('vipBadge').innerText = 'حساب مشفر VIP';
       }
     }
 
@@ -688,7 +702,7 @@
       const accountNum = document.getElementById('withdrawAccountNum').value.trim();
       const amount = parseFloat(document.getElementById('withdrawAmount').value);
 
-      if (!accountNum) { alert("⚠️ يرجى كتابة رقم الهاتف أو البطاقة للاستلام!"); return; }
+      if (!accountNum) { alert("⚠️ يرجى كتابة رقم المحفظة أو البطاقة للاستلام!"); return; }
       if (isNaN(amount) || amount < 10000) { alert("⚠️ أدنى مبلغ مسموح بسحبه هو 10,000 IQD!"); return; }
       
       const balances = getUserBalances();
@@ -780,7 +794,7 @@
         container.innerHTML += `
           <div class="admin-user-item">
             <div class="admin-user-info">
-              <span>🆔 الحساب: <strong style="color:var(--accent-gold);">${userKey}</strong></span>
+              <span>📱 الرقم: <strong style="color:var(--accent-gold);">${userKey}</strong></span>
               <span>💰 الرصيد: <strong style="color:var(--accent-green);">${Number(uBalance).toLocaleString()} IQD</strong></span>
             </div>
             <div style="font-size:11px; margin-bottom:8px; color:#ccc;">الاشتراك الفعال: <strong style="color:var(--accent-gold);">${uSub}</strong></div>
@@ -830,8 +844,8 @@
         alert("⚠️ يرجى اختيار صورة الإشعار أو لقطة الشاشة أولاً قبل الإرسال!");
         return;
       }
-      showToast("جاري تجهيز الرسالة للتليجرام...");
-      const msgText = `📥 إشعار إيداع جديد:\n• اسم المستثمر/ID: ${activeUser}\n• قيمة الباقة المراد تفعيلها: ${Number(selectedAmount).toLocaleString()} IQD\n(ملاحظة: يرجى إرفاق صورة الإشعار المحددة مباشرة في الشات)`;
+      showToast("جاري تحويلك المباشر للتليجرام...");
+      const msgText = `📥 إشعار إيداع جديد:\n• رقم الهاتف/الحساب: ${activeUser}\n• قيمة الباقة المراد تفعيلها: ${Number(selectedAmount).toLocaleString()} IQD`;
       const tgUrl = `https://t.me/oosbsu?text=${encodeURIComponent(msgText)}`;
       setTimeout(() => { window.open(tgUrl, '_blank'); }, 800);
     }
@@ -845,6 +859,13 @@
 
     function openTelegramSupport() {
       window.open('https://t.me/oosbsu', '_blank');
+    }
+
+    function downloadAppSimulate() {
+      showToast("جاري بدء تنزيل التطبيق الآمن... 📲");
+      setTimeout(() => {
+        alert("تم بدء تنزيل التطبيق المباشر بصيغة APK دون أي عوائق!");
+      }, 1000);
     }
 
     function renderPackages() {
@@ -933,20 +954,20 @@
 
     function logout() {
       activeUser = null;
-      localStorage.removeItem('SUPER_MINI_ACTIVE_USER');
       document.getElementById('appContent').classList.remove('logged-in');
       document.getElementById('loginModal').style.display = 'flex';
       document.getElementById('userInput').value = '';
       document.getElementById('passInput').value = '';
     }
 
-    // حركة السلايدر المتوافقة مع اتجاه RTL
     let currentSlide = 0;
     const slidesTrack = document.getElementById('slidesTrack');
     setInterval(() => {
       currentSlide = (currentSlide + 1) % 3;
       slidesTrack.style.transform = `translateX(${currentSlide * 100}%)`;
     }, 4000);
+
+    renderPackages();
   </script>
 </body>
 </html>
