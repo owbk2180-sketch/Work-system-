@@ -2,7 +2,15 @@
 <html lang="ar" dir="rtl" data-theme="dark">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  
+  <!-- وسوم تحويل الصفحة إلى تطبيق مجرد من شريط المتصفح -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#070a12">
+  <link rel="manifest" href="data:application/json;charset=utf-8,%7B%22name%22%3A%22Super%20Mini%22%2C%22short_name%22%3A%22SuperMini%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23070a12%22%2C%22theme_color%22%3A%22%23f59e0b%22%7D">
+
   <title>Super Mini | المنصة المالية الرقمية المشفرة</title>
   <style>
     :root {
@@ -19,13 +27,12 @@
       --accent-red: #ef4444;
       --accent-red-glow: rgba(239, 68, 68, 0.4);
       --qi-color: #fbbc04;
-      --zain-color: #ff007f;
       --glass-bg: rgba(15, 23, 42, 0.92);
       --shadow-lux: 0 12px 35px -5px rgba(0, 0, 0, 0.8), 0 0 20px rgba(245, 158, 11, 0.2);
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; transition: all 0.22s ease-in-out; }
-    body { background-color: var(--bg-main); color: var(--text-main); display: flex; justify-content: center; min-height: 100vh; overflow-x: hidden; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; transition: all 0.22s ease-in-out; -webkit-tap-highlight-color: transparent; }
+    body { background-color: var(--bg-main); color: var(--text-main); display: flex; justify-content: center; min-height: 100vh; overflow-x: hidden; user-select: none; }
     
     .app-container { width: 100%; max-width: 440px; background: var(--bg-main); position: relative; padding-bottom: 95px; min-height: 100vh; border-left: 1px solid var(--card-border); border-right: 1px solid var(--card-border); display: none; }
     .app-container.logged-in { display: block; }
@@ -122,7 +129,6 @@
 
     .section-head { font-size: 16px; font-weight: 900; margin: 24px 16px 14px 16px; display: flex; justify-content: space-between; align-items: center; color: var(--accent-gold); text-shadow: 0 0 10px var(--accent-gold-glow); }
     
-    /* تصميم الباقات الفخم والجذاب جداً */
     .packages-list { display: flex; flex-direction: column; gap: 20px; padding: 0 16px; }
     
     .package-item {
@@ -216,6 +222,9 @@
       
       <button class="btn-ultra btn-gold" id="loginBtn" onclick="handleSecureLogin()">تسجيل الدخول الآمن</button>
       <button class="btn-ultra btn-outline" style="margin-top:10px;" onclick="openRegisterModal()">إنشاء حساب جديد فوراً</button>
+
+      <!-- زر تثبيت التطبيق تلقائياً على هاتف الزبون -->
+      <button class="btn-ultra btn-green" id="pwaInstallBtn" style="margin-top:10px; display:none;" onclick="installAppDirectly()">📲 تثبيت التطبيق على الهاتف</button>
     </div>
   </div>
 
@@ -244,7 +253,20 @@
     </div>
   </div>
 
-  <!-- نافذة إشعار نجاح طلب السحب (24 إلى 48 ساعة) -->
+  <!-- نافذة إشعار الوصول (بديل الدعم الخارجي) -->
+  <div class="modal-overlay" id="supportModal">
+    <div class="modal-card">
+      <div style="font-size: 36px; margin-bottom: 10px;">💬</div>
+      <h3 style="color: var(--accent-gold);">الدعم الفني المباشر</h3>
+      <p style="font-size: 13px; color: #fff; margin-top: 10px;">
+        معرف الدعم الخاص على التليجرام: <br><strong style="color:var(--accent-gold); font-size:16px;">@oosbsu</strong>
+      </p>
+      <button class="btn-ultra btn-gold" style="margin-top: 15px;" onclick="copyText('@oosbsu')">نسخ معرف الدعم</button>
+      <button class="btn-ultra btn-outline" style="margin-top: 8px;" onclick="closeModal('supportModal')">إغلاق</button>
+    </div>
+  </div>
+
+  <!-- نافذة إشعار نجاح طلب السحب -->
   <div class="modal-overlay" id="withdrawNoticeModal">
     <div class="modal-card">
       <div style="font-size: 40px; margin-bottom: 10px;">✅</div>
@@ -451,7 +473,7 @@
           <img id="imagePreview" src="" alt="صورة الإشعار">
         </div>
 
-        <button class="btn-ultra btn-green" onclick="submitReceiptWithImage()">إرسال صورة الإشعار والتفعيل عبر التليجرام</button>
+        <button class="btn-ultra btn-green" onclick="submitReceiptWithImage()">تأكيد ورفع إشعار الإيداع</button>
       </div>
     </div>
 
@@ -514,6 +536,25 @@
   <script>
     const ADMIN_ACCOUNT_ID = "5143617453";
     const DEFAULT_ACCOUNTS = { "5143617453": "5143617453" };
+
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      const installBtn = document.getElementById('pwaInstallBtn');
+      if (installBtn) installBtn.style.display = 'inline-flex';
+    });
+
+    function installAppDirectly() {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then(() => {
+          deferredPrompt = null;
+        });
+      } else {
+        alert("تطبيقك جاهز! لإضافته لشاشة الهاتف: اضغط خيارات المتصفح (⋮) ثم اختر 'إضافة إلى الشاشة الرئيسية' أو 'Install App'");
+      }
+    }
 
     function getUsersDatabase() {
       const stored = localStorage.getItem('SUPER_MINI_USERS');
@@ -682,11 +723,9 @@
         return;
       }
 
-      // خصم الرصيد
       balances[activeUser] = currentBal - amount;
       saveUserBalances(balances);
 
-      // حفظ العملية في السجل
       const allHistory = getWithdrawHistory();
       if (!allHistory[activeUser]) allHistory[activeUser] = [];
       allHistory[activeUser].unshift({
@@ -701,7 +740,6 @@
 
       updateUserData();
 
-      // إظهار نافذة إشعار الوصول خلال 24 إلى 48 ساعة
       document.getElementById('withdrawAccountNum').value = '';
       document.getElementById('withdrawAmount').value = '';
       document.getElementById('withdrawNoticeModal').style.display = 'flex';
@@ -811,15 +849,14 @@
     }
 
     function submitReceiptWithImage() {
-      const selectedAmount = document.getElementById('pkgSelect').value;
       if (!selectedImageFile) {
         alert("⚠️ يرجى اختيار صورة الإشعار أو لقطة الشاشة أولاً قبل الإرسال!");
         return;
       }
-      showToast("جاري تجهيز الرسالة للتليجرام...");
-      const msgText = `📥 إشعار إيداع جديد:\n• اسم المستثمر/ID: ${activeUser}\n• قيمة الباقة المراد تفعيلها: ${Number(selectedAmount).toLocaleString()} IQD`;
-      const tgUrl = `https://t.me/oosbsu?text=${encodeURIComponent(msgText)}`;
-      setTimeout(() => { window.open(tgUrl, '_blank'); }, 800);
+      showToast("تم إرسال إشعار الإيداع بنجاح لطلبات المراجعة!");
+      document.getElementById('previewContainer').style.display = 'none';
+      document.getElementById('receiptFileInput').value = '';
+      selectedImageFile = null;
     }
 
     function switchTab(tabId, btn) {
@@ -830,7 +867,7 @@
     }
 
     function openTelegramSupport() {
-      window.open('https://t.me/oosbsu', '_blank');
+      document.getElementById('supportModal').style.display = 'flex';
     }
 
     function renderPackages() {
@@ -908,7 +945,7 @@
 
     function copyText(val) {
       navigator.clipboard.writeText(val);
-      showToast('تم نسخ الرقم بنجاح: ' + val);
+      showToast('تم النسخ بنجاح: ' + val);
     }
 
     function copyRef() {
@@ -935,4 +972,5 @@
     renderPackages();
   </script>
 </body>
-        </html>
+</html>
+
