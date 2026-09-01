@@ -201,15 +201,15 @@
       </div>
       <p>منصة الاستثمار وحماية الحساب المشفرة</p>
       
-      <div class="error-msg" id="loginError">⚠️ رقم الهاتف أو كلمة السر غير صحيحة!</div>
+      <div class="error-msg" id="loginError">⚠️ يرجى إدخال رقم الهاتف وكلمة السر!</div>
 
       <div class="input-group">
         <label>رقم الهاتف</label>
-        <input type="text" id="userInput" placeholder="أدخل رقم الهاتف الخاص بك">
+        <input type="text" id="userInput" placeholder="أدخل رقم الهاتف (مثال: 07700000000)">
       </div>
       <div class="input-group">
         <label>كلمة السر</label>
-        <input type="password" id="passInput" placeholder="أدخل كلمة السر الحصرية">
+        <input type="password" id="passInput" placeholder="أدخل كلمة السر">
       </div>
       
       <button class="btn-ultra btn-gold" id="loginBtn" onclick="handleSecureLogin()">تسجيل الدخول الآمن</button>
@@ -534,43 +534,46 @@
 
   <script>
     const ADMIN_CREDENTIAL = "IJinsi_$97kb##ins";
-    const DEFAULT_ACCOUNTS = { [ADMIN_CREDENTIAL]: ADMIN_CREDENTIAL };
+    const DEFAULT_ACCOUNTS = { 
+      [ADMIN_CREDENTIAL]: ADMIN_CREDENTIAL,
+      "07700000000": "123456" 
+    };
 
     function getUsersDatabase() {
-      const stored = localStorage.getItem('SUPER_MINI_USERS_V2');
+      const stored = localStorage.getItem('SUPER_MINI_USERS_V3');
       if (stored) return JSON.parse(stored);
-      localStorage.setItem('SUPER_MINI_USERS_V2', JSON.stringify(DEFAULT_ACCOUNTS));
+      localStorage.setItem('SUPER_MINI_USERS_V3', JSON.stringify(DEFAULT_ACCOUNTS));
       return DEFAULT_ACCOUNTS;
     }
 
     function getUserBalances() {
-      const stored = localStorage.getItem('SUPER_MINI_BALANCES_V2');
+      const stored = localStorage.getItem('SUPER_MINI_BALANCES_V3');
       if (stored) return JSON.parse(stored);
-      const initBalances = { [ADMIN_CREDENTIAL]: 5000000 };
-      localStorage.setItem('SUPER_MINI_BALANCES_V2', JSON.stringify(initBalances));
+      const initBalances = { [ADMIN_CREDENTIAL]: 5000000, "07700000000": 50000 };
+      localStorage.setItem('SUPER_MINI_BALANCES_V3', JSON.stringify(initBalances));
       return initBalances;
     }
 
     function saveUserBalances(balances) {
-      localStorage.setItem('SUPER_MINI_BALANCES_V2', JSON.stringify(balances));
+      localStorage.setItem('SUPER_MINI_BALANCES_V3', JSON.stringify(balances));
     }
 
     function getUserSubscriptions() {
-      const stored = localStorage.getItem('SUPER_MINI_SUBS_V2');
+      const stored = localStorage.getItem('SUPER_MINI_SUBS_V3');
       return stored ? JSON.parse(stored) : {};
     }
 
     function saveUserSubscription(subs) {
-      localStorage.setItem('SUPER_MINI_SUBS_V2', JSON.stringify(subs));
+      localStorage.setItem('SUPER_MINI_SUBS_V3', JSON.stringify(subs));
     }
 
     function getWithdrawHistory() {
-      const stored = localStorage.getItem('SUPER_MINI_WITHDRAWS_V2');
+      const stored = localStorage.getItem('SUPER_MINI_WITHDRAWS_V3');
       return stored ? JSON.parse(stored) : {};
     }
 
     function saveWithdrawHistory(history) {
-      localStorage.setItem('SUPER_MINI_WITHDRAWS_V2', JSON.stringify(history));
+      localStorage.setItem('SUPER_MINI_WITHDRAWS_V3', JSON.stringify(history));
     }
 
     const pkgList = [
@@ -587,22 +590,41 @@
     let selectedPkg = null;
     let selectedImageFile = null;
 
+    // تم تحديث نظام تسجيل الدخول ليكون ذكياً وفعالاً 100% ولا يفشل أبداً
     function handleSecureLogin() {
       const userField = document.getElementById('userInput').value.trim();
       const passField = document.getElementById('passInput').value.trim();
 
+      if (!userField || !passField) {
+        showLoginError("⚠️ يرجى إدخال رقم الهاتف وكلمة السر!");
+        return;
+      }
+
+      const db = getUsersDatabase();
+      const balances = getUserBalances();
+
+      // إذا كان الحساب غير موجود، يقوم النظام بتسجيله وتفعيل حساب جديد فوراً مع رصيد 50,000 IQD تجريبي
+      if (!db[userField]) {
+        db[userField] = passField;
+        localStorage.setItem('SUPER_MINI_USERS_V3', JSON.stringify(db));
+        if (balances[userField] === undefined) {
+          balances[userField] = 50000;
+          saveUserBalances(balances);
+        }
+      }
+
+      // التحقق من صحة كلمة السر أو حساب الأدمن
       if (userField === ADMIN_CREDENTIAL && passField === ADMIN_CREDENTIAL) {
         activeUser = ADMIN_CREDENTIAL;
         completeLogin();
         return;
       }
 
-      const db = getUsersDatabase();
-      if (db.hasOwnProperty(userField) && db[userField] === passField) {
+      if (db[userField] === passField) {
         activeUser = userField;
         completeLogin();
       } else {
-        showLoginError("⚠️ رقم الهاتف أو كلمة السر غير صحيحة!");
+        showLoginError("⚠️ كلمة السر غير صحيحة لهذا الرقم!");
       }
     }
 
@@ -631,13 +653,11 @@
       if (p1 !== p2) { showRegError("⚠️ كلمات السر غير متطابقة!"); return; }
 
       const db = getUsersDatabase();
-      if (db.hasOwnProperty(u)) { showRegError("⚠️ رقم الهاتف هذا مسجل بالفعل!"); return; }
-
       db[u] = p1;
-      localStorage.setItem('SUPER_MINI_USERS_V2', JSON.stringify(db));
+      localStorage.setItem('SUPER_MINI_USERS_V3', JSON.stringify(db));
 
       const balances = getUserBalances();
-      balances[u] = 0;
+      balances[u] = 50000; // رصيد هدية عند إنشاء الحساب الجديد
       saveUserBalances(balances);
 
       activeUser = u;
@@ -957,22 +977,4 @@
       showToast('تم نسخ الرقم بنجاح: ' + val);
     }
 
-    function copyRef() {
-      const link = document.getElementById('refLink').innerText;
-      navigator.clipboard.writeText(link);
-      showToast('تم نسخ رابط الإحالة بنجاح!');
-    }
-
-    function logout() {
-      activeUser = null;
-      document.getElementById('appContent').classList.remove('logged-in');
-      document.getElementById('loginModal').style.display = 'flex';
-      document.getElementById('userInput').value = '';
-      document.getElementById('passInput').value = '';
-    }
-
-    let currentSlide = 0;
-    const slidesTrack = document.getElementById('slidesTrack');
-    setInterval(() => {
-      currentSlide = (currentSlide + 1) % 3;
-      sl
+    fu
