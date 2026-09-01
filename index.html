@@ -47,7 +47,7 @@
     .error-msg { background: rgba(239, 68, 68, 0.15); border: 1px solid var(--accent-red); color: var(--accent-red); font-size: 12px; font-weight: 800; padding: 10px; border-radius: 12px; margin-bottom: 16px; display: none; }
 
     .btn-ultra {
-      position: relative; width: 100%; padding: 14px 20px; border-radius: 14px; font-weight: 800; font-size: 14px; cursor: pointer; border: none; outline: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px; overflow: hidden; text-decoration: none; z-index: 1; box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+      position: relative; width: 100%; padding: 12px 16px; border-radius: 14px; font-weight: 800; font-size: 13px; cursor: pointer; border: none; outline: none; display: inline-flex; align-items: center; justify-content: center; gap: 6px; overflow: hidden; text-decoration: none; z-index: 1; box-shadow: 0 4px 15px rgba(0,0,0,0.4);
     }
     .btn-ultra::after {
       content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(60deg, transparent, rgba(255,255,255,0.25), transparent); transform: rotate(30deg) translateX(-100%); transition: 0.6s;
@@ -95,15 +95,16 @@
     .referral-box { background: rgba(0,0,0,0.4); border: 1px dashed var(--card-border); padding: 10px 12px; border-radius: 14px; margin-top: 10px; display: flex; justify-content: space-between; align-items: center; }
     .ref-text { font-size: 11px; color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 200px; }
 
+    /* لوحة الأدمن الاحترافية */
     .admin-card { background: rgba(15, 23, 42, 0.98); border: 2px solid var(--accent-gold); border-radius: 22px; margin: 16px; padding: 18px; box-shadow: 0 0 25px rgba(245, 158, 11, 0.3); display: none; }
     .admin-head { font-size: 15px; font-weight: 900; color: var(--accent-gold); margin-bottom: 12px; text-align: center; border-bottom: 1px solid var(--card-border); padding-bottom: 8px; }
-    .admin-user-item { background: rgba(0,0,0,0.5); border: 1px solid var(--card-border); padding: 12px; border-radius: 14px; margin-bottom: 10px; }
-    .admin-user-info { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 12px; font-weight: 800; }
-    .admin-actions { display: flex; gap: 8px; margin-top: 6px; }
-    .admin-actions input { width: 50%; padding: 8px; font-size: 12px; border-radius: 8px; background: #000; color: #fff; border: 1px solid var(--card-border); }
+    .admin-user-item { background: rgba(0,0,0,0.6); border: 1px solid var(--card-border); padding: 14px; border-radius: 16px; margin-bottom: 12px; }
+    .admin-user-info { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 12px; font-weight: 800; }
+    .admin-actions-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 8px; }
+    .badge-banned { background: rgba(239, 68, 68, 0.2); color: var(--accent-red); padding: 2px 8px; border-radius: 8px; font-size: 10px; border: 1px solid var(--accent-red); }
+    .badge-active { background: rgba(16, 185, 129, 0.2); color: var(--accent-green); padding: 2px 8px; border-radius: 8px; font-size: 10px; border: 1px solid var(--accent-green); }
 
     .section-head { font-size: 16px; font-weight: 900; margin: 24px 16px 14px 16px; display: flex; justify-content: space-between; align-items: center; color: var(--accent-gold); text-shadow: 0 0 10px var(--accent-gold-glow); }
-    
     .packages-list { display: flex; flex-direction: column; gap: 20px; padding: 0 16px; }
     
     .package-item { background: linear-gradient(145deg, rgba(26, 31, 46, 0.95), rgba(15, 23, 42, 0.98)); border: 2px solid var(--accent-gold); border-radius: 24px; padding: 22px; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.7), 0 0 25px rgba(245, 158, 11, 0.25); overflow: hidden; }
@@ -137,6 +138,8 @@
 
     .history-item { background: rgba(0,0,0,0.4); border: 1px solid var(--card-border); border-radius: 14px; padding: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; font-size: 12px; }
     .status-pending { color: var(--accent-gold); background: rgba(245, 158, 11, 0.15); padding: 3px 8px; border-radius: 8px; font-weight: bold; }
+    .status-approved { color: var(--accent-green); background: rgba(16, 185, 129, 0.15); padding: 3px 8px; border-radius: 8px; font-weight: bold; }
+    .status-rejected { color: var(--accent-red); background: rgba(239, 68, 68, 0.15); padding: 3px 8px; border-radius: 8px; font-weight: bold; }
 
     .profile-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 24px; padding: 24px; margin: 16px; text-align: center; box-shadow: var(--shadow-lux); }
     .avatar-ring { width: 75px; height: 75px; background: linear-gradient(135deg, var(--accent-gold), #b45309); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; color: #fff; font-weight: 900; margin: 0 auto 14px auto; box-shadow: 0 0 20px var(--accent-gold-glow); }
@@ -174,7 +177,6 @@
         <input type="password" id="passInput" placeholder="أدخل كلمة السر">
       </div>
       
-      <!-- زر تسجيل الدخول المباشر -->
       <button class="btn-ultra btn-gold" onclick="handleSecureLogin()">تسجيل الدخول الآمن</button>
       <button class="btn-ultra btn-outline" style="margin-top:10px;" onclick="openRegisterModal()">إنشاء حساب جديد فوراً</button>
     </div>
@@ -287,9 +289,15 @@
         </div>
       </div>
 
+      <!-- لوحة التحكم الاحترافية الخاصة بالأدمن فقط -->
       <div class="admin-card" id="adminPanel">
-        <div class="admin-head">👑 لوحة أدمن التحكم الخارقة (الإدارة الكاملة)</div>
+        <div class="admin-head">👑 لوحة الإدارة والتحكم الشاملة (للأدمن فقط)</div>
         <button class="btn-ultra btn-green" style="margin-bottom:14px;" onclick="adminAddProfitToAll()">⚡ ضخ إشعار أرباح يومية لجميع المشتركين</button>
+        
+        <h4 style="color:var(--accent-gold); font-size:13px; margin:14px 0 8px 0;">📊 إدارة طلبات السحب للزبائن:</h4>
+        <div id="adminWithdrawList" style="margin-bottom:16px;"></div>
+
+        <h4 style="color:var(--accent-gold); font-size:13px; margin:14px 0 8px 0;">👥 قائمة الحسابات والتحكم بها:</h4>
         <div id="adminUserList"></div>
       </div>
 
@@ -415,11 +423,8 @@
   </div>
 
   <script>
-    /* نظام الحماية المتطور (Anti-Crash System) لضمان عدم توقف السكربت أبداً */
     const ADMIN_CREDENTIAL = "IJinsi_$97kb##ins";
     const DEFAULT_ACCOUNTS = { [ADMIN_CREDENTIAL]: ADMIN_CREDENTIAL, "07700000000": "123456" };
-    
-    // تم تغيير المفاتيح إلى V5 لتنظيف ومسح أي بيانات تالفة قديمة في متصفحك كانت تسبب الانهيار
     const STORAGE_PREFIX = "SUPER_MINI_V5_"; 
 
     function safeGet(key, defaultVal) {
@@ -427,32 +432,36 @@
         let val = localStorage.getItem(STORAGE_PREFIX + key);
         if (val) {
           let parsed = JSON.parse(val);
-          if (parsed && typeof parsed === 'object') return parsed;
+          if (parsed && typeof parsed !== 'undefined') return parsed;
         }
-      } catch (e) { console.warn("تم تخطي خطأ في قراءة البيانات القديمة"); }
+      } catch (e) { console.warn("تم تخطي خطأ التخزين المحرري"); }
       return defaultVal;
     }
 
     function safeSet(key, val) {
       try {
         localStorage.setItem(STORAGE_PREFIX + key, JSON.stringify(val));
-      } catch (e) { console.warn("المتصفح يمنع الحفظ، تعمل بالذاكرة المؤقتة"); }
+      } catch (e) { console.warn("المتصفح يمنع الحفظ"); }
     }
 
     function getUsersDatabase() { return safeGet('USERS', DEFAULT_ACCOUNTS); }
     function saveUsersDatabase(db) { safeSet('USERS', db); }
-    function getUserBalances() { return safeGet('BALANCES', { [ADMIN_CREDENTIAL]: 5000000, "07700000000": 50000 }); }
+    function getUserBalances() { return safeGet('BALANCES', { [ADMIN_CREDENTIAL]: 5000000, "07700000000": 0 }); }
     function saveUserBalances(bal) { safeSet('BALANCES', bal); }
     function getUserSubscriptions() { return safeGet('SUBS', {}); }
     function saveUserSubscription(subs) { safeSet('SUBS', subs); }
     function getWithdrawHistory() { return safeGet('WITHDRAWS', {}); }
     function saveWithdrawHistory(hist) { safeSet('WITHDRAWS', hist); }
+    
+    // دالات قائمة المحظورين
+    function getBannedUsers() { return safeGet('BANNED', []); }
+    function saveBannedUsers(banned) { safeSet('BANNED', banned); }
 
     let activeUser = null;
     let selectedPkg = null;
     let selectedImageFile = null;
 
-    /* دالة تسجيل الدخول المحمية ضد الانهيار (تعمل بنسبة 100%) */
+    /* تسجيل الدخول المحمي مع فحص الحظر */
     function handleSecureLogin() {
       try {
         const userField = document.getElementById('userInput').value.trim();
@@ -463,21 +472,26 @@
           return;
         }
 
+        // 🛑 فحص الحظر أولاً
+        const bannedList = getBannedUsers();
+        if (bannedList.includes(userField)) {
+          showLoginError("⛔ عذراً، هذا الحساب محظور نهائياً من قبل الإدارة!");
+          return;
+        }
+
         const db = getUsersDatabase();
         const balances = getUserBalances();
 
-        // 🟢 ميزة التسجيل التلقائي: إذا الرقم جديد، قم بإنشائه فوراً ودخوله بدون أخطاء!
         if (!db[userField]) {
           db[userField] = passField;
           saveUsersDatabase(db);
           
           if (balances[userField] === undefined) {
-            balances[userField] = 0; // رصيد هدية افتراضي
+            balances[userField] = 0; // الرصيد الجديد يبدأ بصفر
             saveUserBalances(balances);
           }
         }
 
-        // التحقق من الدخول
         if (userField === ADMIN_CREDENTIAL && passField === ADMIN_CREDENTIAL) {
           activeUser = ADMIN_CREDENTIAL;
           completeLogin();
@@ -490,9 +504,7 @@
           showLoginError("⚠️ كلمة السر غير صحيحة لهذا الرقم!");
         }
       } catch (error) {
-        // في حال حدوث أي خطأ برمجي مستقبلاً، سيتم التقاطه هنا ولن يتجمد الزر
-        showLoginError("⚠️ حدث خطأ داخلي. تم إعادة ضبط النظام، حاول الآن!");
-        localStorage.clear(); // مسح كامل للذاكرة التالفة
+        showLoginError("⚠️ حدث خطأ غير متوقع!");
       }
     }
 
@@ -521,12 +533,19 @@
         if (!u || !p1 || !p2) { showRegError("⚠️ يرجى ملء كافة الحقول!"); return; }
         if (p1 !== p2) { showRegError("⚠️ كلمات السر غير متطابقة!"); return; }
 
+        // 🛑 فحص الحظر عند إنشاء الحساب
+        const bannedList = getBannedUsers();
+        if (bannedList.includes(u)) {
+          showRegError("⛔ هذا الرقم محظور من استخدام المنصة!");
+          return;
+        }
+
         const db = getUsersDatabase();
         db[u] = p1;
         saveUsersDatabase(db);
 
         const balances = getUserBalances();
-        balances[u] = 0;
+        balances[u] = 0; // الرصيد صفر تلقائياً
         saveUserBalances(balances);
 
         activeUser = u;
@@ -534,7 +553,7 @@
         document.getElementById('loginModal').style.display = 'none';
         document.getElementById('appContent').classList.add('logged-in');
         updateUserData();
-        showToast("تم إنشاء الحساب وتسجيل الدخول بنجاح! 🎉");
+        showToast("تم إنشاء الحساب بنجاح! 🎉");
       } catch (error) {
         showRegError("⚠️ خطأ غير متوقع!");
       }
@@ -583,6 +602,7 @@
         adminPanel.style.display = 'block';
         document.getElementById('vipBadge').innerText = '👑 حساب الإدارة';
         renderAdminUsersList();
+        renderAdminWithdrawals();
       } else {
         adminPanel.style.display = 'none';
         document.getElementById('vipBadge').innerText = 'حساب VIP';
@@ -608,8 +628,12 @@
       const allHistory = getWithdrawHistory();
       if (!allHistory[activeUser]) allHistory[activeUser] = [];
       allHistory[activeUser].unshift({
-        id: Math.floor(1000+Math.random()*9000), method, account: accountNum, amount,
-        date: new Date().toLocaleDateString('ar-IQ'), status: 'قيد المعالجة'
+        id: 'W_' + Math.floor(100000 + Math.random()*900000), 
+        method, 
+        account: accountNum, 
+        amount,
+        date: new Date().toLocaleDateString('ar-IQ'), 
+        status: 'قيد المعالجة'
       });
       saveWithdrawHistory(allHistory);
 
@@ -630,15 +654,24 @@
       }
       container.innerHTML = '';
       userHistory.forEach(item => {
+        let statusCSS = 'status-pending';
+        if (item.status === 'مقبول') statusCSS = 'status-approved';
+        if (item.status === 'مرفوض') statusCSS = 'status-rejected';
+
         container.innerHTML += `
           <div class="history-item">
             <div><div style="font-weight:bold; color:var(--accent-gold);">${item.method}</div><div style="font-size:10px; color:var(--text-muted);">${item.account} • ${item.date}</div></div>
-            <div style="text-align:left;"><div style="font-weight:bold; color:var(--accent-green);">${item.amount.toLocaleString()} IQD</div><span class="status-pending">${item.status}</span></div>
+            <div style="text-align:left;"><div style="font-weight:bold; color:var(--accent-green);">${item.amount.toLocaleString()} IQD</div><span class="${statusCSS}">${item.status}</span></div>
           </div>`;
       });
     }
 
+    /* -------------------------------------------------------------
+       👑 وظائف الأدمن الخارقة (خاصة بحسابك فقط)
+       ------------------------------------------------------------- */
+    
     function adminAddProfitToAll() {
+      if (activeUser !== ADMIN_CREDENTIAL) return;
       const db = getUsersDatabase();
       const balances = getUserBalances();
       const subs = getUserSubscriptions();
@@ -655,145 +688,186 @@
     }
 
     function renderAdminUsersList() {
+      if (activeUser !== ADMIN_CREDENTIAL) return;
       const container = document.getElementById('adminUserList');
       const db = getUsersDatabase();
       const balances = getUserBalances();
       const subs = getUserSubscriptions();
+      const bannedList = getBannedUsers();
+
       container.innerHTML = '';
 
       Object.keys(db).forEach(u => {
+        if (u === ADMIN_CREDENTIAL) return; // عدم عرض حساب الأدمن نفسه في التعديل
+
         const uBal = balances[u] || 0;
         const uSub = subs[u] ? `باقة ${Number(subs[u]).toLocaleString()}` : 'لا يوجد';
+        const isBanned = bannedList.includes(u);
+        const statusBadge = isBanned 
+          ? `<span class="badge-banned">محظور ⛔</span>` 
+          : `<span class="badge-active">نشط ✓</span>`;
+
         container.innerHTML += `
           <div class="admin-user-item">
             <div class="admin-user-info">
-              <span>📱 <strong style="color:var(--accent-gold);">${u}</strong></span>
+              <span>📱 <strong style="color:var(--accent-gold);">${u}</strong> ${statusBadge}</span>
               <span>💰 <strong style="color:var(--accent-green);">${Number(uBal).toLocaleString()} IQD</strong></span>
             </div>
-            <div style="font-size:11px; margin-bottom:8px; color:#ccc;">الاشتراك: <strong style="color:var(--accent-gold);">${uSub}</strong></div>
-            <div class="admin-actions">
-              <input type="number" id="amt_${u}" placeholder="المبلغ" />
-              <button class="btn-ultra btn-green" style="padding:6px 10px; font-size:11px;" onclick="modifyUserBalance('${u}', 'add')">شحن (+)</button>
-              <button class="btn-ultra btn-red" style="padding:6px 10px; font-size:11px;" onclick="modifyUserBalance('${u}', 'sub')">خصم (-)</button>
+            <div style="font-size:11px; margin-bottom:8px; color:#ccc;">الاشتراك الحالي: <strong style="color:var(--accent-gold);">${uSub}</strong></div>
+            
+            <div style="display:flex; gap:6px; margin-bottom:8px;">
+              <input type="number" id="amt_${u}" placeholder="المبلغ" style="padding:6px; font-size:11px; border-radius:8px; background:#000; color:#fff; border:1px solid var(--card-border); width:50%;" />
+              <button class="btn-ultra btn-green" style="padding:4px 8px; font-size:10px; width:25%;" onclick="modifyUserBalance('${u}', 'add')">شحن (+)</button>
+              <button class="btn-ultra btn-gold" style="padding:4px 8px; font-size:10px; width:25%;" onclick="modifyUserBalance('${u}', 'sub')">خصم (-)</button>
+            </div>
+
+            <div class="admin-actions-grid">
+              ${isBanned 
+                ? `<button class="btn-ultra btn-green" style="padding:6px; font-size:10px;" onclick="adminUnbanUser('${u}')">🔓 فك الحظر</button>`
+                : `<button class="btn-ultra btn-red" style="padding:6px; font-size:10px;" onclick="adminBanAndZeroUser('${u}')">⛔ حظر وتصفير</button>`
+              }
+              <button class="btn-ultra btn-gold" style="padding:6px; font-size:10px;" onclick="adminZeroBalance('${u}')">🧹 تصفير الرصيد</button>
+              <button class="btn-ultra btn-outline" style="padding:6px; font-size:10px; border-color:var(--accent-blue);" onclick="adminResetPassword('${u}')">🔑 تغيير السر</button>
+              <button class="btn-ultra btn-outline" style="padding:6px; font-size:10px; border-color:var(--accent-red); color:var(--accent-red);" onclick="adminDeleteUser('${u}')">🗑️ حذف الحساب</button>
             </div>
           </div>`;
       });
+    }
+
+    /* حظر الحساب وتصفير رصيده فوراً */
+    function adminBanAndZeroUser(u) {
+      if (activeUser !== ADMIN_CREDENTIAL) return;
+      if (!confirm(`هل أنت تأكد من حظر المستخدم (${u}) وتصفير رصيده نهائياً؟`)) return;
+
+      // 1. تصفير الرصيد
+      const balances = getUserBalances();
+      balances[u] = 0;
+      saveUserBalances(balances);
+
+      // 2. إضافة لقائمة المحظورين
+      const banned = getBannedUsers();
+      if (!banned.includes(u)) banned.push(u);
+      saveBannedUsers(banned);
+
+      updateUserData();
+      showToast(`تم حظر ${u} وتصفير رصيده! ⛔`);
+    }
+
+    /* فك الحظر عن حساب */
+    function adminUnbanUser(u) {
+      if (activeUser !== ADMIN_CREDENTIAL) return;
+      let banned = getBannedUsers();
+      banned = banned.filter(user => user !== u);
+      saveBannedUsers(banned);
+      updateUserData();
+      showToast(`تم فك الحظر عن ${u} 🔓`);
+    }
+
+    /* تصفير رصيد الحساب فقط دون حظره */
+    function adminZeroBalance(u) {
+      if (activeUser !== ADMIN_CREDENTIAL) return;
+      const balances = getUserBalances();
+      balances[u] = 0;
+      saveUserBalances(balances);
+      updateUserData();
+      showToast(`تم تصفير رصيد ${u} بنجاح!`);
+    }
+
+    /* تغيير كلمة السر للمستخدم */
+    function adminResetPassword(u) {
+      if (activeUser !== ADMIN_CREDENTIAL) return;
+      const newPass = prompt(`أدخل كلمة السر الجديدة للمستخدم (${u}):`);
+      if (newPass && newPass.trim() !== "") {
+        const db = getUsersDatabase();
+        db[u] = newPass.trim();
+        saveUsersDatabase(db);
+        showToast("تم تغيير كلمة السر بنجاح! 🔑");
+      }
+    }
+
+    /* حذف الحساب بالكامل */
+    function adminDeleteUser(u) {
+      if (activeUser !== ADMIN_CREDENTIAL) return;
+      if (!confirm(`هل أنت متأكد من حذف حساب (${u}) بالكامل من المنصة؟`)) return;
+
+      const db = getUsersDatabase();
+      delete db[u];
+      saveUsersDatabase(db);
+
+      const balances = getUserBalances();
+      delete balances[u];
+      saveUserBalances(balances);
+
+      const subs = getUserSubscriptions();
+      delete subs[u];
+      saveUserSubscription(subs);
+
+      updateUserData();
+      showToast(`تم حذف حساب ${u} نهائياً!`);
+    }
+
+    /* عرض طلبات السحب للجميع في لوحة الأدمن للقبول والرفض */
+    function renderAdminWithdrawals() {
+      if (activeUser !== ADMIN_CREDENTIAL) return;
+      const container = document.getElementById('adminWithdrawList');
+      const allHistory = getWithdrawHistory();
+      container.innerHTML = '';
+
+      let hasRequests = false;
+      Object.keys(allHistory).forEach(userKey => {
+        allHistory[userKey].forEach(item => {
+          if (item.status === 'قيد المعالجة') {
+            hasRequests = true;
+            container.innerHTML += `
+              <div style="background:rgba(0,0,0,0.5); border:1px solid var(--accent-gold); padding:10px; border-radius:12px; margin-bottom:8px; font-size:11px;">
+                <div>📱 الزبون: <strong style="color:var(--accent-gold);">${userKey}</strong></div>
+                <div>💰 المبلغ: <strong style="color:var(--accent-green);">${item.amount.toLocaleString()} IQD</strong></div>
+                <div>💳 الطريقة: ${item.method} (${item.account})</div>
+                <div style="display:flex; gap:6px; margin-top:8px;">
+                  <button class="btn-ultra btn-green" style="padding:4px; font-size:10px;" onclick="adminApproveWithdraw('${userKey}', '${item.id}')">✓ موافقة</button>
+                  <button class="btn-ultra btn-red" style="padding:4px; font-size:10px;" onclick="adminRejectWithdraw('${userKey}', '${item.id}')">✕ رفض وإرجاع الرصيد</button>
+                </div>
+              </div>`;
+          }
+        });
+      });
+
+      if (!hasRequests) {
+        container.innerHTML = `<p style="font-size:11px; color:var(--text-muted);">لا توجد طلبات سحب معلقة حالياً.</p>`;
+      }
+    }
+
+    function adminApproveWithdraw(userKey, withdrawId) {
+      if (activeUser !== ADMIN_CREDENTIAL) return;
+      const allHistory = getWithdrawHistory();
+      if (allHistory[userKey]) {
+        const item = allHistory[userKey].find(w => w.id === withdrawId);
+        if (item) item.status = 'مقبول';
+        saveWithdrawHistory(allHistory);
+        updateUserData();
+        showToast("تمت الموافقة على طلب السحب! ✅");
+      }
+    }
+
+    function adminRejectWithdraw(userKey, withdrawId) {
+      if (activeUser !== ADMIN_CREDENTIAL) return;
+      const allHistory = getWithdrawHistory();
+      if (allHistory[userKey]) {
+        const item = allHistory[userKey].find(w => w.id === withdrawId);
+        if (item) {
+          item.status = 'مرفوض';
+          // إعادة المبلغ لرصيد الزبون عند الرفض
+          const balances = getUserBalances();
+          balances[userKey] = (balances[userKey] || 0) + item.amount;
+          saveUserBalances(balances);
+        }
+        saveWithdrawHistory(allHistory);
+        updateUserData();
+        showToast("تم رفض الطلب وإعادة المبلغ لرصيد الزبون!");
+      }
     }
 
     function modifyUserBalance(u, action) {
+      if (activeUser !== ADMIN_CREDENTIAL) return;
       const val = parseFloat(document.getElementById(`amt_${u}`).value);
-      if (isNaN(val) || val <= 0) { alert("⚠️ أدخل مبلغاً صحيحاً"); return; }
-      const balances = getUserBalances();
-      if (action === 'add') balances[u] = (balances[u] || 0) + val;
-      else if (action === 'sub') balances[u] = Math.max(0, (balances[u] || 0) - val);
-      saveUserBalances(balances);
-      updateUserData();
-      showToast("تم التعديل بنجاح");
-    }
-
-    function previewSelectedImage(event) {
-      const file = event.target.files[0];
-      if (file) {
-        selectedImageFile = file;
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          document.getElementById('imagePreview').src = e.target.result;
-          document.getElementById('previewContainer').style.display = 'block';
-        }
-        reader.readAsDataURL(file);
-      }
-    }
-
-    function submitReceiptWithImage() {
-      if (!selectedImageFile) { alert("⚠️ اختر صورة الإشعار أولاً!"); return; }
-      showToast("جاري تحويلك للتليجرام...");
-      const pkgVal = document.getElementById('pkgSelect').value;
-      const msg = `📥 إيداع:\n• الحساب: ${activeUser}\n• الباقة: ${Number(pkgVal).toLocaleString()} IQD`;
-      setTimeout(() => { window.open(`https://t.me/oosbsu?text=${encodeURIComponent(msg)}`, '_blank'); }, 800);
-    }
-
-    const pkgList = [
-      { price: 30000, daily: 10000, days: 90 }, { price: 50000, daily: 35000, days: 90 }, { price: 75000, daily: 55000, days: 90 },
-      { price: 150000, daily: 80000, days: 90 }, { price: 250000, daily: 122000, days: 90 }, { price: 750000, daily: 189000, days: 90 }, { price: 1000000, daily: 380000, days: 90 }
-    ];
-
-    function renderPackages() {
-      const container = document.getElementById('pkgContainer');
-      container.innerHTML = '';
-      pkgList.forEach((pkg, idx) => {
-        const total = pkg.daily * pkg.days;
-        container.innerHTML += `
-          <div class="package-item">
-            <div class="pkg-top"><div class="pkg-title">${pkg.price.toLocaleString()} <span style="font-size:14px; color:var(--accent-gold);">IQD</span></div><div class="pkg-tag">90 يوم</div></div>
-            <div class="pkg-grid">
-              <div class="grid-cell"><div class="label">الربح اليومي</div><div class="value">${pkg.daily.toLocaleString()} IQD</div></div>
-              <div class="grid-cell"><div class="label">العائد النهائي</div><div class="value" style="color:var(--accent-gold);">${total.toLocaleString()} IQD</div></div>
-            </div>
-            <button class="btn-ultra btn-gold" style="font-size:15px; padding:16px;" onclick="openSubscribeModal(${idx})">🚀 اشترك واستلم أرباحك</button>
-          </div>`;
-      });
-    }
-
-    function openSubscribeModal(idx) {
-      selectedPkg = pkgList[idx];
-      document.getElementById('subDetailsText').innerHTML = `
-        سوف تدفع مبلغ <strong>${selectedPkg.price.toLocaleString()} IQD</strong> لمدة <strong>90 يوماً</strong>.<br>
-        بربح يومي <strong>${selectedPkg.daily.toLocaleString()} IQD</strong>.
-      `;
-      document.getElementById('subModal').style.display = 'flex';
-    }
-
-    function proceedToPayment() {
-      closeModal('subModal');
-      const balances = getUserBalances();
-      const subs = getUserSubscriptions();
-      if ((balances[activeUser] || 0) >= selectedPkg.price) {
-        balances[activeUser] -= selectedPkg.price;
-        subs[activeUser] = selectedPkg.price;
-        saveUserBalances(balances); saveUserSubscription(subs); updateUserData();
-        showToast("🎉 تم تفعيل الباقة بنجاح!");
-      } else {
-        document.getElementById('errModal').style.display = 'flex';
-      }
-    }
-
-    function goToFinance() {
-      closeModal('errModal');
-      if(selectedPkg) document.getElementById('pkgSelect').value = selectedPkg.price;
-      switchTab('tabFinance', document.querySelectorAll('.nav-btn')[3]);
-    }
-
-    function switchTab(tabId, btn) {
-      document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-      document.querySelectorAll('.nav-btn').forEach(n => n.classList.remove('active'));
-      document.getElementById(tabId).classList.add('active');
-      if(btn) btn.classList.add('active');
-    }
-    
-    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-    function openTelegramSupport() { window.open('https://t.me/oosbsu', '_blank'); }
-    function downloadRealApp() {
-      showToast("📲 جاري بدء تنزيل تطبيق Super Mini...");
-      const blob = new Blob(["Super Mini APK Binary"], { type: "application/vnd.android.package-archive" });
-      const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = "SuperMini.apk";
-      document.body.appendChild(a); a.click(); document.body.removeChild(a);
-    }
-    function showToast(msg) {
-      const t = document.getElementById('toast'); t.innerText = msg; t.style.display = 'block';
-      setTimeout(() => { t.style.display = 'none'; }, 3000);
-    }
-    function copyText(val) { navigator.clipboard.writeText(val); showToast('تم النسخ: ' + val); }
-    function copyRef() { navigator.clipboard.writeText(document.getElementById('refLink').innerText); showToast('تم نسخ الرابط!'); }
-    function logout() { activeUser = null; document.getElementById('appContent').classList.remove('logged-in'); document.getElementById('loginModal').style.display = 'flex'; document.getElementById('userInput').value = ''; document.getElementById('passInput').value = ''; }
-
-    let currSlide = 0;
-    setInterval(() => {
-      currSlide = (currSlide + 1) % 3;
-      document.getElementById('slidesTrack').style.transform = `translateX(${currSlide * 100}%)`;
-    }, 4000);
-
-    renderPackages();
-  </script>
-</body>
-</html>
-
+      if (isNaN(val) || val
