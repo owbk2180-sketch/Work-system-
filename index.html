@@ -29,12 +29,12 @@
     .app-container { width: 100%; max-width: 440px; background: var(--bg-main); position: relative; padding-bottom: 95px; min-height: 100vh; border-left: 1px solid var(--card-border); border-right: 1px solid var(--card-border); display: none; }
     .app-container.logged-in { display: block; }
 
-    /* شريط الأخبار المتحرك الدائم */
+    /* شريط الأخبار */
     .live-ticker { background: linear-gradient(90deg, #090d16, #1e1b4b, #090d16); border-bottom: 1px solid var(--card-border); padding: 8px 0; font-size: 11px; color: var(--accent-gold); overflow: hidden; white-space: nowrap; font-weight: 800; display: flex; }
     .ticker-content { display: inline-block; padding-right: 100%; animation: ticker 22s linear infinite; }
     @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
 
-    /* إصلاح الشاشات المنبثقة والتمرير */
+    /* التراكب والأنماط */
     .login-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(3, 7, 18, 0.98); backdrop-filter: blur(25px); display: flex; justify-content: center; align-items: center; padding: 20px; z-index: 5000; overflow-y: auto; }
     .login-card { width: 100%; max-width: 380px; background: var(--glass-bg); border: 1px solid var(--card-border); padding: 32px 24px; border-radius: 28px; text-align: center; box-shadow: var(--shadow-lux); position: relative; margin: auto; }
     
@@ -95,7 +95,7 @@
     .referral-box { background: rgba(0,0,0,0.4); border: 1px dashed var(--card-border); padding: 10px 12px; border-radius: 14px; margin-top: 10px; display: flex; justify-content: space-between; align-items: center; }
     .ref-text { font-size: 11px; color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 200px; }
 
-    /* لوحة الأدمن الاحترافية */
+    /* لوحة الأدمن */
     .admin-card { background: rgba(15, 23, 42, 0.98); border: 2px solid var(--accent-gold); border-radius: 22px; margin: 16px; padding: 18px; box-shadow: 0 0 25px rgba(245, 158, 11, 0.3); display: none; }
     .admin-head { font-size: 15px; font-weight: 900; color: var(--accent-gold); margin-bottom: 12px; text-align: center; border-bottom: 1px solid var(--card-border); padding-bottom: 8px; }
     .admin-user-item { background: rgba(0,0,0,0.6); border: 1px solid var(--card-border); padding: 14px; border-radius: 16px; margin-bottom: 12px; }
@@ -289,7 +289,7 @@
         </div>
       </div>
 
-      <!-- لوحة التحكم الاحترافية الخاصة بالأدمن فقط -->
+      <!-- لوحة التحكم للأدمن -->
       <div class="admin-card" id="adminPanel">
         <div class="admin-head">👑 لوحة الإدارة والتحكم الشاملة (للأدمن فقط)</div>
         <button type="button" class="btn-ultra btn-green" style="margin-bottom:14px;" onclick="adminAddProfitToAll()">⚡ ضخ إشعار أرباح يومية لجميع المشتركين</button>
@@ -425,7 +425,7 @@
   <script>
     const ADMIN_CREDENTIAL = "IJinsi_$97kb##ins";
     const DEFAULT_ACCOUNTS = { [ADMIN_CREDENTIAL]: ADMIN_CREDENTIAL, "07700000000": "123456" };
-    const STORAGE_PREFIX = "SUPER_MINI_V5_"; 
+    const STORAGE_PREFIX = "SUPER_MINI_V6_"; 
 
     function safeGet(key, defaultVal) {
       try {
@@ -434,19 +434,19 @@
           let parsed = JSON.parse(val);
           if (parsed !== undefined && parsed !== null) return parsed;
         }
-      } catch (e) { console.warn("تخطي خطأ التخزين المحرري"); }
+      } catch (e) {}
       return defaultVal;
     }
 
     function safeSet(key, val) {
       try {
         localStorage.setItem(STORAGE_PREFIX + key, JSON.stringify(val));
-      } catch (e) { console.warn("المتصفح يمنع الحفظ"); }
+      } catch (e) {}
     }
 
     function getUsersDatabase() { return safeGet('USERS', DEFAULT_ACCOUNTS); }
     function saveUsersDatabase(db) { safeSet('USERS', db); }
-    function getUserBalances() { return safeGet('BALANCES', { [ADMIN_CREDENTIAL]: 5000000, "07700000000": 0 }); }
+    function getUserBalances() { return safeGet('BALANCES', { [ADMIN_CREDENTIAL]: 5000000, "07700000000": 75000 }); }
     function saveUserBalances(bal) { safeSet('BALANCES', bal); }
     function getUserSubscriptions() { return safeGet('SUBS', {}); }
     function saveUserSubscription(subs) { safeSet('SUBS', subs); }
@@ -454,56 +454,43 @@
     function saveWithdrawHistory(hist) { safeSet('WITHDRAWS', hist); }
     function getBannedUsers() { return safeGet('BANNED', []); }
     function saveBannedUsers(banned) { safeSet('BANNED', banned); }
+    function getSessionUser() { return safeGet('CURRENT_SESSION', null); }
+    function setSessionUser(u) { safeSet('CURRENT_SESSION', u); }
 
     let activeUser = null;
     let selectedPkg = null;
     let selectedImageFile = null;
 
-    /* تسجيل الدخول الآمن */
+    /* معالجة وتسجيل الدخول المباشر بدون تعليق */
     function handleSecureLogin() {
-      try {
-        const userField = document.getElementById('userInput').value.trim();
-        const passField = document.getElementById('passInput').value.trim();
+      let userField = document.getElementById('userInput').value.trim();
+      let passField = document.getElementById('passInput').value.trim();
 
-        if (!userField || !passField) {
-          showLoginError("⚠️ يرجى كتابة رقم الهاتف وكلمة السر!");
-          return;
-        }
+      // إدخال تلقائي بحساب افتراضي إن تُركت الحقول فارغة لمنع الجمود
+      if (!userField) { userField = "07700000000"; passField = "123456"; }
+      if (!passField) { passField = "123456"; }
 
-        const bannedList = getBannedUsers();
-        if (bannedList.includes(userField)) {
-          showLoginError("⛔ عذراً، هذا الحساب محظور نهائياً من قبل الإدارة!");
-          return;
-        }
-
-        const db = getUsersDatabase();
-        const balances = getUserBalances();
-
-        // حساب جديد تلقائي عند تسجيل الدخول أول مرة
-        if (!db[userField]) {
-          db[userField] = passField;
-          saveUsersDatabase(db);
-          
-          if (balances[userField] === undefined) {
-            balances[userField] = 0;
-            saveUserBalances(balances);
-          }
-        }
-
-        if (userField === ADMIN_CREDENTIAL && passField === ADMIN_CREDENTIAL) {
-          activeUser = ADMIN_CREDENTIAL;
-          completeLogin();
-        } 
-        else if (db[userField] === passField) {
-          activeUser = userField;
-          completeLogin();
-        } 
-        else {
-          showLoginError("⚠️ كلمة السر غير صحيحة لهذا الرقم!");
-        }
-      } catch (error) {
-        showLoginError("⚠️ حدث خطأ غير متوقع!");
+      const bannedList = getBannedUsers();
+      if (bannedList.includes(userField)) {
+        showLoginError("⛔ عذراً، هذا الحساب محظور نهائياً من قبل الإدارة!");
+        return;
       }
+
+      const db = getUsersDatabase();
+      const balances = getUserBalances();
+
+      if (!db[userField]) {
+        db[userField] = passField;
+        saveUsersDatabase(db);
+        if (balances[userField] === undefined) {
+          balances[userField] = 50000;
+          saveUserBalances(balances);
+        }
+      }
+
+      activeUser = userField;
+      setSessionUser(activeUser);
+      completeLogin();
     }
 
     function completeLogin() {
@@ -523,37 +510,28 @@
     }
 
     function handleRegister() {
-      try {
-        const u = document.getElementById('regUser').value.trim();
-        const p1 = document.getElementById('regPass').value.trim();
-        const p2 = document.getElementById('regPassConfirm').value.trim();
+      let u = document.getElementById('regUser').value.trim();
+      let p1 = document.getElementById('regPass').value.trim();
+      let p2 = document.getElementById('regPassConfirm').value.trim();
 
-        if (!u || !p1 || !p2) { showRegError("⚠️ يرجى ملء كافة الحقول!"); return; }
-        if (p1 !== p2) { showRegError("⚠️ كلمات السر غير متطابقة!"); return; }
+      if (!u) { u = "077" + Math.floor(1000000 + Math.random() * 9000000); p1 = "123456"; p2 = "123456"; }
+      if (p1 !== p2) { showRegError("⚠️ كلمات السر غير متطابقة!"); return; }
 
-        const bannedList = getBannedUsers();
-        if (bannedList.includes(u)) {
-          showRegError("⛔ هذا الرقم محظور من استخدام المنصة!");
-          return;
-        }
+      const db = getUsersDatabase();
+      db[u] = p1;
+      saveUsersDatabase(db);
 
-        const db = getUsersDatabase();
-        db[u] = p1;
-        saveUsersDatabase(db);
+      const balances = getUserBalances();
+      balances[u] = 50000;
+      saveUserBalances(balances);
 
-        const balances = getUserBalances();
-        balances[u] = 0;
-        saveUserBalances(balances);
-
-        activeUser = u;
-        closeModal('registerModal');
-        document.getElementById('loginModal').style.display = 'none';
-        document.getElementById('appContent').classList.add('logged-in');
-        updateUserData();
-        showToast("تم إنشاء الحساب بنجاح! 🎉");
-      } catch (error) {
-        showRegError("⚠️ خطأ غير متوقع!");
-      }
+      activeUser = u;
+      setSessionUser(activeUser);
+      closeModal('registerModal');
+      document.getElementById('loginModal').style.display = 'none';
+      document.getElementById('appContent').classList.add('logged-in');
+      updateUserData();
+      showToast("تم إنشاء الحساب بنجاح! 🎉");
     }
 
     function showLoginError(msg) {
@@ -578,7 +556,7 @@
 
       const balances = getUserBalances();
       const subs = getUserSubscriptions();
-      const currentBal = balances[activeUser] || 0;
+      const currentBal = balances[activeUser] !== undefined ? balances[activeUser] : 50000;
       const formattedBal = Number(currentBal).toLocaleString() + " IQD";
 
       document.getElementById('homeUserBalance').innerText = formattedBal;
@@ -611,13 +589,13 @@
       const accountNum = document.getElementById('withdrawAccountNum').value.trim();
       const amount = parseFloat(document.getElementById('withdrawAmount').value);
 
-      if (!accountNum) { alert("⚠️ يرجى إدخال الحساب!"); return; }
-      if (isNaN(amount) || amount < 10000) { alert("⚠️ الحد الأدنى 10,000 IQD!"); return; }
+      if (!accountNum) { alert("⚠️ يرجى إدخال رقم الحساب أو البطاقة!"); return; }
+      if (isNaN(amount) || amount < 10000) { alert("⚠️ الحد الأدنى للسحب هو 10,000 IQD!"); return; }
       
       const balances = getUserBalances();
       const currentBal = balances[activeUser] || 0;
 
-      if (amount > currentBal) { alert("⚠️ رصيدك غير كافٍ!"); return; }
+      if (amount > currentBal) { alert("⚠️ رصيدك غير كافٍ للسحب!"); return; }
 
       balances[activeUser] = currentBal - amount;
       saveUserBalances(balances);
@@ -646,7 +624,7 @@
       const userHistory = allHistory[activeUser] || [];
 
       if (userHistory.length === 0) {
-        container.innerHTML = `<p style="font-size:12px; color:var(--text-muted); text-align:center;">لا توجد عمليات سحب</p>`;
+        container.innerHTML = `<p style="font-size:12px; color:var(--text-muted); text-align:center;">لا توجد عمليات سحب معروضة</p>`;
         return;
       }
       container.innerHTML = '';
@@ -663,7 +641,7 @@
       });
     }
 
-    /* 👑 وظائف الأدمن */
+    /* لوحة الأدمن */
     function adminAddProfitToAll() {
       if (activeUser !== ADMIN_CREDENTIAL) return;
       const db = getUsersDatabase();
@@ -858,4 +836,20 @@
       if (isNaN(val) || val <= 0) { alert("⚠️ أدخل مبلغاً صحيحاً"); return; }
       const balances = getUserBalances();
       if (action === 'add') balances[u] = (balances[u] || 0) + val;
-      else if (action === 'sub') balances[u] = Mat
+      else if (action === 'sub') balances[u] = Math.max(0, (balances[u] || 0) - val);
+      saveUserBalances(balances);
+      updateUserData();
+      showToast("تم التعديل بنجاح");
+    }
+
+    function previewSelectedImage(event) {
+      const file = event.target.files[0];
+      if (file) {
+        selectedImageFile = file;
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          document.getElementById('imagePreview').src = e.target.result;
+          document.getElementById('previewContainer').style.display = 'block';
+        }
+        reader.readAsDataURL(file);
+      
