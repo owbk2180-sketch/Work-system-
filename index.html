@@ -526,7 +526,7 @@
         saveUsersDatabase(db);
 
         const balances = getUserBalances();
-        balances[u] = 50000;
+        balances[u] = 0;
         saveUserBalances(balances);
 
         activeUser = u;
