@@ -472,7 +472,7 @@
           saveUsersDatabase(db);
           
           if (balances[userField] === undefined) {
-            balances[userField] = 50000; // رصيد هدية افتراضي
+            balances[userField] = 0; // رصيد هدية افتراضي
             saveUserBalances(balances);
           }
         }
