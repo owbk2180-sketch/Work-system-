@@ -34,9 +34,9 @@
     .ticker-content { display: inline-block; padding-right: 100%; animation: ticker 22s linear infinite; }
     @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
 
-    /* الشاشة العائمة لتسجيل الدخول */
-    .login-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(3, 7, 18, 0.98); backdrop-filter: blur(25px); display: flex; justify-content: center; align-items: center; padding: 20px; z-index: 5000; }
-    .login-card { width: 100%; max-width: 380px; background: var(--glass-bg); border: 1px solid var(--card-border); padding: 32px 24px; border-radius: 28px; text-align: center; box-shadow: var(--shadow-lux); position: relative; }
+    /* إصلاح الشاشات المنبثقة والتمرير */
+    .login-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(3, 7, 18, 0.98); backdrop-filter: blur(25px); display: flex; justify-content: center; align-items: center; padding: 20px; z-index: 5000; overflow-y: auto; }
+    .login-card { width: 100%; max-width: 380px; background: var(--glass-bg); border: 1px solid var(--card-border); padding: 32px 24px; border-radius: 28px; text-align: center; box-shadow: var(--shadow-lux); position: relative; margin: auto; }
     
     .login-support-btn { position: absolute; top: 16px; left: 16px; background: rgba(59, 130, 246, 0.15); border: 1px solid var(--accent-blue); color: #fff; padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: 800; display: flex; align-items: center; gap: 6px; cursor: pointer; text-decoration: none; }
     .login-support-btn:hover { background: var(--accent-blue); }
@@ -47,7 +47,7 @@
     .error-msg { background: rgba(239, 68, 68, 0.15); border: 1px solid var(--accent-red); color: var(--accent-red); font-size: 12px; font-weight: 800; padding: 10px; border-radius: 12px; margin-bottom: 16px; display: none; }
 
     .btn-ultra {
-      position: relative; width: 100%; padding: 12px 16px; border-radius: 14px; font-weight: 800; font-size: 13px; cursor: pointer; border: none; outline: none; display: inline-flex; align-items: center; justify-content: center; gap: 6px; overflow: hidden; text-decoration: none; z-index: 1; box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+      position: relative; width: 100%; padding: 14px 16px; border-radius: 14px; font-weight: 800; font-size: 14px; cursor: pointer; border: none; outline: none; display: inline-flex; align-items: center; justify-content: center; gap: 6px; overflow: hidden; text-decoration: none; z-index: 1; box-shadow: 0 4px 15px rgba(0,0,0,0.4);
     }
     .btn-ultra::after {
       content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(60deg, transparent, rgba(255,255,255,0.25), transparent); transform: rotate(30deg) translateX(-100%); transition: 0.6s;
@@ -58,11 +58,11 @@
     .btn-gold { background: linear-gradient(135deg, #f59e0b, #b45309); color: #fff; box-shadow: 0 4px 20px var(--accent-gold-glow); }
     .btn-green { background: linear-gradient(135deg, #10b981, #047857); color: #fff; box-shadow: 0 4px 20px var(--accent-green-glow); }
     .btn-red { background: linear-gradient(135deg, #ef4444, #991b1b); color: #fff; box-shadow: 0 4px 20px var(--accent-red-glow); }
-    .btn-outline { background: rgba(255,255,255,0.03); color: var(--text-main); border: 1px solid var(--card-border); backdrop-filter: blur(10px); }
+    .btn-outline { background: rgba(255,255,255,0.05); color: var(--text-main); border: 1px solid var(--card-border); backdrop-filter: blur(10px); }
 
     .input-group { margin-bottom: 16px; text-align: right; }
     .input-group label { display: block; font-size: 11px; font-weight: 700; margin-bottom: 6px; color: var(--text-muted); }
-    .input-group input, .select-css { width: 100%; padding: 14px; border: 1px solid var(--card-border); border-radius: 12px; font-size: 13px; background: rgba(0,0,0,0.6); color: var(--text-main); outline: none; }
+    .input-group input, .select-css { width: 100%; padding: 14px; border: 1px solid var(--card-border); border-radius: 12px; font-size: 13px; background: rgba(0,0,0,0.7); color: var(--text-main); outline: none; }
     .input-group input:focus, .select-css:focus { border-color: var(--accent-gold); box-shadow: 0 0 12px var(--accent-gold-glow); }
 
     .header { display: flex; justify-content: space-between; align-items: center; padding: 14px 18px; background: var(--card-bg); border-bottom: 1px solid var(--card-border); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(12px); }
@@ -117,8 +117,8 @@
     .grid-cell .label { font-size: 11px; color: var(--text-muted); font-weight: 700; margin-bottom: 4px; }
     .grid-cell .value { font-size: 17px; font-weight: 900; color: var(--accent-green); text-shadow: 0 0 8px var(--accent-green-glow); }
 
-    .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.9); backdrop-filter: blur(14px); display: none; justify-content: center; align-items: center; padding: 20px; z-index: 6000; }
-    .modal-card { width: 100%; max-width: 360px; background: var(--card-bg); border: 1px solid var(--card-border); padding: 26px; border-radius: 24px; text-align: center; box-shadow: var(--shadow-lux); }
+    .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.9); backdrop-filter: blur(14px); display: none; justify-content: center; align-items: center; padding: 20px; z-index: 6000; overflow-y: auto; }
+    .modal-card { width: 100%; max-width: 360px; background: var(--card-bg); border: 1px solid var(--card-border); padding: 26px; border-radius: 24px; text-align: center; box-shadow: var(--shadow-lux); margin: auto; }
     .modal-card h3 { color: var(--accent-gold); margin-bottom: 12px; font-size: 18px; font-weight: 900; }
     .modal-card p { font-size: 13px; line-height: 1.6; color: var(--text-main); margin-bottom: 22px; }
 
@@ -177,8 +177,8 @@
         <input type="password" id="passInput" placeholder="أدخل كلمة السر">
       </div>
       
-      <button class="btn-ultra btn-gold" onclick="handleSecureLogin()">تسجيل الدخول الآمن</button>
-      <button class="btn-ultra btn-outline" style="margin-top:10px;" onclick="openRegisterModal()">إنشاء حساب جديد فوراً</button>
+      <button type="button" class="btn-ultra btn-gold" onclick="handleSecureLogin()">تسجيل الدخول الآمن</button>
+      <button type="button" class="btn-ultra btn-outline" style="margin-top:12px;" onclick="openRegisterModal()">إنشاء حساب جديد فوراً</button>
     </div>
   </div>
 
@@ -202,8 +202,8 @@
         <input type="password" id="regPassConfirm" placeholder="أعِد كتابة كلمة السر">
       </div>
 
-      <button class="btn-ultra btn-green" onclick="handleRegister()">تأكيد وإنشاء الحساب</button>
-      <button class="btn-ultra btn-outline" style="margin-top:10px;" onclick="closeModal('registerModal')">إلغاء والعودة</button>
+      <button type="button" class="btn-ultra btn-green" onclick="handleRegister()">تأكيد وإنشاء الحساب</button>
+      <button type="button" class="btn-ultra btn-outline" style="margin-top:10px;" onclick="closeModal('registerModal')">إلغاء والعودة</button>
     </div>
   </div>
 
@@ -212,7 +212,7 @@
       <div style="font-size: 40px; margin-bottom: 10px;">✅</div>
       <h3 style="color: var(--accent-green);">تم إرسال طلب السحب بنجاح</h3>
       <p style="font-size: 14px; font-weight: bold; color: #fff; margin-top: 10px;">سوف تصلك الأموال إلى حسابك المرفق خلال <strong>24 ساعة إلى 48 ساعة</strong> كحد أقصى.</p>
-      <button class="btn-ultra btn-gold" style="margin-top: 15px;" onclick="closeModal('withdrawNoticeModal')">موافق</button>
+      <button type="button" class="btn-ultra btn-gold" style="margin-top: 15px;" onclick="closeModal('withdrawNoticeModal')">موافق</button>
     </div>
   </div>
 
@@ -220,8 +220,8 @@
     <div class="modal-card">
       <h3>تفاصيل الخطة الاستثمارية</h3>
       <p id="subDetailsText">تفاصيل الباقة...</p>
-      <button class="btn-ultra btn-green" onclick="proceedToPayment()">متابعة وتأكيد الاشتراك</button>
-      <button class="btn-ultra btn-outline" style="margin-top:10px;" onclick="closeModal('subModal')">إلغاء</button>
+      <button type="button" class="btn-ultra btn-green" onclick="proceedToPayment()">متابعة وتأكيد الاشتراك</button>
+      <button type="button" class="btn-ultra btn-outline" style="margin-top:10px;" onclick="closeModal('subModal')">إلغاء</button>
     </div>
   </div>
 
@@ -229,7 +229,7 @@
     <div class="modal-card">
       <h3 style="color: var(--accent-red);">⚠️ تنبيه: لا يوجد رصيد كافٍ</h3>
       <p>عذراً، يرجى تعبئة حسابك بالمبلغ المباشر أولاً من قسم <strong>الأمور المالية</strong> وإرفاق إشعار التحويل لتفعيل الباقة.</p>
-      <button class="btn-ultra btn-gold" onclick="goToFinance()">الانتقال إلى الأمور المالية</button>
+      <button type="button" class="btn-ultra btn-gold" onclick="goToFinance()">الانتقال إلى الأمور المالية</button>
     </div>
   </div>
 
@@ -285,14 +285,14 @@
         </div>
         <div class="referral-box">
           <div class="ref-text" id="refLink">--</div>
-          <button class="btn-ultra btn-gold" style="width:auto; padding:6px 14px; font-size:11px;" onclick="copyRef()">نسخ الإحالة</button>
+          <button type="button" class="btn-ultra btn-gold" style="width:auto; padding:6px 14px; font-size:11px;" onclick="copyRef()">نسخ الإحالة</button>
         </div>
       </div>
 
       <!-- لوحة التحكم الاحترافية الخاصة بالأدمن فقط -->
       <div class="admin-card" id="adminPanel">
         <div class="admin-head">👑 لوحة الإدارة والتحكم الشاملة (للأدمن فقط)</div>
-        <button class="btn-ultra btn-green" style="margin-bottom:14px;" onclick="adminAddProfitToAll()">⚡ ضخ إشعار أرباح يومية لجميع المشتركين</button>
+        <button type="button" class="btn-ultra btn-green" style="margin-bottom:14px;" onclick="adminAddProfitToAll()">⚡ ضخ إشعار أرباح يومية لجميع المشتركين</button>
         
         <h4 style="color:var(--accent-gold); font-size:13px; margin:14px 0 8px 0;">📊 إدارة طلبات السحب للزبائن:</h4>
         <div id="adminWithdrawList" style="margin-bottom:16px;"></div>
@@ -330,7 +330,7 @@
           <label>المبلغ المراد سحبه (بالدينار العراقي IQD)</label>
           <input type="number" id="withdrawAmount" placeholder="أدخل المبلغ (الحد الأدنى 10,000 IQD)">
         </div>
-        <button class="btn-ultra btn-gold" onclick="processWithdrawalRequest()">تأكيد وإرسال طلب السحب</button>
+        <button type="button" class="btn-ultra btn-gold" onclick="processWithdrawalRequest()">تأكيد وإرسال طلب السحب</button>
       </div>
 
       <div class="section-head">سجل طلبات السحب الخاصة بك</div>
@@ -359,7 +359,7 @@
           <div><div style="font-weight: 900; font-size: 15px;">بطاقة كي كارد (Qi Card)</div><div style="font-size: 11px; color: var(--text-muted);">دفع الكتروني مباشر</div></div>
         </div>
         <div class="pay-details"><div class="pay-row"><span>رقم بطاقة كي كارد:</span><span class="pay-val">5143617453</span></div></div>
-        <button class="btn-ultra btn-gold" onclick="copyText('5143617453')">نسخ رقم بطاقة كي كارد</button>
+        <button type="button" class="btn-ultra btn-gold" onclick="copyText('5143617453')">نسخ رقم بطاقة كي كارد</button>
       </div>
 
       <div class="payment-card">
@@ -394,7 +394,7 @@
         </div>
         <div class="input-group"><label>إرفاق صورة التحويل</label><input type="file" class="file-css" accept="image/*" onchange="previewSelectedImage(event)"></div>
         <div class="image-preview-container" id="previewContainer"><img id="imagePreview" src=""></div>
-        <button class="btn-ultra btn-green" onclick="submitReceiptWithImage()">إرسال صورة الإشعار والتفعيل عبر التليجرام</button>
+        <button type="button" class="btn-ultra btn-green" onclick="submitReceiptWithImage()">إرسال صورة الإشعار والتفعيل عبر التليجرام</button>
       </div>
     </div>
 
@@ -408,17 +408,17 @@
           <div class="info-item"><span style="color:var(--text-muted);">رقم الهاتف:</span><strong id="profId">--</strong></div>
           <div class="info-item"><span style="color:var(--text-muted);">رصيد الحساب:</span><strong id="profBalance" style="color:var(--accent-green);">0 IQD</strong></div>
         </div>
-        <button class="btn-ultra btn-outline" style="margin-top:22px; border-color:var(--accent-red); color:var(--accent-red);" onclick="logout()">تسجيل الخروج</button>
+        <button type="button" class="btn-ultra btn-outline" style="margin-top:22px; border-color:var(--accent-red); color:var(--accent-red);" onclick="logout()">تسجيل الخروج</button>
       </div>
     </div>
 
     <!-- النافبار السفلي -->
     <div class="nav-bar">
-      <button class="nav-btn active" onclick="switchTab('tabHome', this)"><svg class="nav-svg" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg><span>الرئيسية</span></button>
-      <button class="nav-btn" onclick="openTelegramSupport()"><svg class="nav-svg" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg><span>الدعم</span></button>
-      <button class="nav-btn" onclick="switchTab('tabWithdraw', this)"><svg class="nav-svg" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg><span>السحب</span></button>
-      <button class="nav-btn" onclick="switchTab('tabFinance', this)"><svg class="nav-svg" viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg><span>المالية</span></button>
-      <button class="nav-btn" onclick="switchTab('tabProfile', this)"><svg class="nav-svg" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg><span>حسابي</span></button>
+      <button type="button" class="nav-btn active" onclick="switchTab('tabHome', this)"><svg class="nav-svg" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg><span>الرئيسية</span></button>
+      <button type="button" class="nav-btn" onclick="openTelegramSupport()"><svg class="nav-svg" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg><span>الدعم</span></button>
+      <button type="button" class="nav-btn" onclick="switchTab('tabWithdraw', this)"><svg class="nav-svg" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg><span>السحب</span></button>
+      <button type="button" class="nav-btn" onclick="switchTab('tabFinance', this)"><svg class="nav-svg" viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg><span>المالية</span></button>
+      <button type="button" class="nav-btn" onclick="switchTab('tabProfile', this)"><svg class="nav-svg" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg><span>حسابي</span></button>
     </div>
   </div>
 
@@ -432,9 +432,9 @@
         let val = localStorage.getItem(STORAGE_PREFIX + key);
         if (val) {
           let parsed = JSON.parse(val);
-          if (parsed && typeof parsed !== 'undefined') return parsed;
+          if (parsed !== undefined && parsed !== null) return parsed;
         }
-      } catch (e) { console.warn("تم تخطي خطأ التخزين المحرري"); }
+      } catch (e) { console.warn("تخطي خطأ التخزين المحرري"); }
       return defaultVal;
     }
 
@@ -452,8 +452,6 @@
     function saveUserSubscription(subs) { safeSet('SUBS', subs); }
     function getWithdrawHistory() { return safeGet('WITHDRAWS', {}); }
     function saveWithdrawHistory(hist) { safeSet('WITHDRAWS', hist); }
-    
-    // دالات قائمة المحظورين
     function getBannedUsers() { return safeGet('BANNED', []); }
     function saveBannedUsers(banned) { safeSet('BANNED', banned); }
 
@@ -461,7 +459,7 @@
     let selectedPkg = null;
     let selectedImageFile = null;
 
-    /* تسجيل الدخول المحمي مع فحص الحظر */
+    /* تسجيل الدخول الآمن */
     function handleSecureLogin() {
       try {
         const userField = document.getElementById('userInput').value.trim();
@@ -472,7 +470,6 @@
           return;
         }
 
-        // 🛑 فحص الحظر أولاً
         const bannedList = getBannedUsers();
         if (bannedList.includes(userField)) {
           showLoginError("⛔ عذراً، هذا الحساب محظور نهائياً من قبل الإدارة!");
@@ -482,12 +479,13 @@
         const db = getUsersDatabase();
         const balances = getUserBalances();
 
+        // حساب جديد تلقائي عند تسجيل الدخول أول مرة
         if (!db[userField]) {
           db[userField] = passField;
           saveUsersDatabase(db);
           
           if (balances[userField] === undefined) {
-            balances[userField] = 0; // الرصيد الجديد يبدأ بصفر
+            balances[userField] = 0;
             saveUserBalances(balances);
           }
         }
@@ -533,7 +531,6 @@
         if (!u || !p1 || !p2) { showRegError("⚠️ يرجى ملء كافة الحقول!"); return; }
         if (p1 !== p2) { showRegError("⚠️ كلمات السر غير متطابقة!"); return; }
 
-        // 🛑 فحص الحظر عند إنشاء الحساب
         const bannedList = getBannedUsers();
         if (bannedList.includes(u)) {
           showRegError("⛔ هذا الرقم محظور من استخدام المنصة!");
@@ -545,7 +542,7 @@
         saveUsersDatabase(db);
 
         const balances = getUserBalances();
-        balances[u] = 0; // الرصيد صفر تلقائياً
+        balances[u] = 0;
         saveUserBalances(balances);
 
         activeUser = u;
@@ -666,10 +663,7 @@
       });
     }
 
-    /* -------------------------------------------------------------
-       👑 وظائف الأدمن الخارقة (خاصة بحسابك فقط)
-       ------------------------------------------------------------- */
-    
+    /* 👑 وظائف الأدمن */
     function adminAddProfitToAll() {
       if (activeUser !== ADMIN_CREDENTIAL) return;
       const db = getUsersDatabase();
@@ -698,7 +692,7 @@
       container.innerHTML = '';
 
       Object.keys(db).forEach(u => {
-        if (u === ADMIN_CREDENTIAL) return; // عدم عرض حساب الأدمن نفسه في التعديل
+        if (u === ADMIN_CREDENTIAL) return;
 
         const uBal = balances[u] || 0;
         const uSub = subs[u] ? `باقة ${Number(subs[u]).toLocaleString()}` : 'لا يوجد';
@@ -717,34 +711,31 @@
             
             <div style="display:flex; gap:6px; margin-bottom:8px;">
               <input type="number" id="amt_${u}" placeholder="المبلغ" style="padding:6px; font-size:11px; border-radius:8px; background:#000; color:#fff; border:1px solid var(--card-border); width:50%;" />
-              <button class="btn-ultra btn-green" style="padding:4px 8px; font-size:10px; width:25%;" onclick="modifyUserBalance('${u}', 'add')">شحن (+)</button>
-              <button class="btn-ultra btn-gold" style="padding:4px 8px; font-size:10px; width:25%;" onclick="modifyUserBalance('${u}', 'sub')">خصم (-)</button>
+              <button type="button" class="btn-ultra btn-green" style="padding:4px 8px; font-size:10px; width:25%;" onclick="modifyUserBalance('${u}', 'add')">شحن (+)</button>
+              <button type="button" class="btn-ultra btn-gold" style="padding:4px 8px; font-size:10px; width:25%;" onclick="modifyUserBalance('${u}', 'sub')">خصم (-)</button>
             </div>
 
             <div class="admin-actions-grid">
               ${isBanned 
-                ? `<button class="btn-ultra btn-green" style="padding:6px; font-size:10px;" onclick="adminUnbanUser('${u}')">🔓 فك الحظر</button>`
-                : `<button class="btn-ultra btn-red" style="padding:6px; font-size:10px;" onclick="adminBanAndZeroUser('${u}')">⛔ حظر وتصفير</button>`
+                ? `<button type="button" class="btn-ultra btn-green" style="padding:6px; font-size:10px;" onclick="adminUnbanUser('${u}')">🔓 فك الحظر</button>`
+                : `<button type="button" class="btn-ultra btn-red" style="padding:6px; font-size:10px;" onclick="adminBanAndZeroUser('${u}')">⛔ حظر وتصفير</button>`
               }
-              <button class="btn-ultra btn-gold" style="padding:6px; font-size:10px;" onclick="adminZeroBalance('${u}')">🧹 تصفير الرصيد</button>
-              <button class="btn-ultra btn-outline" style="padding:6px; font-size:10px; border-color:var(--accent-blue);" onclick="adminResetPassword('${u}')">🔑 تغيير السر</button>
-              <button class="btn-ultra btn-outline" style="padding:6px; font-size:10px; border-color:var(--accent-red); color:var(--accent-red);" onclick="adminDeleteUser('${u}')">🗑️ حذف الحساب</button>
+              <button type="button" class="btn-ultra btn-gold" style="padding:6px; font-size:10px;" onclick="adminZeroBalance('${u}')">🧹 تصفير الرصيد</button>
+              <button type="button" class="btn-ultra btn-outline" style="padding:6px; font-size:10px; border-color:var(--accent-blue);" onclick="adminResetPassword('${u}')">🔑 تغيير السر</button>
+              <button type="button" class="btn-ultra btn-outline" style="padding:6px; font-size:10px; border-color:var(--accent-red); color:var(--accent-red);" onclick="adminDeleteUser('${u}')">🗑️ حذف الحساب</button>
             </div>
           </div>`;
       });
     }
 
-    /* حظر الحساب وتصفير رصيده فوراً */
     function adminBanAndZeroUser(u) {
       if (activeUser !== ADMIN_CREDENTIAL) return;
       if (!confirm(`هل أنت تأكد من حظر المستخدم (${u}) وتصفير رصيده نهائياً؟`)) return;
 
-      // 1. تصفير الرصيد
       const balances = getUserBalances();
       balances[u] = 0;
       saveUserBalances(balances);
 
-      // 2. إضافة لقائمة المحظورين
       const banned = getBannedUsers();
       if (!banned.includes(u)) banned.push(u);
       saveBannedUsers(banned);
@@ -753,7 +744,6 @@
       showToast(`تم حظر ${u} وتصفير رصيده! ⛔`);
     }
 
-    /* فك الحظر عن حساب */
     function adminUnbanUser(u) {
       if (activeUser !== ADMIN_CREDENTIAL) return;
       let banned = getBannedUsers();
@@ -763,7 +753,6 @@
       showToast(`تم فك الحظر عن ${u} 🔓`);
     }
 
-    /* تصفير رصيد الحساب فقط دون حظره */
     function adminZeroBalance(u) {
       if (activeUser !== ADMIN_CREDENTIAL) return;
       const balances = getUserBalances();
@@ -773,7 +762,6 @@
       showToast(`تم تصفير رصيد ${u} بنجاح!`);
     }
 
-    /* تغيير كلمة السر للمستخدم */
     function adminResetPassword(u) {
       if (activeUser !== ADMIN_CREDENTIAL) return;
       const newPass = prompt(`أدخل كلمة السر الجديدة للمستخدم (${u}):`);
@@ -785,7 +773,6 @@
       }
     }
 
-    /* حذف الحساب بالكامل */
     function adminDeleteUser(u) {
       if (activeUser !== ADMIN_CREDENTIAL) return;
       if (!confirm(`هل أنت متأكد من حذف حساب (${u}) بالكامل من المنصة؟`)) return;
@@ -806,7 +793,6 @@
       showToast(`تم حذف حساب ${u} نهائياً!`);
     }
 
-    /* عرض طلبات السحب للجميع في لوحة الأدمن للقبول والرفض */
     function renderAdminWithdrawals() {
       if (activeUser !== ADMIN_CREDENTIAL) return;
       const container = document.getElementById('adminWithdrawList');
@@ -824,8 +810,8 @@
                 <div>💰 المبلغ: <strong style="color:var(--accent-green);">${item.amount.toLocaleString()} IQD</strong></div>
                 <div>💳 الطريقة: ${item.method} (${item.account})</div>
                 <div style="display:flex; gap:6px; margin-top:8px;">
-                  <button class="btn-ultra btn-green" style="padding:4px; font-size:10px;" onclick="adminApproveWithdraw('${userKey}', '${item.id}')">✓ موافقة</button>
-                  <button class="btn-ultra btn-red" style="padding:4px; font-size:10px;" onclick="adminRejectWithdraw('${userKey}', '${item.id}')">✕ رفض وإرجاع الرصيد</button>
+                  <button type="button" class="btn-ultra btn-green" style="padding:4px; font-size:10px;" onclick="adminApproveWithdraw('${userKey}', '${item.id}')">✓ موافقة</button>
+                  <button type="button" class="btn-ultra btn-red" style="padding:4px; font-size:10px;" onclick="adminRejectWithdraw('${userKey}', '${item.id}')">✕ رفض وإرجاع الرصيد</button>
                 </div>
               </div>`;
           }
@@ -856,7 +842,6 @@
         const item = allHistory[userKey].find(w => w.id === withdrawId);
         if (item) {
           item.status = 'مرفوض';
-          // إعادة المبلغ لرصيد الزبون عند الرفض
           const balances = getUserBalances();
           balances[userKey] = (balances[userKey] || 0) + item.amount;
           saveUserBalances(balances);
@@ -870,4 +855,7 @@
     function modifyUserBalance(u, action) {
       if (activeUser !== ADMIN_CREDENTIAL) return;
       const val = parseFloat(document.getElementById(`amt_${u}`).value);
-      if (isNaN(val) || val
+      if (isNaN(val) || val <= 0) { alert("⚠️ أدخل مبلغاً صحيحاً"); return; }
+      const balances = getUserBalances();
+      if (action === 'add') balances[u] = (balances[u] || 0) + val;
+      else if (action === 'sub') balances[u] = Mat
