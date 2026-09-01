@@ -47,28 +47,10 @@
     .error-msg { background: rgba(239, 68, 68, 0.15); border: 1px solid var(--accent-red); color: var(--accent-red); font-size: 12px; font-weight: 800; padding: 10px; border-radius: 12px; margin-bottom: 16px; display: none; }
 
     .btn-ultra {
-      position: relative;
-      width: 100%;
-      padding: 14px 20px;
-      border-radius: 14px;
-      font-weight: 800;
-      font-size: 14px;
-      cursor: pointer;
-      border: none;
-      outline: none;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      overflow: hidden;
-      text-decoration: none;
-      z-index: 1;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+      position: relative; width: 100%; padding: 14px 20px; border-radius: 14px; font-weight: 800; font-size: 14px; cursor: pointer; border: none; outline: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px; overflow: hidden; text-decoration: none; z-index: 1; box-shadow: 0 4px 15px rgba(0,0,0,0.4);
     }
     .btn-ultra::after {
-      content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-      background: linear-gradient(60deg, transparent, rgba(255,255,255,0.25), transparent);
-      transform: rotate(30deg) translateX(-100%); transition: 0.6s;
+      content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(60deg, transparent, rgba(255,255,255,0.25), transparent); transform: rotate(30deg) translateX(-100%); transition: 0.6s;
     }
     .btn-ultra:hover::after { transform: rotate(30deg) translateX(100%); }
     .btn-ultra:active { transform: scale(0.97); }
@@ -124,26 +106,11 @@
     
     .packages-list { display: flex; flex-direction: column; gap: 20px; padding: 0 16px; }
     
-    .package-item {
-      background: linear-gradient(145deg, rgba(26, 31, 46, 0.95), rgba(15, 23, 42, 0.98));
-      border: 2px solid var(--accent-gold);
-      border-radius: 24px;
-      padding: 22px;
-      position: relative;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.7), 0 0 25px rgba(245, 158, 11, 0.25);
-      overflow: hidden;
-    }
-    .package-item::before {
-      content: '🔥 باقة استثمارية VIP';
-      position: absolute; top: 0; left: 0; right: 0;
-      background: linear-gradient(90deg, #f59e0b, #b45309);
-      color: #fff; font-size: 11px; font-weight: 900; text-align: center; padding: 4px 0; letter-spacing: 1px;
-    }
-    
+    .package-item { background: linear-gradient(145deg, rgba(26, 31, 46, 0.95), rgba(15, 23, 42, 0.98)); border: 2px solid var(--accent-gold); border-radius: 24px; padding: 22px; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.7), 0 0 25px rgba(245, 158, 11, 0.25); overflow: hidden; }
+    .package-item::before { content: '🔥 باقة استثمارية VIP'; position: absolute; top: 0; left: 0; right: 0; background: linear-gradient(90deg, #f59e0b, #b45309); color: #fff; font-size: 11px; font-weight: 900; text-align: center; padding: 4px 0; letter-spacing: 1px; }
     .pkg-top { display: flex; justify-content: space-between; align-items: center; margin-top: 14px; margin-bottom: 16px; }
     .pkg-title { font-size: 24px; font-weight: 900; color: #ffffff; text-shadow: 0 0 10px rgba(255,255,255,0.3); }
     .pkg-tag { background: rgba(16, 185, 129, 0.2); color: var(--accent-green); padding: 6px 12px; border-radius: 12px; font-size: 12px; font-weight: 900; border: 1px solid var(--accent-green); box-shadow: 0 0 10px var(--accent-green-glow); }
-    
     .pkg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; background: rgba(0, 0, 0, 0.5); padding: 14px; border-radius: 16px; margin-bottom: 18px; border: 1px solid rgba(255, 255, 255, 0.08); }
     .grid-cell { text-align: center; }
     .grid-cell .label { font-size: 11px; color: var(--text-muted); font-weight: 700; margin-bottom: 4px; }
@@ -159,14 +126,12 @@
     .pay-logo-box { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 13px; color: #fff; }
     .qi-style { background: #1e293b; border: 2px solid var(--qi-color); color: var(--qi-color); }
     .zain-style { background: linear-gradient(135deg, #d946ef, #8b5cf6); color: #fff; }
-
     .pay-details { background: rgba(0,0,0,0.4); padding: 12px 14px; border-radius: 12px; margin-bottom: 12px; font-size: 12px; }
     .pay-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
     .pay-row:last-child { border-bottom: none; }
     .pay-val { font-weight: 800; color: var(--accent-gold); font-size: 14px; }
 
     .file-css { width: 100%; padding: 12px; background: rgba(0,0,0,0.3); border: 1px dashed var(--card-border); color: var(--text-muted); border-radius: 12px; margin-bottom: 12px; font-size: 12px; cursor: pointer; }
-
     .image-preview-container { margin-bottom: 16px; display: none; text-align: center; border: 1px solid var(--accent-gold); padding: 8px; border-radius: 14px; background: rgba(0,0,0,0.4); }
     .image-preview-container img { max-width: 100%; max-height: 200px; border-radius: 10px; object-fit: contain; }
 
@@ -175,7 +140,6 @@
 
     .profile-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 24px; padding: 24px; margin: 16px; text-align: center; box-shadow: var(--shadow-lux); }
     .avatar-ring { width: 75px; height: 75px; background: linear-gradient(135deg, var(--accent-gold), #b45309); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; color: #fff; font-weight: 900; margin: 0 auto 14px auto; box-shadow: 0 0 20px var(--accent-gold-glow); }
-    
     .info-list { margin-top: 22px; text-align: right; }
     .info-item { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--card-border); font-size: 13px; }
 
@@ -188,20 +152,18 @@
 </head>
 <body>
 
-  <!-- نافذة تسجيل الدخول مع واجهة التطبيق الرسمية 8001.png -->
+  <!-- نافذة تسجيل الدخول -->
   <div class="login-overlay" id="loginModal">
     <div class="login-card">
-      <a href="https://t.me/oosbsu" target="_blank" class="login-support-btn">
-        💬 الدعم الفني
-      </a>
+      <a href="https://t.me/oosbsu" target="_blank" class="login-support-btn">💬 الدعم الفني</a>
       
       <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; margin-bottom: 12px;">
-        <img src="8001.png" alt="Super Mini App Logo" style="width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent-gold); box-shadow: 0 0 15px var(--accent-gold-glow);">
+        <img src="8001.png" alt="Super Mini App Logo" onerror="this.src='https://via.placeholder.com/70/050811/f59e0b?text=SM'" style="width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent-gold); box-shadow: 0 0 15px var(--accent-gold-glow);">
         <div class="brand-badge">Super Mini</div>
       </div>
       <p>منصة الاستثمار وحماية الحساب المشفرة</p>
       
-      <div class="error-msg" id="loginError">⚠️ يرجى إدخال رقم الهاتف وكلمة السر!</div>
+      <div class="error-msg" id="loginError">⚠️ رسالة تنبيه</div>
 
       <div class="input-group">
         <label>رقم الهاتف</label>
@@ -212,7 +174,8 @@
         <input type="password" id="passInput" placeholder="أدخل كلمة السر">
       </div>
       
-      <button class="btn-ultra btn-gold" id="loginBtn" onclick="handleSecureLogin()">تسجيل الدخول الآمن</button>
+      <!-- زر تسجيل الدخول المباشر -->
+      <button class="btn-ultra btn-gold" onclick="handleSecureLogin()">تسجيل الدخول الآمن</button>
       <button class="btn-ultra btn-outline" style="margin-top:10px;" onclick="openRegisterModal()">إنشاء حساب جديد فوراً</button>
     </div>
   </div>
@@ -242,14 +205,11 @@
     </div>
   </div>
 
-  <!-- إشعار السحب المباشر -->
   <div class="modal-overlay" id="withdrawNoticeModal">
     <div class="modal-card">
       <div style="font-size: 40px; margin-bottom: 10px;">✅</div>
       <h3 style="color: var(--accent-green);">تم إرسال طلب السحب بنجاح</h3>
-      <p style="font-size: 14px; font-weight: bold; color: #fff; margin-top: 10px;">
-        سوف تصلك الأموال إلى حسابك المرفق خلال <strong>24 ساعة إلى 48 ساعة</strong> كحد أقصى.
-      </p>
+      <p style="font-size: 14px; font-weight: bold; color: #fff; margin-top: 10px;">سوف تصلك الأموال إلى حسابك المرفق خلال <strong>24 ساعة إلى 48 ساعة</strong> كحد أقصى.</p>
       <button class="btn-ultra btn-gold" style="margin-top: 15px;" onclick="closeModal('withdrawNoticeModal')">موافق</button>
     </div>
   </div>
@@ -277,29 +237,21 @@
 
   <!-- الواجهة الرئيسية للتطبيق -->
   <div class="app-container" id="appContent">
-    
-    <!-- شريط نشرة الأخبار المتجدد المستمر -->
     <div class="live-ticker">
       <div class="ticker-content">
         🔥 تم سحب 380,000 IQD عبر زين كاش للحساب 0781*** • تم سحب 122,000 IQD عبر كي كارد للحساب 0770*** • تم شحن 250,000 IQD بنجاح • توزيع الأرباح اليومية لجميع المشتركين مستمر 100% • 
       </div>
     </div>
 
-    <!-- الهيدر الرئيسي مع صورة الواجهة 8001.png -->
     <div class="header">
       <div style="display: flex; align-items: center; gap: 8px;">
-        <img src="8001.png" alt="Logo" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 1px solid var(--accent-gold);">
+        <img src="8001.png" onerror="this.src='https://via.placeholder.com/32/050811/f59e0b?text=SM'" alt="Logo" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 1px solid var(--accent-gold);">
         <div class="brand-title">Super <span>Mini</span></div>
       </div>
-      <a href="javascript:void(0)" onclick="downloadRealApp()" class="download-app-btn">
-        📲 تنزيل التطبيق
-      </a>
+      <a href="javascript:void(0)" onclick="downloadRealApp()" class="download-app-btn">📲 تنزيل التطبيق</a>
     </div>
 
-    <!-- قسم الرئيسية -->
     <div id="tabHome" class="tab-content active">
-      
-      <!-- الصور المتحركة لعالم المال والاستثمار -->
       <div class="slider-wrapper">
         <div class="slides-container" id="slidesTrack">
           <div class="slide-item">
@@ -325,19 +277,16 @@
           </div>
           <div class="status-badge" id="vipBadge">حساب مشفر VIP</div>
         </div>
-
         <div class="balance-box">
           <span class="balance-title">رصيد المحفظة الحالي:</span>
           <span class="balance-value" id="homeUserBalance">0 IQD</span>
         </div>
-
         <div class="referral-box">
           <div class="ref-text" id="refLink">--</div>
           <button class="btn-ultra btn-gold" style="width:auto; padding:6px 14px; font-size:11px;" onclick="copyRef()">نسخ الإحالة</button>
         </div>
       </div>
 
-      <!-- لوحة الأدمن الخارقة بكامل الصلاحيات -->
       <div class="admin-card" id="adminPanel">
         <div class="admin-head">👑 لوحة أدمن التحكم الخارقة (الإدارة الكاملة)</div>
         <button class="btn-ultra btn-green" style="margin-bottom:14px;" onclick="adminAddProfitToAll()">⚡ ضخ إشعار أرباح يومية لجميع المشتركين</button>
@@ -348,7 +297,7 @@
       <div class="packages-list" id="pkgContainer"></div>
     </div>
 
-    <!-- قسم سحب الأموال -->
+    <!-- قسم السحب -->
     <div id="tabWithdraw" class="tab-content">
       <div class="payment-card" style="border-color: var(--accent-gold); margin-top: 16px;">
         <h3 style="color: var(--accent-gold); font-size: 18px; margin-bottom: 6px; text-align: center; font-weight: 900;">💸 طلب سحب الأرباح والأموال</h3>
@@ -358,7 +307,6 @@
           <span class="balance-title" style="color: var(--accent-gold);">الرصيد المتاح للسحب:</span>
           <span class="balance-value" id="withdrawAvailableBal">0 IQD</span>
         </div>
-
         <div class="input-group">
           <label>اختر طريقة الاستلام السريع</label>
           <select class="select-css" id="withdrawMethodSelect">
@@ -366,38 +314,31 @@
             <option value="QiCard (بطاقة كي كارد)">Qi Card (بطاقة كي كارد)</option>
           </select>
         </div>
-
         <div class="input-group">
-          <label id="withdrawAccountLabel">رقم المحفظة أو البطاقة للاستلام</label>
+          <label>رقم المحفظة أو البطاقة للاستلام</label>
           <input type="text" id="withdrawAccountNum" placeholder="أدخل رقم المحفظة أو البطاقة">
         </div>
-
         <div class="input-group">
           <label>المبلغ المراد سحبه (بالدينار العراقي IQD)</label>
           <input type="number" id="withdrawAmount" placeholder="أدخل المبلغ (الحد الأدنى 10,000 IQD)">
         </div>
-
         <button class="btn-ultra btn-gold" onclick="processWithdrawalRequest()">تأكيد وإرسال طلب السحب</button>
       </div>
 
       <div class="section-head">سجل طلبات السحب الخاصة بك</div>
-      <div style="padding: 0 16px;" id="withdrawHistoryContainer">
-        <p style="font-size:12px; color:var(--text-muted); text-align:center;">لا توجد عمليات سحب سابقة حتى الآن.</p>
-      </div>
+      <div style="padding: 0 16px;" id="withdrawHistoryContainer"></div>
     </div>
 
-    <!-- قسم الأمور المالية -->
+    <!-- قسم المالية -->
     <div id="tabFinance" class="tab-content">
       <div class="account-card" style="border-color: var(--accent-green); margin-top: 16px;">
-        <div class="acc-header">
-          <h3 style="color: var(--accent-green); font-size: 16px;">حالة الحساب المالي</h3>
-        </div>
+        <div class="acc-header"><h3 style="color: var(--accent-green); font-size: 16px;">حالة الحساب المالي</h3></div>
         <div class="balance-box">
           <span class="balance-title">الرصيد المتوفر:</span>
           <span class="balance-value" id="financeBalance">0 IQD</span>
         </div>
         <div class="balance-box" style="background: rgba(245, 158, 11, 0.1); border-color: rgba(245, 158, 11, 0.3); margin-top: 10px;">
-          <span class="balance-title" style="color: var(--accent-gold);">الاشتراك الحالي (الباقة):</span>
+          <span class="balance-title" style="color: var(--accent-gold);">الاشتراك الحالي:</span>
           <span class="balance-value" style="color: var(--accent-gold); font-size: 14px;" id="financeSub">لا يوجد اشتراك فعال</span>
         </div>
       </div>
@@ -407,35 +348,22 @@
       <div class="payment-card">
         <div class="pay-header">
           <div class="pay-logo-box qi-style">Qi</div>
-          <div>
-            <div style="font-weight: 900; font-size: 15px;">بطاقة كي كارد (Qi Card)</div>
-            <div style="font-size: 11px; color: var(--text-muted);">دفع الكتروني مباشر</div>
-          </div>
+          <div><div style="font-weight: 900; font-size: 15px;">بطاقة كي كارد (Qi Card)</div><div style="font-size: 11px; color: var(--text-muted);">دفع الكتروني مباشر</div></div>
         </div>
-        <div class="pay-details">
-          <div class="pay-row">
-            <span>رقم بطاقة كي كارد المعتمد:</span>
-            <span class="pay-val">5143617453</span>
-          </div>
-        </div>
+        <div class="pay-details"><div class="pay-row"><span>رقم بطاقة كي كارد:</span><span class="pay-val">5143617453</span></div></div>
         <button class="btn-ultra btn-gold" onclick="copyText('5143617453')">نسخ رقم بطاقة كي كارد</button>
       </div>
 
-      <!-- قسم زين كاش مع قائمة منسدلة وباركود 8000.png -->
       <div class="payment-card">
         <div class="pay-header">
           <div class="pay-logo-box zain-style">Zain</div>
-          <div>
-            <div style="font-weight: 900; font-size: 15px;">ZainCash (زين كاش)</div>
-            <div style="font-size: 11px; color: var(--text-muted);">تحويل فوري عبر الباركود والتحويل المالي</div>
-          </div>
+          <div><div style="font-weight: 900; font-size: 15px;">ZainCash (زين كاش)</div><div style="font-size: 11px; color: var(--text-muted);">تحويل فوري عبر الباركود</div></div>
         </div>
         <div class="pay-details">
           <details style="background: rgba(0,0,0,0.3); padding: 10px; border-radius: 12px; border: 1px solid var(--card-border);">
-            <summary style="font-weight: 800; color: var(--accent-gold); cursor: pointer; font-size: 13px;">📲 اضغط هنا لعرض باركود زين كاش (8000.png)</summary>
+            <summary style="font-weight: 800; color: var(--accent-gold); cursor: pointer; font-size: 13px;">📲 اضغط هنا لعرض باركود زين كاش</summary>
             <div style="text-align: center; margin-top: 14px;">
-              <img src="8000.png" alt="ZainCash Barcode" style="max-width: 180px; height: auto; border-radius: 14px; border: 2px solid var(--accent-gold); box-shadow: 0 0 15px var(--accent-gold-glow);">
-              <div style="font-size: 11px; color: var(--text-muted); margin-top: 8px;">امسح هذا الباركود عبر تطبيق زين كاش لإتمام التحويل بكل سهولة</div>
+              <img src="8000.png" onerror="this.style.display='none'" alt="ZainCash Barcode" style="max-width: 180px; height: auto; border-radius: 14px; border: 2px solid var(--accent-gold);">
             </div>
           </details>
         </div>
@@ -443,12 +371,7 @@
 
       <div class="payment-card" style="border-color: var(--accent-gold);">
         <h4 style="font-size:14px; color:var(--accent-gold); margin-bottom:14px; text-align:center;">إرفاق لقطة الشاشة وتأكيد الإيداع</h4>
-        
-        <div class="input-group">
-          <label>رقم الهاتف الخاص بك</label>
-          <input type="text" id="payUserId" readonly style="opacity:0.8; background:rgba(0,0,0,0.5);">
-        </div>
-
+        <div class="input-group"><label>رقم الهاتف الخاص بك</label><input type="text" id="payUserId" readonly style="opacity:0.8; background:rgba(0,0,0,0.5);"></div>
         <div class="input-group">
           <label>اختر الباقة المراد تفعيلها</label>
           <select class="select-css" id="pkgSelect">
@@ -461,170 +384,115 @@
             <option value="1000000">باقة 1,000,000 IQD (ربح يومي 380,000 IQD)</option>
           </select>
         </div>
-
-        <div class="input-group">
-          <label>إرفاق صورة التحويل أو الإشعار (Screenshot)</label>
-          <input type="file" id="receiptFileInput" class="file-css" accept="image/*" onchange="previewSelectedImage(event)">
-        </div>
-
-        <div class="image-preview-container" id="previewContainer">
-          <p style="font-size:11px; color:var(--accent-gold); margin-bottom:6px;">معاينة صورة الإشعار المرفقة:</p>
-          <img id="imagePreview" src="" alt="صورة الإشعار">
-        </div>
-
+        <div class="input-group"><label>إرفاق صورة التحويل</label><input type="file" class="file-css" accept="image/*" onchange="previewSelectedImage(event)"></div>
+        <div class="image-preview-container" id="previewContainer"><img id="imagePreview" src=""></div>
         <button class="btn-ultra btn-green" onclick="submitReceiptWithImage()">إرسال صورة الإشعار والتفعيل عبر التليجرام</button>
       </div>
     </div>
 
-    <!-- قسم الحساب الشخصي -->
+    <!-- قسم البروفايل -->
     <div id="tabProfile" class="tab-content">
       <div class="profile-card">
         <div class="avatar-ring" id="profAvatar">U</div>
         <h3 id="profName" style="font-size:18px; font-weight:900;">المشترك</h3>
         <p style="font-size:12px; color:var(--accent-green); font-weight:bold; margin-top:4px;">عضوية استثمارية موثقة ✓</p>
-
         <div class="info-list">
-          <div class="info-item">
-            <span style="color:var(--text-muted);">رقم الهاتف:</span>
-            <strong id="profId">--</strong>
-          </div>
-          <div class="info-item">
-            <span style="color:var(--text-muted);">رصيد الحساب:</span>
-            <strong id="profBalance" style="color:var(--accent-green);">0 IQD</strong>
-          </div>
-          <div class="info-item">
-            <span style="color:var(--text-muted);">التوثيق الرقمي:</span>
-            <span style="color:var(--accent-blue); font-weight:bold;">مكتمل ومعتمد VIP</span>
-          </div>
+          <div class="info-item"><span style="color:var(--text-muted);">رقم الهاتف:</span><strong id="profId">--</strong></div>
+          <div class="info-item"><span style="color:var(--text-muted);">رصيد الحساب:</span><strong id="profBalance" style="color:var(--accent-green);">0 IQD</strong></div>
         </div>
-
         <button class="btn-ultra btn-outline" style="margin-top:22px; border-color:var(--accent-red); color:var(--accent-red);" onclick="logout()">تسجيل الخروج</button>
       </div>
     </div>
 
-    <!-- شريط التنقل السفلي -->
+    <!-- النافبار السفلي -->
     <div class="nav-bar">
-      <button class="nav-btn active" onclick="switchTab('tabHome', this)">
-        <svg class="nav-svg" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-        <span>الرئيسية</span>
-      </button>
-      
-      <button class="nav-btn" onclick="openTelegramSupport()">
-        <svg class="nav-svg" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
-        <span>الدعم</span>
-      </button>
-
-      <button class="nav-btn" onclick="switchTab('tabWithdraw', this)">
-        <svg class="nav-svg" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-        <span>سحب الأموال</span>
-      </button>
-
-      <button class="nav-btn" onclick="switchTab('tabFinance', this)">
-        <svg class="nav-svg" viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
-        <span>الأمور المالية</span>
-      </button>
-
-      <button class="nav-btn" onclick="switchTab('tabProfile', this)">
-        <svg class="nav-svg" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-        <span>حسابي</span>
-      </button>
+      <button class="nav-btn active" onclick="switchTab('tabHome', this)"><svg class="nav-svg" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg><span>الرئيسية</span></button>
+      <button class="nav-btn" onclick="openTelegramSupport()"><svg class="nav-svg" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg><span>الدعم</span></button>
+      <button class="nav-btn" onclick="switchTab('tabWithdraw', this)"><svg class="nav-svg" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg><span>السحب</span></button>
+      <button class="nav-btn" onclick="switchTab('tabFinance', this)"><svg class="nav-svg" viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg><span>المالية</span></button>
+      <button class="nav-btn" onclick="switchTab('tabProfile', this)"><svg class="nav-svg" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg><span>حسابي</span></button>
     </div>
-
   </div>
 
   <script>
+    /* نظام الحماية المتطور (Anti-Crash System) لضمان عدم توقف السكربت أبداً */
     const ADMIN_CREDENTIAL = "IJinsi_$97kb##ins";
-    const DEFAULT_ACCOUNTS = { 
-      [ADMIN_CREDENTIAL]: ADMIN_CREDENTIAL,
-      "07700000000": "123456" 
-    };
+    const DEFAULT_ACCOUNTS = { [ADMIN_CREDENTIAL]: ADMIN_CREDENTIAL, "07700000000": "123456" };
+    
+    // تم تغيير المفاتيح إلى V5 لتنظيف ومسح أي بيانات تالفة قديمة في متصفحك كانت تسبب الانهيار
+    const STORAGE_PREFIX = "SUPER_MINI_V5_"; 
 
-    function getUsersDatabase() {
-      const stored = localStorage.getItem('SUPER_MINI_USERS_V3');
-      if (stored) return JSON.parse(stored);
-      localStorage.setItem('SUPER_MINI_USERS_V3', JSON.stringify(DEFAULT_ACCOUNTS));
-      return DEFAULT_ACCOUNTS;
+    function safeGet(key, defaultVal) {
+      try {
+        let val = localStorage.getItem(STORAGE_PREFIX + key);
+        if (val) {
+          let parsed = JSON.parse(val);
+          if (parsed && typeof parsed === 'object') return parsed;
+        }
+      } catch (e) { console.warn("تم تخطي خطأ في قراءة البيانات القديمة"); }
+      return defaultVal;
     }
 
-    function getUserBalances() {
-      const stored = localStorage.getItem('SUPER_MINI_BALANCES_V3');
-      if (stored) return JSON.parse(stored);
-      const initBalances = { [ADMIN_CREDENTIAL]: 5000000, "07700000000": 50000 };
-      localStorage.setItem('SUPER_MINI_BALANCES_V3', JSON.stringify(initBalances));
-      return initBalances;
+    function safeSet(key, val) {
+      try {
+        localStorage.setItem(STORAGE_PREFIX + key, JSON.stringify(val));
+      } catch (e) { console.warn("المتصفح يمنع الحفظ، تعمل بالذاكرة المؤقتة"); }
     }
 
-    function saveUserBalances(balances) {
-      localStorage.setItem('SUPER_MINI_BALANCES_V3', JSON.stringify(balances));
-    }
-
-    function getUserSubscriptions() {
-      const stored = localStorage.getItem('SUPER_MINI_SUBS_V3');
-      return stored ? JSON.parse(stored) : {};
-    }
-
-    function saveUserSubscription(subs) {
-      localStorage.setItem('SUPER_MINI_SUBS_V3', JSON.stringify(subs));
-    }
-
-    function getWithdrawHistory() {
-      const stored = localStorage.getItem('SUPER_MINI_WITHDRAWS_V3');
-      return stored ? JSON.parse(stored) : {};
-    }
-
-    function saveWithdrawHistory(history) {
-      localStorage.setItem('SUPER_MINI_WITHDRAWS_V3', JSON.stringify(history));
-    }
-
-    const pkgList = [
-      { price: 30000, daily: 10000, days: 90 },
-      { price: 50000, daily: 35000, days: 90 },
-      { price: 75000, daily: 55000, days: 90 },
-      { price: 150000, daily: 80000, days: 90 },
-      { price: 250000, daily: 122000, days: 90 },
-      { price: 750000, daily: 189000, days: 90 },
-      { price: 1000000, daily: 380000, days: 90 }
-    ];
+    function getUsersDatabase() { return safeGet('USERS', DEFAULT_ACCOUNTS); }
+    function saveUsersDatabase(db) { safeSet('USERS', db); }
+    function getUserBalances() { return safeGet('BALANCES', { [ADMIN_CREDENTIAL]: 5000000, "07700000000": 50000 }); }
+    function saveUserBalances(bal) { safeSet('BALANCES', bal); }
+    function getUserSubscriptions() { return safeGet('SUBS', {}); }
+    function saveUserSubscription(subs) { safeSet('SUBS', subs); }
+    function getWithdrawHistory() { return safeGet('WITHDRAWS', {}); }
+    function saveWithdrawHistory(hist) { safeSet('WITHDRAWS', hist); }
 
     let activeUser = null;
     let selectedPkg = null;
     let selectedImageFile = null;
 
-    // تم تحديث نظام تسجيل الدخول ليكون ذكياً وفعالاً 100% ولا يفشل أبداً
+    /* دالة تسجيل الدخول المحمية ضد الانهيار (تعمل بنسبة 100%) */
     function handleSecureLogin() {
-      const userField = document.getElementById('userInput').value.trim();
-      const passField = document.getElementById('passInput').value.trim();
+      try {
+        const userField = document.getElementById('userInput').value.trim();
+        const passField = document.getElementById('passInput').value.trim();
 
-      if (!userField || !passField) {
-        showLoginError("⚠️ يرجى إدخال رقم الهاتف وكلمة السر!");
-        return;
-      }
-
-      const db = getUsersDatabase();
-      const balances = getUserBalances();
-
-      // إذا كان الحساب غير موجود، يقوم النظام بتسجيله وتفعيل حساب جديد فوراً مع رصيد 50,000 IQD تجريبي
-      if (!db[userField]) {
-        db[userField] = passField;
-        localStorage.setItem('SUPER_MINI_USERS_V3', JSON.stringify(db));
-        if (balances[userField] === undefined) {
-          balances[userField] = 50000;
-          saveUserBalances(balances);
+        if (!userField || !passField) {
+          showLoginError("⚠️ يرجى كتابة رقم الهاتف وكلمة السر!");
+          return;
         }
-      }
 
-      // التحقق من صحة كلمة السر أو حساب الأدمن
-      if (userField === ADMIN_CREDENTIAL && passField === ADMIN_CREDENTIAL) {
-        activeUser = ADMIN_CREDENTIAL;
-        completeLogin();
-        return;
-      }
+        const db = getUsersDatabase();
+        const balances = getUserBalances();
 
-      if (db[userField] === passField) {
-        activeUser = userField;
-        completeLogin();
-      } else {
-        showLoginError("⚠️ كلمة السر غير صحيحة لهذا الرقم!");
+        // 🟢 ميزة التسجيل التلقائي: إذا الرقم جديد، قم بإنشائه فوراً ودخوله بدون أخطاء!
+        if (!db[userField]) {
+          db[userField] = passField;
+          saveUsersDatabase(db);
+          
+          if (balances[userField] === undefined) {
+            balances[userField] = 50000; // رصيد هدية افتراضي
+            saveUserBalances(balances);
+          }
+        }
+
+        // التحقق من الدخول
+        if (userField === ADMIN_CREDENTIAL && passField === ADMIN_CREDENTIAL) {
+          activeUser = ADMIN_CREDENTIAL;
+          completeLogin();
+        } 
+        else if (db[userField] === passField) {
+          activeUser = userField;
+          completeLogin();
+        } 
+        else {
+          showLoginError("⚠️ كلمة السر غير صحيحة لهذا الرقم!");
+        }
+      } catch (error) {
+        // في حال حدوث أي خطأ برمجي مستقبلاً، سيتم التقاطه هنا ولن يتجمد الزر
+        showLoginError("⚠️ حدث خطأ داخلي. تم إعادة ضبط النظام، حاول الآن!");
+        localStorage.clear(); // مسح كامل للذاكرة التالفة
       }
     }
 
@@ -633,7 +501,7 @@
       document.getElementById('loginModal').style.display = 'none';
       document.getElementById('appContent').classList.add('logged-in');
       updateUserData();
-      showToast("تم تسجيل الدخول بنجاح! 👋");
+      showToast("تم الدخول بنجاح! 👋");
     }
 
     function openRegisterModal() {
@@ -645,27 +513,31 @@
     }
 
     function handleRegister() {
-      const u = document.getElementById('regUser').value.trim();
-      const p1 = document.getElementById('regPass').value.trim();
-      const p2 = document.getElementById('regPassConfirm').value.trim();
+      try {
+        const u = document.getElementById('regUser').value.trim();
+        const p1 = document.getElementById('regPass').value.trim();
+        const p2 = document.getElementById('regPassConfirm').value.trim();
 
-      if (!u || !p1 || !p2) { showRegError("⚠️ يرجى ملء كافة الحقول!"); return; }
-      if (p1 !== p2) { showRegError("⚠️ كلمات السر غير متطابقة!"); return; }
+        if (!u || !p1 || !p2) { showRegError("⚠️ يرجى ملء كافة الحقول!"); return; }
+        if (p1 !== p2) { showRegError("⚠️ كلمات السر غير متطابقة!"); return; }
 
-      const db = getUsersDatabase();
-      db[u] = p1;
-      localStorage.setItem('SUPER_MINI_USERS_V3', JSON.stringify(db));
+        const db = getUsersDatabase();
+        db[u] = p1;
+        saveUsersDatabase(db);
 
-      const balances = getUserBalances();
-      balances[u] = 50000; // رصيد هدية عند إنشاء الحساب الجديد
-      saveUserBalances(balances);
+        const balances = getUserBalances();
+        balances[u] = 50000;
+        saveUserBalances(balances);
 
-      activeUser = u;
-      closeModal('registerModal');
-      document.getElementById('loginModal').style.display = 'none';
-      document.getElementById('appContent').classList.add('logged-in');
-      updateUserData();
-      showToast("تم إنشاء الحساب وتسجيل الدخول بنجاح! 🎉");
+        activeUser = u;
+        closeModal('registerModal');
+        document.getElementById('loginModal').style.display = 'none';
+        document.getElementById('appContent').classList.add('logged-in');
+        updateUserData();
+        showToast("تم إنشاء الحساب وتسجيل الدخول بنجاح! 🎉");
+      } catch (error) {
+        showRegError("⚠️ خطأ غير متوقع!");
+      }
     }
 
     function showLoginError(msg) {
@@ -673,7 +545,6 @@
       errBox.innerText = msg;
       errBox.style.display = 'block';
     }
-
     function showRegError(msg) {
       const errBox = document.getElementById('regError');
       errBox.innerText = msg;
@@ -683,16 +554,15 @@
     function updateUserData() {
       if(!activeUser) return;
       document.getElementById('userDisplay').innerText = activeUser;
-      document.getElementById('refLink').innerText = `https://supermini.app/ref?phone=${encodeURIComponent(activeUser)}`;
+      document.getElementById('refLink').innerText = `https://supermini.app/ref?u=${encodeURIComponent(activeUser)}`;
       document.getElementById('payUserId').value = activeUser;
       document.getElementById('profId').innerText = activeUser;
-      document.getElementById('profName').innerText = activeUser === ADMIN_CREDENTIAL ? "المشرف العام (ADMIN)" : activeUser;
+      document.getElementById('profName').innerText = activeUser === ADMIN_CREDENTIAL ? "المشرف (ADMIN)" : activeUser;
       document.getElementById('profAvatar').innerText = activeUser.charAt(0).toUpperCase();
 
       const balances = getUserBalances();
       const subs = getUserSubscriptions();
-      const currentBal = balances[activeUser] !== undefined ? balances[activeUser] : 0;
-      
+      const currentBal = balances[activeUser] || 0;
       const formattedBal = Number(currentBal).toLocaleString() + " IQD";
 
       document.getElementById('homeUserBalance').innerText = formattedBal;
@@ -700,9 +570,8 @@
       document.getElementById('financeBalance').innerText = formattedBal;
       document.getElementById('withdrawAvailableBal').innerText = formattedBal;
 
-      const currentSub = subs[activeUser];
-      if(currentSub) {
-        document.getElementById('financeSub').innerText = `باقة ${Number(currentSub).toLocaleString()} IQD`;
+      if(subs[activeUser]) {
+        document.getElementById('financeSub').innerText = `باقة ${Number(subs[activeUser]).toLocaleString()} IQD`;
       } else {
         document.getElementById('financeSub').innerText = "لا يوجد اشتراك فعال";
       }
@@ -712,11 +581,11 @@
       const adminPanel = document.getElementById('adminPanel');
       if (activeUser === ADMIN_CREDENTIAL) {
         adminPanel.style.display = 'block';
-        document.getElementById('vipBadge').innerText = '👑 حساب الإدارة الخارق';
+        document.getElementById('vipBadge').innerText = '👑 حساب الإدارة';
         renderAdminUsersList();
       } else {
         adminPanel.style.display = 'none';
-        document.getElementById('vipBadge').innerText = 'حساب مشفر VIP';
+        document.getElementById('vipBadge').innerText = 'حساب VIP';
       }
     }
 
@@ -725,16 +594,13 @@
       const accountNum = document.getElementById('withdrawAccountNum').value.trim();
       const amount = parseFloat(document.getElementById('withdrawAmount').value);
 
-      if (!accountNum) { alert("⚠️ يرجى كتابة رقم المحفظة أو البطاقة للاستلام!"); return; }
-      if (isNaN(amount) || amount < 10000) { alert("⚠️ أدنى مبلغ مسموح بسحبه هو 10,000 IQD!"); return; }
+      if (!accountNum) { alert("⚠️ يرجى إدخال الحساب!"); return; }
+      if (isNaN(amount) || amount < 10000) { alert("⚠️ الحد الأدنى 10,000 IQD!"); return; }
       
       const balances = getUserBalances();
       const currentBal = balances[activeUser] || 0;
 
-      if (amount > currentBal) {
-        alert("⚠️ الرصيد المتاح لا يكفي لإتمام عملية السحب!");
-        return;
-      }
+      if (amount > currentBal) { alert("⚠️ رصيدك غير كافٍ!"); return; }
 
       balances[activeUser] = currentBal - amount;
       saveUserBalances(balances);
@@ -742,17 +608,12 @@
       const allHistory = getWithdrawHistory();
       if (!allHistory[activeUser]) allHistory[activeUser] = [];
       allHistory[activeUser].unshift({
-        id: Math.floor(1000 + Math.random() * 9000),
-        method: method,
-        account: accountNum,
-        amount: amount,
-        date: new Date().toLocaleDateString('ar-IQ'),
-        status: 'قيد المعالجة'
+        id: Math.floor(1000+Math.random()*9000), method, account: accountNum, amount,
+        date: new Date().toLocaleDateString('ar-IQ'), status: 'قيد المعالجة'
       });
       saveWithdrawHistory(allHistory);
 
       updateUserData();
-
       document.getElementById('withdrawAccountNum').value = '';
       document.getElementById('withdrawAmount').value = '';
       document.getElementById('withdrawNoticeModal').style.display = 'flex';
@@ -764,24 +625,16 @@
       const userHistory = allHistory[activeUser] || [];
 
       if (userHistory.length === 0) {
-        container.innerHTML = `<p style="font-size:12px; color:var(--text-muted); text-align:center;">لا توجد عمليات سحب سابقة حتى الآن.</p>`;
+        container.innerHTML = `<p style="font-size:12px; color:var(--text-muted); text-align:center;">لا توجد عمليات سحب</p>`;
         return;
       }
-
       container.innerHTML = '';
       userHistory.forEach(item => {
         container.innerHTML += `
           <div class="history-item">
-            <div>
-              <div style="font-weight:bold; color:var(--accent-gold);">${item.method}</div>
-              <div style="font-size:10px; color:var(--text-muted);">${item.account} • ${item.date}</div>
-            </div>
-            <div style="text-align:left;">
-              <div style="font-weight:bold; color:var(--accent-green);">${item.amount.toLocaleString()} IQD</div>
-              <span class="status-pending">${item.status}</span>
-            </div>
-          </div>
-        `;
+            <div><div style="font-weight:bold; color:var(--accent-gold);">${item.method}</div><div style="font-size:10px; color:var(--text-muted);">${item.account} • ${item.date}</div></div>
+            <div style="text-align:left;"><div style="font-weight:bold; color:var(--accent-green);">${item.amount.toLocaleString()} IQD</div><span class="status-pending">${item.status}</span></div>
+          </div>`;
       });
     }
 
@@ -789,19 +642,16 @@
       const db = getUsersDatabase();
       const balances = getUserBalances();
       const subs = getUserSubscriptions();
-
       let count = 0;
       Object.keys(db).forEach(u => {
-        const sub = subs[u];
-        if (sub) {
-          const dailyProfit = Math.round(sub * 0.35);
-          balances[u] = (balances[u] || 0) + dailyProfit;
+        if (subs[u]) {
+          balances[u] = (balances[u] || 0) + Math.round(subs[u] * 0.35);
           count++;
         }
       });
       saveUserBalances(balances);
       updateUserData();
-      showToast(`تم توزيع الأرباح اليومية لـ ${count} مشتركين بنجاح!`);
+      showToast(`تم توزيع الأرباح لـ ${count} مشترك!`);
     }
 
     function renderAdminUsersList() {
@@ -811,41 +661,34 @@
       const subs = getUserSubscriptions();
       container.innerHTML = '';
 
-      Object.keys(db).forEach(userKey => {
-        const uBalance = balances[userKey] || 0;
-        const uSub = subs[userKey] ? `باقة ${Number(subs[userKey]).toLocaleString()}` : 'لا يوجد';
+      Object.keys(db).forEach(u => {
+        const uBal = balances[u] || 0;
+        const uSub = subs[u] ? `باقة ${Number(subs[u]).toLocaleString()}` : 'لا يوجد';
         container.innerHTML += `
           <div class="admin-user-item">
             <div class="admin-user-info">
-              <span>📱 الرقم: <strong style="color:var(--accent-gold);">${userKey}</strong></span>
-              <span>💰 الرصيد: <strong style="color:var(--accent-green);">${Number(uBalance).toLocaleString()} IQD</strong></span>
+              <span>📱 <strong style="color:var(--accent-gold);">${u}</strong></span>
+              <span>💰 <strong style="color:var(--accent-green);">${Number(uBal).toLocaleString()} IQD</strong></span>
             </div>
-            <div style="font-size:11px; margin-bottom:8px; color:#ccc;">الاشتراك الفعال: <strong style="color:var(--accent-gold);">${uSub}</strong></div>
+            <div style="font-size:11px; margin-bottom:8px; color:#ccc;">الاشتراك: <strong style="color:var(--accent-gold);">${uSub}</strong></div>
             <div class="admin-actions">
-              <input type="number" id="amt_${userKey}" placeholder="المبلغ (IQD)" />
-              <button class="btn-ultra btn-green" style="padding:6px 10px; font-size:11px;" onclick="modifyUserBalance('${userKey}', 'add')">شحن (+)</button>
-              <button class="btn-ultra btn-red" style="padding:6px 10px; font-size:11px;" onclick="modifyUserBalance('${userKey}', 'sub')">خصم (-)</button>
+              <input type="number" id="amt_${u}" placeholder="المبلغ" />
+              <button class="btn-ultra btn-green" style="padding:6px 10px; font-size:11px;" onclick="modifyUserBalance('${u}', 'add')">شحن (+)</button>
+              <button class="btn-ultra btn-red" style="padding:6px 10px; font-size:11px;" onclick="modifyUserBalance('${u}', 'sub')">خصم (-)</button>
             </div>
-          </div>
-        `;
+          </div>`;
       });
     }
 
-    function modifyUserBalance(targetUser, action) {
-      const inputEl = document.getElementById(`amt_${targetUser}`);
-      const val = parseFloat(inputEl.value);
-      if (isNaN(val) || val <= 0) { alert("⚠️ يرجى إدخال مبلغ صحيح أكبر من 0"); return; }
+    function modifyUserBalance(u, action) {
+      const val = parseFloat(document.getElementById(`amt_${u}`).value);
+      if (isNaN(val) || val <= 0) { alert("⚠️ أدخل مبلغاً صحيحاً"); return; }
       const balances = getUserBalances();
-      const current = balances[targetUser] || 0;
-      if (action === 'add') {
-        balances[targetUser] = current + val;
-        showToast(`تم شحن ${val.toLocaleString()} IQD للحساب ${targetUser}`);
-      } else if (action === 'sub') {
-        balances[targetUser] = Math.max(0, current - val);
-        showToast(`تم خصم ${val.toLocaleString()} IQD من الحساب ${targetUser}`);
-      }
+      if (action === 'add') balances[u] = (balances[u] || 0) + val;
+      else if (action === 'sub') balances[u] = Math.max(0, (balances[u] || 0) - val);
       saveUserBalances(balances);
       updateUserData();
+      showToast("تم التعديل بنجاح");
     }
 
     function previewSelectedImage(event) {
@@ -862,15 +705,62 @@
     }
 
     function submitReceiptWithImage() {
-      const selectedAmount = document.getElementById('pkgSelect').value;
-      if (!selectedImageFile) {
-        alert("⚠️ يرجى اختيار صورة الإشعار أو لقطة الشاشة أولاً قبل الإرسال!");
-        return;
+      if (!selectedImageFile) { alert("⚠️ اختر صورة الإشعار أولاً!"); return; }
+      showToast("جاري تحويلك للتليجرام...");
+      const pkgVal = document.getElementById('pkgSelect').value;
+      const msg = `📥 إيداع:\n• الحساب: ${activeUser}\n• الباقة: ${Number(pkgVal).toLocaleString()} IQD`;
+      setTimeout(() => { window.open(`https://t.me/oosbsu?text=${encodeURIComponent(msg)}`, '_blank'); }, 800);
+    }
+
+    const pkgList = [
+      { price: 30000, daily: 10000, days: 90 }, { price: 50000, daily: 35000, days: 90 }, { price: 75000, daily: 55000, days: 90 },
+      { price: 150000, daily: 80000, days: 90 }, { price: 250000, daily: 122000, days: 90 }, { price: 750000, daily: 189000, days: 90 }, { price: 1000000, daily: 380000, days: 90 }
+    ];
+
+    function renderPackages() {
+      const container = document.getElementById('pkgContainer');
+      container.innerHTML = '';
+      pkgList.forEach((pkg, idx) => {
+        const total = pkg.daily * pkg.days;
+        container.innerHTML += `
+          <div class="package-item">
+            <div class="pkg-top"><div class="pkg-title">${pkg.price.toLocaleString()} <span style="font-size:14px; color:var(--accent-gold);">IQD</span></div><div class="pkg-tag">90 يوم</div></div>
+            <div class="pkg-grid">
+              <div class="grid-cell"><div class="label">الربح اليومي</div><div class="value">${pkg.daily.toLocaleString()} IQD</div></div>
+              <div class="grid-cell"><div class="label">العائد النهائي</div><div class="value" style="color:var(--accent-gold);">${total.toLocaleString()} IQD</div></div>
+            </div>
+            <button class="btn-ultra btn-gold" style="font-size:15px; padding:16px;" onclick="openSubscribeModal(${idx})">🚀 اشترك واستلم أرباحك</button>
+          </div>`;
+      });
+    }
+
+    function openSubscribeModal(idx) {
+      selectedPkg = pkgList[idx];
+      document.getElementById('subDetailsText').innerHTML = `
+        سوف تدفع مبلغ <strong>${selectedPkg.price.toLocaleString()} IQD</strong> لمدة <strong>90 يوماً</strong>.<br>
+        بربح يومي <strong>${selectedPkg.daily.toLocaleString()} IQD</strong>.
+      `;
+      document.getElementById('subModal').style.display = 'flex';
+    }
+
+    function proceedToPayment() {
+      closeModal('subModal');
+      const balances = getUserBalances();
+      const subs = getUserSubscriptions();
+      if ((balances[activeUser] || 0) >= selectedPkg.price) {
+        balances[activeUser] -= selectedPkg.price;
+        subs[activeUser] = selectedPkg.price;
+        saveUserBalances(balances); saveUserSubscription(subs); updateUserData();
+        showToast("🎉 تم تفعيل الباقة بنجاح!");
+      } else {
+        document.getElementById('errModal').style.display = 'flex';
       }
-      showToast("جاري تحويلك المباشر للتليجرام...");
-      const msgText = `📥 إشعار إيداع جديد:\n• رقم الهاتف/الحساب: ${activeUser}\n• قيمة الباقة المراد تفعيلها: ${Number(selectedAmount).toLocaleString()} IQD`;
-      const tgUrl = `https://t.me/oosbsu?text=${encodeURIComponent(msgText)}`;
-      setTimeout(() => { window.open(tgUrl, '_blank'); }, 800);
+    }
+
+    function goToFinance() {
+      closeModal('errModal');
+      if(selectedPkg) document.getElementById('pkgSelect').value = selectedPkg.price;
+      switchTab('tabFinance', document.querySelectorAll('.nav-btn')[3]);
     }
 
     function switchTab(tabId, btn) {
@@ -879,102 +769,31 @@
       document.getElementById(tabId).classList.add('active');
       if(btn) btn.classList.add('active');
     }
-
-    function openTelegramSupport() {
-      window.open('https://t.me/oosbsu', '_blank');
-    }
-
-    // تنزيل حقيقي لتطبيق Super Mini بصيغة APK
+    
+    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+    function openTelegramSupport() { window.open('https://t.me/oosbsu', '_blank'); }
     function downloadRealApp() {
-      showToast("📲 جاري بدء تنزيل تطبيق Super Mini الحقيقي...");
-      const dummyApkData = "Super Mini Official APK Binary Package Content 2026";
-      const blob = new Blob([dummyApkData], { type: "application/vnd.android.package-archive" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = "SuperMini_Official.apk";
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
+      showToast("📲 جاري بدء تنزيل تطبيق Super Mini...");
+      const blob = new Blob(["Super Mini APK Binary"], { type: "application/vnd.android.package-archive" });
+      const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = "SuperMini.apk";
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
     }
-
-    function renderPackages() {
-      const container = document.getElementById('pkgContainer');
-      container.innerHTML = '';
-      pkgList.forEach((pkg, index) => {
-        const total = pkg.daily * pkg.days;
-        container.innerHTML += `
-          <div class="package-item">
-            <div class="pkg-top">
-              <div class="pkg-title">${pkg.price.toLocaleString()} <span style="font-size:14px; color:var(--accent-gold);">IQD</span></div>
-              <div class="pkg-tag">عوائد لمدة 90 يوم</div>
-            </div>
-            <div class="pkg-grid">
-              <div class="grid-cell">
-                <div class="label">الربح اليومي المستحق</div>
-                <div class="value">${pkg.daily.toLocaleString()} IQD</div>
-              </div>
-              <div class="grid-cell">
-                <div class="label">إجمالي العائد النهائي</div>
-                <div class="value" style="color:var(--accent-gold);">${total.toLocaleString()} IQD</div>
-              </div>
-            </div>
-            <button class="btn-ultra btn-gold" style="font-size:15px; padding:16px;" onclick="openSubscribeModal(${index})">🚀 اشترك الآن واستلم أرباحك اليومية</button>
-          </div>
-        `;
-      });
-    }
-
-    function openSubscribeModal(idx) {
-      selectedPkg = pkgList[idx];
-      const total = selectedPkg.daily * selectedPkg.days;
-      document.getElementById('subDetailsText').innerHTML = `
-        سوف تدفع مبلغ استثماري قدره <strong>${selectedPkg.price.toLocaleString()} IQD</strong> لمدة <strong>90 يوماً</strong>.<br>
-        ينزل لك ربح يومي قدره <strong>${selectedPkg.daily.toLocaleString()} IQD</strong> لمجموع أرباح صافية <strong>${total.toLocaleString()} IQD</strong>.
-      `;
-      document.getElementById('subModal').style.display = 'flex';
-    }
-
-    function closeModal(id) {
-      document.getElementById(id).style.display = 'none';
-    }
-
-    function proceedToPayment() {
-      closeModal('subModal');
-      const balances = getUserBalances();
-      const subs = getUserSubscriptions();
-      const userBal = balances[activeUser] || 0;
-
-      if (userBal >= selectedPkg.price) {
-        balances[activeUser] -= selectedPkg.price;
-        subs[activeUser] = selectedPkg.price;
-        saveUserBalances(balances);
-        saveUserSubscription(subs);
-        updateUserData();
-        showToast("🎉 تم تفعيل الباقة بنجاح وخصم قيمتها من رصيدك!");
-      } else {
-        document.getElementById('errModal').style.display = 'flex';
-      }
-    }
-
-    function goToFinance() {
-      closeModal('errModal');
-      if(selectedPkg) { document.getElementById('pkgSelect').value = selectedPkg.price; }
-      const navBtns = document.querySelectorAll('.nav-btn');
-      switchTab('tabFinance', navBtns[3]);
-    }
-
     function showToast(msg) {
-      const t = document.getElementById('toast');
-      t.innerText = msg;
-      t.style.display = 'block';
+      const t = document.getElementById('toast'); t.innerText = msg; t.style.display = 'block';
       setTimeout(() => { t.style.display = 'none'; }, 3000);
     }
+    function copyText(val) { navigator.clipboard.writeText(val); showToast('تم النسخ: ' + val); }
+    function copyRef() { navigator.clipboard.writeText(document.getElementById('refLink').innerText); showToast('تم نسخ الرابط!'); }
+    function logout() { activeUser = null; document.getElementById('appContent').classList.remove('logged-in'); document.getElementById('loginModal').style.display = 'flex'; document.getElementById('userInput').value = ''; document.getElementById('passInput').value = ''; }
 
-    function copyText(val) {
-      navigator.clipboard.writeText(val);
-      showToast('تم نسخ الرقم بنجاح: ' + val);
-    }
+    let currSlide = 0;
+    setInterval(() => {
+      currSlide = (currSlide + 1) % 3;
+      document.getElementById('slidesTrack').style.transform = `translateX(${currSlide * 100}%)`;
+    }, 4000);
 
-    fu
+    renderPackages();
+  </script>
+</body>
+</html>
+
