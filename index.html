@@ -29,12 +29,10 @@
     .app-container { width: 100%; max-width: 440px; background: var(--bg-main); position: relative; padding-bottom: 95px; min-height: 100vh; border-left: 1px solid var(--card-border); border-right: 1px solid var(--card-border); display: none; }
     .app-container.logged-in { display: block; }
 
-    /* شريط الأخبار المتحرك الدائم */
     .live-ticker { background: linear-gradient(90deg, #090d16, #1e1b4b, #090d16); border-bottom: 1px solid var(--card-border); padding: 8px 0; font-size: 11px; color: var(--accent-gold); overflow: hidden; white-space: nowrap; font-weight: 800; display: flex; }
     .ticker-content { display: inline-block; padding-right: 100%; animation: ticker 22s linear infinite; }
     @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
 
-    /* الشاشة العائمة لتسجيل الدخول */
     .login-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(3, 7, 18, 0.98); backdrop-filter: blur(25px); display: flex; justify-content: center; align-items: center; padding: 20px; z-index: 5000; }
     .login-card { width: 100%; max-width: 380px; background: var(--glass-bg); border: 1px solid var(--card-border); padding: 32px 24px; border-radius: 28px; text-align: center; box-shadow: var(--shadow-lux); position: relative; }
     
@@ -174,7 +172,6 @@
         <input type="password" id="passInput" placeholder="أدخل كلمة السر">
       </div>
       
-      <!-- زر تسجيل الدخول المباشر -->
       <button class="btn-ultra btn-gold" onclick="handleSecureLogin()">تسجيل الدخول الآمن</button>
       <button class="btn-ultra btn-outline" style="margin-top:10px;" onclick="openRegisterModal()">إنشاء حساب جديد فوراً</button>
     </div>
@@ -415,28 +412,26 @@
   </div>
 
   <script>
-    /* نظام الحماية المتطور (Anti-Crash System) لضمان عدم توقف السكربت أبداً */
     const ADMIN_CREDENTIAL = "IJinsi_$97kb##ins";
     const DEFAULT_ACCOUNTS = { [ADMIN_CREDENTIAL]: ADMIN_CREDENTIAL, "07700000000": "123456" };
-    
-    // تم تغيير المفاتيح إلى V5 لتنظيف ومسح أي بيانات تالفة قديمة في متصفحك كانت تسبب الانهيار
     const STORAGE_PREFIX = "SUPER_MINI_V5_"; 
+    const ONE_HOUR_MS = 60 * 60 * 1000; // مدة الجلسة بالساعات (1 ساعة = 3600,000 مللي ثانية)
 
     function safeGet(key, defaultVal) {
       try {
         let val = localStorage.getItem(STORAGE_PREFIX + key);
         if (val) {
           let parsed = JSON.parse(val);
-          if (parsed && typeof parsed === 'object') return parsed;
+          if (parsed !== null && parsed !== undefined) return parsed;
         }
-      } catch (e) { console.warn("تم تخطي خطأ في قراءة البيانات القديمة"); }
+      } catch (e) { console.warn("تم تخطي خطأ في قراءة البيانات"); }
       return defaultVal;
     }
 
     function safeSet(key, val) {
       try {
         localStorage.setItem(STORAGE_PREFIX + key, JSON.stringify(val));
-      } catch (e) { console.warn("المتصفح يمنع الحفظ، تعمل بالذاكرة المؤقتة"); }
+      } catch (e) { console.warn("المتصفح يمنع الحفظ المحلية"); }
     }
 
     function getUsersDatabase() { return safeGet('USERS', DEFAULT_ACCOUNTS); }
@@ -452,7 +447,25 @@
     let selectedPkg = null;
     let selectedImageFile = null;
 
-    /* دالة تسجيل الدخول المحمية ضد الانهيار (تعمل بنسبة 100%) */
+    // التحقق عند تحميل الصفحة من الجلسة المحفوظة ومهلة الساعة
+    window.addEventListener('DOMContentLoaded', () => {
+      checkSessionValidity();
+    });
+
+    function checkSessionValidity() {
+      const savedUser = safeGet('SESSION_USER', null);
+      const loginTime = safeGet('SESSION_TIME', 0);
+      const now = Date.now();
+
+      if (savedUser && loginTime && (now - loginTime < ONE_HOUR_MS)) {
+        activeUser = savedUser;
+        completeLogin(false); // دخول تلقائي دون إخفاء الإشعار
+      } else {
+        // انتهت المهلة أو لا توجد جلسة
+        logout(false);
+      }
+    }
+
     function handleSecureLogin() {
       try {
         const userField = document.getElementById('userInput').value.trim();
@@ -466,42 +479,46 @@
         const db = getUsersDatabase();
         const balances = getUserBalances();
 
-        // 🟢 ميزة التسجيل التلقائي: إذا الرقم جديد، قم بإنشائه فوراً ودخوله بدون أخطاء!
         if (!db[userField]) {
           db[userField] = passField;
           saveUsersDatabase(db);
           
           if (balances[userField] === undefined) {
-            balances[userField] = 0; // رصيد هدية افتراضي
+            balances[userField] = 0;
             saveUserBalances(balances);
           }
         }
 
-        // التحقق من الدخول
         if (userField === ADMIN_CREDENTIAL && passField === ADMIN_CREDENTIAL) {
           activeUser = ADMIN_CREDENTIAL;
-          completeLogin();
+          saveSessionInfo();
+          completeLogin(true);
         } 
         else if (db[userField] === passField) {
           activeUser = userField;
-          completeLogin();
+          saveSessionInfo();
+          completeLogin(true);
         } 
         else {
           showLoginError("⚠️ كلمة السر غير صحيحة لهذا الرقم!");
         }
       } catch (error) {
-        // في حال حدوث أي خطأ برمجي مستقبلاً، سيتم التقاطه هنا ولن يتجمد الزر
         showLoginError("⚠️ حدث خطأ داخلي. تم إعادة ضبط النظام، حاول الآن!");
-        localStorage.clear(); // مسح كامل للذاكرة التالفة
+        localStorage.clear();
       }
     }
 
-    function completeLogin() {
+    function saveSessionInfo() {
+      safeSet('SESSION_USER', activeUser);
+      safeSet('SESSION_TIME', Date.now());
+    }
+
+    function completeLogin(isNewLogin = true) {
       document.getElementById('loginError').style.display = 'none';
       document.getElementById('loginModal').style.display = 'none';
       document.getElementById('appContent').classList.add('logged-in');
       updateUserData();
-      showToast("تم الدخول بنجاح! 👋");
+      if(isNewLogin) showToast("تم الدخول بنجاح! 👋");
     }
 
     function openRegisterModal() {
@@ -530,6 +547,7 @@
         saveUserBalances(balances);
 
         activeUser = u;
+        saveSessionInfo();
         closeModal('registerModal');
         document.getElementById('loginModal').style.display = 'none';
         document.getElementById('appContent').classList.add('logged-in');
@@ -784,7 +802,19 @@
     }
     function copyText(val) { navigator.clipboard.writeText(val); showToast('تم النسخ: ' + val); }
     function copyRef() { navigator.clipboard.writeText(document.getElementById('refLink').innerText); showToast('تم نسخ الرابط!'); }
-    function logout() { activeUser = null; document.getElementById('appContent').classList.remove('logged-in'); document.getElementById('loginModal').style.display = 'flex'; document.getElementById('userInput').value = ''; document.getElementById('passInput').value = ''; }
+    
+    function logout(userInitiated = true) { 
+      activeUser = null; 
+      localStorage.removeItem(STORAGE_PREFIX + 'SESSION_USER');
+      localStorage.removeItem(STORAGE_PREFIX + 'SESSION_TIME');
+      document.getElementById('appContent').classList.remove('logged-in'); 
+      document.getElementById('loginModal').style.display = 'flex'; 
+      document.getElementById('userInput').value = ''; 
+      document.getElementById('passInput').value = ''; 
+      if(!userInitiated) {
+        showLoginError("⚠️ انتهت مهلة الجلسة (ساعة واحدة). يرجى تسجيل الدخول مجدداً.");
+      }
+    }
 
     let currSlide = 0;
     setInterval(() => {
