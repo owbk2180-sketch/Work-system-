@@ -4,74 +4,33 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Super Mini | المنصة المالية المشفرة</title>
-  <!-- مكتبة الرسم البياني التفاعلي Chart.js -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     :root {
-      --bg-main: #040711;
-      --card-bg: rgba(13, 20, 36, 0.88);
-      --card-border: rgba(245, 158, 11, 0.3);
+      --bg-main: #050811;
+      --card-bg: rgba(15, 23, 42, 0.94);
+      --card-border: rgba(245, 158, 11, 0.35);
       --text-main: #f9fafb;
-      --text-muted: #94a3b8;
-      --accent-gold: #fbbf24;
-      --accent-gold-glow: rgba(251, 191, 36, 0.35);
+      --text-muted: #9ca3af;
+      --accent-gold: #f59e0b;
+      --accent-gold-glow: rgba(245, 158, 11, 0.5);
       --accent-green: #10b981;
-      --accent-green-glow: rgba(16, 185, 129, 0.35);
+      --accent-green-glow: rgba(16, 185, 129, 0.5);
       --accent-blue: #3b82f6;
-      --accent-red: #f43f5e;
-      --accent-red-glow: rgba(244, 63, 94, 0.4);
+      --accent-red: #ef4444;
+      --accent-red-glow: rgba(239, 68, 68, 0.4);
       --qi-color: #fbbc04;
-      --glass-bg: rgba(10, 16, 31, 0.95);
-      --shadow-lux: 0 20px 40px -15px rgba(0, 0, 0, 0.9), 0 0 25px rgba(245, 158, 11, 0.15);
+      --glass-bg: rgba(11, 17, 32, 0.95);
+      --shadow-lux: 0 12px 35px -5px rgba(0, 0, 0, 0.8), 0 0 20px rgba(245, 158, 11, 0.2);
     }
 
-    * { 
-      box-sizing: border-box; 
-      margin: 0; 
-      padding: 0; 
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
-      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); 
-    }
-
-    body { 
-      background-color: var(--bg-main); 
-      background-image: 
-        radial-gradient(at 50% 0%, rgba(245, 158, 11, 0.08) 0px, transparent 50%),
-        radial-gradient(at 100% 100%, rgba(59, 130, 246, 0.05) 0px, transparent 50%);
-      color: var(--text-main); 
-      display: flex; 
-      justify-content: center; 
-      min-height: 100vh; 
-      overflow-x: hidden; 
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; transition: all 0.22s ease-in-out; }
+    body { background-color: var(--bg-main); color: var(--text-main); display: flex; justify-content: center; min-height: 100vh; overflow-x: hidden; }
     
-    .app-container { 
-      width: 100%; 
-      max-width: 440px; 
-      background: rgba(5, 8, 17, 0.6); 
-      backdrop-filter: blur(12px);
-      position: relative; 
-      padding-bottom: 95px; 
-      min-height: 100vh; 
-      border-left: 1px solid rgba(255, 255, 255, 0.08); 
-      border-right: 1px solid rgba(255, 255, 255, 0.08); 
-      display: none; 
-    }
+    .app-container { width: 100%; max-width: 440px; background: var(--bg-main); position: relative; padding-bottom: 95px; min-height: 100vh; border-left: 1px solid var(--card-border); border-right: 1px solid var(--card-border); display: none; }
     .app-container.logged-in { display: block; }
 
-    .live-ticker { 
-      background: rgba(15, 23, 42, 0.85); 
-      border-bottom: 1px solid rgba(245, 158, 11, 0.2); 
-      padding: 10px 0; 
-      font-size: 11px; 
-      color: var(--accent-gold); 
-      overflow: hidden; 
-      white-space: nowrap; 
-      font-weight: 800; 
-      display: flex; 
-      mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-    }
-    .ticker-content { display: inline-block; padding-right: 100%; animation: ticker 25s linear infinite; }
+    .live-ticker { background: linear-gradient(90deg, #090d16, #1e1b4b, #090d16); border-bottom: 1px solid var(--card-border); padding: 8px 0; font-size: 11px; color: var(--accent-gold); overflow: hidden; white-space: nowrap; font-weight: 800; display: flex; }
+    .ticker-content { display: inline-block; padding-right: 100%; animation: ticker 22s linear infinite; }
     @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
 
     .login-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(3, 7, 18, 0.98); backdrop-filter: blur(25px); display: flex; justify-content: center; align-items: center; padding: 20px; z-index: 5000; }
@@ -86,27 +45,25 @@
     .error-msg { background: rgba(239, 68, 68, 0.15); border: 1px solid var(--accent-red); color: var(--accent-red); font-size: 12px; font-weight: 800; padding: 10px; border-radius: 12px; margin-bottom: 16px; display: none; }
 
     .btn-ultra {
-      position: relative; width: 100%; padding: 15px 20px; border-radius: 16px; font-weight: 800; font-size: 14px; cursor: pointer; border: none; outline: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px; overflow: hidden; text-decoration: none; z-index: 1; box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+      position: relative; width: 100%; padding: 14px 20px; border-radius: 14px; font-weight: 800; font-size: 14px; cursor: pointer; border: none; outline: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px; overflow: hidden; text-decoration: none; z-index: 1; box-shadow: 0 4px 15px rgba(0,0,0,0.4);
     }
     .btn-ultra::after {
-      content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(60deg, transparent, rgba(255,255,255,0.3), transparent); transform: rotate(30deg) translateX(-100%); transition: 0.6s;
+      content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(60deg, transparent, rgba(255,255,255,0.25), transparent); transform: rotate(30deg) translateX(-100%); transition: 0.6s;
     }
     .btn-ultra:hover::after { transform: rotate(30deg) translateX(100%); }
     .btn-ultra:active { transform: scale(0.97); }
 
-    .btn-gold { background: linear-gradient(135deg, #f59e0b, #d97706); color: #fff; box-shadow: 0 4px 20px var(--accent-gold-glow); }
-    .btn-green { background: linear-gradient(135deg, #10b981, #059669); color: #fff; box-shadow: 0 4px 20px var(--accent-green-glow); }
-    .btn-red { background: linear-gradient(135deg, #f43f5e, #be123c); color: #fff; box-shadow: 0 4px 20px var(--accent-red-glow); }
-    .btn-outline { background: rgba(255,255,255,0.03); color: var(--text-main); border: 1px solid rgba(255,255,255,0.15); backdrop-filter: blur(10px); }
+    .btn-gold { background: linear-gradient(135deg, #f59e0b, #b45309); color: #fff; box-shadow: 0 4px 20px var(--accent-gold-glow); }
+    .btn-green { background: linear-gradient(135deg, #10b981, #047857); color: #fff; box-shadow: 0 4px 20px var(--accent-green-glow); }
+    .btn-red { background: linear-gradient(135deg, #ef4444, #991b1b); color: #fff; box-shadow: 0 4px 20px var(--accent-red-glow); }
+    .btn-outline { background: rgba(255,255,255,0.03); color: var(--text-main); border: 1px solid var(--card-border); backdrop-filter: blur(10px); }
 
     .input-group { margin-bottom: 16px; text-align: right; }
     .input-group label { display: block; font-size: 11px; font-weight: 700; margin-bottom: 6px; color: var(--text-muted); }
-    .input-group input, .select-css { 
-      width: 100%; padding: 14px; border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 14px; font-size: 13px; background: rgba(0,0,0,0.5); color: var(--text-main); outline: none; backdrop-filter: blur(10px);
-    }
-    .input-group input:focus, .select-css:focus { border-color: var(--accent-gold); box-shadow: 0 0 15px var(--accent-gold-glow); }
+    .input-group input, .select-css { width: 100%; padding: 14px; border: 1px solid var(--card-border); border-radius: 12px; font-size: 13px; background: rgba(0,0,0,0.6); color: var(--text-main); outline: none; }
+    .input-group input:focus, .select-css:focus { border-color: var(--accent-gold); box-shadow: 0 0 12px var(--accent-gold-glow); }
 
-    .header { display: flex; justify-content: space-between; align-items: center; padding: 14px 18px; background: var(--card-bg); border-bottom: 1px solid rgba(255,255,255,0.08); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(16px); }
+    .header { display: flex; justify-content: space-between; align-items: center; padding: 14px 18px; background: var(--card-bg); border-bottom: 1px solid var(--card-border); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(12px); }
     .brand-title { font-size: 18px; font-weight: 900; color: var(--text-main); }
     .brand-title span { color: var(--accent-gold); }
     
@@ -131,11 +88,6 @@
 
     .balance-box { margin-top: 12px; padding: 14px; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 14px; display: flex; justify-content: space-between; align-items: center; }
     .balance-title { font-size: 12px; color: var(--text-muted); font-weight: 700; }
-    
-    .balance-value, .pkg-title, .pay-val {
-      font-variant-numeric: tabular-nums;
-      letter-spacing: 0.5px;
-    }
     .balance-value { font-size: 18px; color: var(--accent-green); font-weight: 900; }
 
     .referral-box { background: rgba(0,0,0,0.4); border: 1px dashed var(--card-border); padding: 10px 12px; border-radius: 14px; margin-top: 10px; display: flex; justify-content: space-between; align-items: center; }
@@ -152,22 +104,8 @@
     
     .packages-list { display: flex; flex-direction: column; gap: 20px; padding: 0 16px; }
     
-    .package-item { 
-      background: linear-gradient(160deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95)); 
-      border: 1px solid rgba(245, 158, 11, 0.4); 
-      border-radius: 24px; 
-      padding: 24px 20px 20px 20px; 
-      position: relative; 
-      box-shadow: 0 15px 35px rgba(0,0,0,0.6), 0 0 20px rgba(245, 158, 11, 0.12); 
-      overflow: hidden; 
-    }
-    .package-item::before { 
-      content: '🔥 باقة استثمارية VIP'; 
-      position: absolute; top: 0; left: 0; right: 0; 
-      background: linear-gradient(90deg, #f59e0b, #b45309); 
-      color: #fff; font-size: 10px; font-weight: 900; 
-      text-align: center; padding: 4px 0; letter-spacing: 1px; 
-    }
+    .package-item { background: linear-gradient(145deg, rgba(26, 31, 46, 0.95), rgba(15, 23, 42, 0.98)); border: 2px solid var(--accent-gold); border-radius: 24px; padding: 22px; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.7), 0 0 25px rgba(245, 158, 11, 0.25); overflow: hidden; }
+    .package-item::before { content: '🔥 باقة استثمارية VIP'; position: absolute; top: 0; left: 0; right: 0; background: linear-gradient(90deg, #f59e0b, #b45309); color: #fff; font-size: 11px; font-weight: 900; text-align: center; padding: 4px 0; letter-spacing: 1px; }
     .pkg-top { display: flex; justify-content: space-between; align-items: center; margin-top: 14px; margin-bottom: 16px; }
     .pkg-title { font-size: 24px; font-weight: 900; color: #ffffff; text-shadow: 0 0 10px rgba(255,255,255,0.3); }
     .pkg-tag { background: rgba(16, 185, 129, 0.2); color: var(--accent-green); padding: 6px 12px; border-radius: 12px; font-size: 12px; font-weight: 900; border: 1px solid var(--accent-green); box-shadow: 0 0 10px var(--accent-green-glow); }
@@ -203,17 +141,10 @@
     .info-list { margin-top: 22px; text-align: right; }
     .info-item { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--card-border); font-size: 13px; }
 
-    .nav-bar { 
-      position: fixed; bottom: 12px; width: calc(100% - 24px); max-width: 416px; 
-      background: rgba(15, 23, 42, 0.85); 
-      display: flex; justify-content: space-around; align-items: center; 
-      height: 64px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.12); 
-      z-index: 100; backdrop-filter: blur(20px); 
-      box-shadow: 0 20px 30px rgba(0,0,0,0.8);
-    }
+    .nav-bar { position: fixed; bottom: 0; width: 100%; max-width: 440px; background: var(--card-bg); display: flex; justify-content: space-around; align-items: center; height: 72px; border-top: 1px solid var(--card-border); z-index: 100; backdrop-filter: blur(16px); }
     .nav-btn { display: flex; flex-direction: column; align-items: center; font-size: 10px; color: var(--text-muted); gap: 4px; text-decoration: none; font-weight: 800; cursor: pointer; border: none; background: transparent; flex: 1; }
-    .nav-btn.active span { color: var(--accent-gold); font-weight: 900; }
-    .nav-btn.active svg { fill: var(--accent-gold); filter: drop-shadow(0 0 8px var(--accent-gold-glow)); }
+    .nav-btn.active { color: var(--accent-gold); }
+    .nav-btn.active svg { fill: var(--accent-gold); filter: drop-shadow(0 0 6px var(--accent-gold-glow)); }
     .nav-svg { width: 20px; height: 20px; fill: var(--text-muted); }
   </style>
 </head>
@@ -271,7 +202,6 @@
     </div>
   </div>
 
-  <!-- إشعار نجاح السحب -->
   <div class="modal-overlay" id="withdrawNoticeModal">
     <div class="modal-card">
       <div style="font-size: 40px; margin-bottom: 10px;">✅</div>
@@ -281,7 +211,6 @@
     </div>
   </div>
 
-  <!-- نافذة تفاصيل الخطة -->
   <div class="modal-overlay" id="subModal">
     <div class="modal-card">
       <h3>تفاصيل الخطة الاستثمارية</h3>
@@ -291,7 +220,6 @@
     </div>
   </div>
 
-  <!-- نافذة رصيد غير كافٍ -->
   <div class="modal-overlay" id="errModal">
     <div class="modal-card">
       <h3 style="color: var(--accent-red);">⚠️ تنبيه: لا يوجد رصيد كافٍ</h3>
@@ -300,7 +228,6 @@
     </div>
   </div>
 
-  <!-- التوست إشعار سريع -->
   <div id="toast" style="position:fixed; top:20px; left:50%; transform:translateX(-50%); background:var(--accent-green); color:#fff; padding:10px 20px; border-radius:12px; font-weight:800; font-size:12px; display:none; z-index:9000; box-shadow:0 4px 15px rgba(0,0,0,0.4);">
     تمت العملية بنجاح!
   </div>
@@ -321,7 +248,6 @@
       <a href="javascript:void(0)" onclick="downloadRealApp()" class="download-app-btn">📲 تنزيل التطبيق</a>
     </div>
 
-    <!-- الصفحة الرئيسية -->
     <div id="tabHome" class="tab-content active">
       <div class="slider-wrapper">
         <div class="slides-container" id="slidesTrack">
@@ -355,21 +281,6 @@
         <div class="referral-box">
           <div class="ref-text" id="refLink">--</div>
           <button class="btn-ultra btn-gold" style="width:auto; padding:6px 14px; font-size:11px;" onclick="copyRef()">نسخ الإحالة</button>
-        </div>
-      </div>
-
-      <!-- بطاقة الرسم البياني التفاعلي للأرباح -->
-      <div class="account-card" style="border-color: var(--card-border);">
-        <div class="acc-header" style="margin-bottom: 8px;">
-          <div class="acc-id" style="color: var(--accent-gold); font-size: 14px;">
-            📈 مؤشر نمو الأرباح اليومية
-          </div>
-          <span style="font-size: 10px; color: var(--accent-green); background: rgba(16, 185, 129, 0.15); padding: 2px 8px; border-radius: 10px; font-weight: 800;">
-            ▲ +35% صعود
-          </span>
-        </div>
-        <div style="position: relative; width: 100%; height: 160px;">
-          <canvas id="profitChart"></canvas>
         </div>
       </div>
 
@@ -504,7 +415,7 @@
     const ADMIN_CREDENTIAL = "IJinsi_$97kb##ins";
     const DEFAULT_ACCOUNTS = { [ADMIN_CREDENTIAL]: ADMIN_CREDENTIAL, "07700000000": "123456" };
     const STORAGE_PREFIX = "SUPER_MINI_V5_"; 
-    const ONE_HOUR_MS = 60 * 60 * 1000;
+    const ONE_HOUR_MS = 60 * 60 * 1000; // مدة الجلسة بالساعات (1 ساعة = 3600,000 مللي ثانية)
 
     function safeGet(key, defaultVal) {
       try {
@@ -535,8 +446,8 @@
     let activeUser = null;
     let selectedPkg = null;
     let selectedImageFile = null;
-    let profitChartInstance = null;
 
+    // التحقق عند تحميل الصفحة من الجلسة المحفوظة ومهلة الساعة
     window.addEventListener('DOMContentLoaded', () => {
       checkSessionValidity();
     });
@@ -548,8 +459,9 @@
 
       if (savedUser && loginTime && (now - loginTime < ONE_HOUR_MS)) {
         activeUser = savedUser;
-        completeLogin(false);
+        completeLogin(false); // دخول تلقائي دون إخفاء الإشعار
       } else {
+        // انتهت المهلة أو لا توجد جلسة
         logout(false);
       }
     }
@@ -607,8 +519,6 @@
       document.getElementById('appContent').classList.add('logged-in');
       updateUserData();
       if(isNewLogin) showToast("تم الدخول بنجاح! 👋");
-      
-      setTimeout(initProfitChart, 150);
     }
 
     function openRegisterModal() {
@@ -643,8 +553,6 @@
         document.getElementById('appContent').classList.add('logged-in');
         updateUserData();
         showToast("تم إنشاء الحساب وتسجيل الدخول بنجاح! 🎉");
-        
-        setTimeout(initProfitChart, 150);
       } catch (error) {
         showRegError("⚠️ خطأ غير متوقع!");
       }
@@ -697,73 +605,6 @@
         adminPanel.style.display = 'none';
         document.getElementById('vipBadge').innerText = 'حساب VIP';
       }
-    }
-
-    function initProfitChart() {
-      const ctx = document.getElementById('profitChart');
-      if (!ctx) return;
-
-      if (profitChartInstance) {
-        profitChartInstance.destroy();
-      }
-
-      const gradient = ctx.getContext('2d').createLinearGradient(0, 0, 0, 150);
-      gradient.addColorStop(0, 'rgba(245, 158, 11, 0.45)');
-      gradient.addColorStop(1, 'rgba(245, 158, 11, 0.0)');
-
-      profitChartInstance = new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: ['السبت', 'الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'اليوم'],
-          datasets: [{
-            label: 'الأرباح (IQD)',
-            data: [15000, 28000, 42000, 55000, 70000, 95000, 122000],
-            borderColor: '#f59e0b',
-            borderWidth: 2.5,
-            fill: true,
-            backgroundColor: gradient,
-            tension: 0.4,
-            pointBackgroundColor: '#10b981',
-            pointBorderColor: '#ffffff',
-            pointRadius: 4,
-            pointHoverRadius: 6
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: { display: false },
-            tooltip: {
-              backgroundColor: '#0f172a',
-              borderColor: '#f59e0b',
-              borderWidth: 1,
-              titleColor: '#fff',
-              bodyColor: '#10b981',
-              displayColors: false,
-              callbacks: {
-                label: function(context) {
-                  return ' أرباح اليوم: ' + context.parsed.y.toLocaleString() + ' IQD';
-                }
-              }
-            }
-          },
-          scales: {
-            x: {
-              grid: { display: false },
-              ticks: { color: '#9ca3af', font: { size: 10, weight: 'bold' } }
-            },
-            y: {
-              grid: { color: 'rgba(255, 255, 255, 0.05)' },
-              ticks: { 
-                color: '#9ca3af', 
-                font: { size: 9 },
-                callback: function(value) { return value / 1000 + 'k'; }
-              }
-            }
-          }
-        }
-      });
     }
 
     function processWithdrawalRequest() {
@@ -937,3 +778,51 @@
     function goToFinance() {
       closeModal('errModal');
       if(selectedPkg) document.getElementById('pkgSelect').value = selectedPkg.price;
+      switchTab('tabFinance', document.querySelectorAll('.nav-btn')[3]);
+    }
+
+    function switchTab(tabId, btn) {
+      document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(n => n.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      if(btn) btn.classList.add('active');
+    }
+    
+    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+    function openTelegramSupport() { window.open('https://t.me/oosbsu', '_blank'); }
+    function downloadRealApp() {
+      showToast("📲 جاري بدء تنزيل تطبيق Super Mini...");
+      const blob = new Blob(["Super Mini APK Binary"], { type: "application/vnd.android.package-archive" });
+      const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = "SuperMini.apk";
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    }
+    function showToast(msg) {
+      const t = document.getElementById('toast'); t.innerText = msg; t.style.display = 'block';
+      setTimeout(() => { t.style.display = 'none'; }, 3000);
+    }
+    function copyText(val) { navigator.clipboard.writeText(val); showToast('تم النسخ: ' + val); }
+    function copyRef() { navigator.clipboard.writeText(document.getElementById('refLink').innerText); showToast('تم نسخ الرابط!'); }
+    
+    function logout(userInitiated = true) { 
+      activeUser = null; 
+      localStorage.removeItem(STORAGE_PREFIX + 'SESSION_USER');
+      localStorage.removeItem(STORAGE_PREFIX + 'SESSION_TIME');
+      document.getElementById('appContent').classList.remove('logged-in'); 
+      document.getElementById('loginModal').style.display = 'flex'; 
+      document.getElementById('userInput').value = ''; 
+      document.getElementById('passInput').value = ''; 
+      if(!userInitiated) {
+        showLoginError("⚠️ انتهت مهلة الجلسة (ساعة واحدة). يرجى تسجيل الدخول مجدداً.");
+      }
+    }
+
+    let currSlide = 0;
+    setInterval(() => {
+      currSlide = (currSlide + 1) % 3;
+      document.getElementById('slidesTrack').style.transform = `translateX(${currSlide * 100}%)`;
+    }, 4000);
+
+    renderPackages();
+  </script>
+</body>
+</html>
