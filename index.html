@@ -98,7 +98,7 @@
     .admin-user-item { background: rgba(0,0,0,0.5); border: 1px solid var(--card-border); padding: 12px; border-radius: 14px; margin-bottom: 10px; }
     .admin-user-info { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 12px; font-weight: 800; }
     .admin-actions { display: flex; gap: 8px; margin-top: 6px; }
-    .admin-actions input { width: 50%; padding: 8px; font-size: 12px; border-radius: 8px; background: #000; color: #fff; border: 1px solid var(--card-border); }
+    .admin-actions input { width: 100%; padding: 8px; font-size: 12px; border-radius: 8px; background: #000; color: #fff; border: 1px solid var(--card-border); }
 
     .section-head { font-size: 16px; font-weight: 900; margin: 24px 16px 14px 16px; display: flex; justify-content: space-between; align-items: center; color: var(--accent-gold); text-shadow: 0 0 10px var(--accent-gold-glow); }
     
@@ -199,6 +199,16 @@
 
       <button class="btn-ultra btn-green" onclick="handleRegister()">تأكيد وإنشاء الحساب</button>
       <button class="btn-ultra btn-outline" style="margin-top:10px;" onclick="closeModal('registerModal')">إلغاء والعودة</button>
+    </div>
+  </div>
+
+  <!-- نافذة شاشة الحظر الكاملة -->
+  <div class="login-overlay" id="banModal" style="display:none; z-index:9999; background: rgba(5, 0, 0, 0.98);">
+    <div class="login-card" style="border-color: var(--accent-red); box-shadow: 0 0 30px rgba(239, 68, 68, 0.4);">
+      <div style="font-size: 50px; margin-bottom: 10px;">🚫</div>
+      <h2 style="color: var(--accent-red); margin-bottom: 12px; font-weight: 900;">تم حظر حسابك من المنصة</h2>
+      <div id="banReasonText" style="color: #fff; font-size: 13px; font-weight: bold; background: rgba(239, 68, 68, 0.15); border: 1px solid var(--accent-red); padding: 14px; border-radius: 14px; margin-bottom: 18px; line-height: 1.6;"></div>
+      <button class="btn-ultra btn-red" onclick="logout(true)">إغلاق وتغيير الحساب</button>
     </div>
   </div>
 
@@ -411,200 +421,231 @@
     </div>
   </div>
 
+  <!-- مكتبات Firebase السحابية الرسمية -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
   <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyCz7kMpA8v04XZY9VYWAYS_WEuYTQst46w",
+      authDomain: "superminiapp-55204.firebaseapp.com",
+      databaseURL: "https://superminiapp-55204-default-rtdb.firebaseio.com",
+      projectId: "superminiapp-55204",
+      storageBucket: "superminiapp-55204.appspot.com",
+      messagingSenderId: "485993240803",
+      appId: "1:485993240803:web:c59be6938fb92da78cddb"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
     const ADMIN_CREDENTIAL = "IJinsi_$97kb##ins";
-    const DEFAULT_ACCOUNTS = { [ADMIN_CREDENTIAL]: ADMIN_CREDENTIAL, "07700000000": "123456" };
-    const STORAGE_PREFIX = "SUPER_MINI_V6_"; 
-    const ONE_HOUR_MS = 60 * 60 * 1000;
-
-    function safeGet(key, defaultVal) {
-      try {
-        let val = localStorage.getItem(STORAGE_PREFIX + key);
-        if (val !== null && val !== undefined) {
-          let parsed = JSON.parse(val);
-          if (parsed !== null && parsed !== undefined) return parsed;
-        }
-      } catch (e) { console.warn("خطأ قراءة البيانات"); }
-      return defaultVal;
-    }
-
-    function safeSet(key, val) {
-      try {
-        localStorage.setItem(STORAGE_PREFIX + key, JSON.stringify(val));
-      } catch (e) { console.warn("المنع المحلي للحفظ"); }
-    }
-
-    function getUsersDatabase() { return safeGet('USERS', DEFAULT_ACCOUNTS); }
-    function saveUsersDatabase(db) { safeSet('USERS', db); }
-    function getUserBalances() { return safeGet('BALANCES', { [ADMIN_CREDENTIAL]: 5000000, "07700000000": 50000 }); }
-    function saveUserBalances(bal) { safeSet('BALANCES', bal); }
-    function getUserSubscriptions() { return safeGet('SUBS', {}); }
-    function saveUserSubscription(subs) { safeSet('SUBS', subs); }
-    function getWithdrawHistory() { return safeGet('WITHDRAWS', {}); }
-    function saveWithdrawHistory(hist) { safeSet('WITHDRAWS', hist); }
-
     let activeUser = null;
     let selectedPkg = null;
     let selectedImageFile = null;
-
-    window.addEventListener('DOMContentLoaded', () => {
-      checkSessionValidity();
-    });
-
-    function checkSessionValidity() {
-      const savedUser = safeGet('SESSION_USER', null);
-      const loginTime = safeGet('SESSION_TIME', 0);
-      const now = Date.now();
-
-      if (savedUser && loginTime && (now - loginTime < ONE_HOUR_MS)) {
-        activeUser = savedUser;
-        completeLogin(false);
-      } else {
-        logout(false);
-      }
-    }
+    let activeUserListener = null;
 
     function handleSecureLogin() {
-      try {
-        const userField = document.getElementById('userInput').value.trim();
-        const passField = document.getElementById('passInput').value.trim();
+      const userField = document.getElementById('userInput').value.trim();
+      const passField = document.getElementById('passInput').value.trim();
 
-        if (!userField || !passField) {
-          showLoginError("⚠️ يرجى كتابة رقم الهاتف وكلمة السر!");
-          return;
-        }
+      if (!userField || !passField) { showLoginError("⚠️ يرجى كتابة الرقم وكلمة السر!"); return; }
 
-        const db = getUsersDatabase();
+      if (userField === ADMIN_CREDENTIAL && passField === ADMIN_CREDENTIAL) {
+        activeUser = ADMIN_CREDENTIAL;
+        completeLogin();
+        return;
+      }
 
-        // حساب الأدمن
-        if (userField === ADMIN_CREDENTIAL && passField === ADMIN_CREDENTIAL) {
-          activeUser = ADMIN_CREDENTIAL;
-          saveSessionInfo();
-          completeLogin(true);
-          return;
-        }
-
-        // الحسابات العادية
-        if (!db[userField]) {
-          showLoginError("⚠️ هذا الحساب غير موجود! يرجى إنشاء حساب جديد أولاً.");
-          return;
-        }
-
-        if (db[userField] !== passField) {
-          showLoginError("⚠️ كلمة السر غير صحيحة لهذا الرقم!");
+      db.ref('users/' + userField).once('value', snapshot => {
+        const userData = snapshot.val();
+        if (!userData) { showLoginError("⚠️ هذا الحساب غير موجود! سجل حساباً أولاً."); return; }
+        if (userData.pass !== passField) { showLoginError("⚠️ كلمة السر غير صحيحة!"); return; }
+        if (userData.status === 'banned') {
+          showBanScreen(userData.banReason || "تم حظر حسابك لمخالفة الشروط.");
           return;
         }
 
         activeUser = userField;
-        saveSessionInfo();
-        completeLogin(true);
-      } catch (error) {
-        showLoginError("⚠️ حدث خطأ داخلي أثناء تسجيل الدخول!");
-      }
-    }
-
-    function saveSessionInfo() {
-      safeSet('SESSION_USER', activeUser);
-      safeSet('SESSION_TIME', Date.now());
-    }
-
-    function completeLogin(isNewLogin = true) {
-      document.getElementById('loginError').style.display = 'none';
-      document.getElementById('loginModal').style.display = 'none';
-      document.getElementById('appContent').classList.add('logged-in');
-      updateUserData();
-      if(isNewLogin) showToast("تم الدخول بنجاح! 👋");
-    }
-
-    function openRegisterModal() {
-      document.getElementById('regError').style.display = 'none';
-      document.getElementById('regUser').value = '';
-      document.getElementById('regPass').value = '';
-      document.getElementById('regPassConfirm').value = '';
-      document.getElementById('registerModal').style.display = 'flex';
+        completeLogin();
+      });
     }
 
     function handleRegister() {
-      try {
-        const u = document.getElementById('regUser').value.trim();
-        const p1 = document.getElementById('regPass').value.trim();
-        const p2 = document.getElementById('regPassConfirm').value.trim();
+      const u = document.getElementById('regUser').value.trim();
+      const p1 = document.getElementById('regPass').value.trim();
+      const p2 = document.getElementById('regPassConfirm').value.trim();
 
-        if (!u || !p1 || !p2) { showRegError("⚠️ يرجى ملء كافة الحقول!"); return; }
-        if (p1 !== p2) { showRegError("⚠️ كلمات السر غير متطابقة!"); return; }
+      if (!u || !p1 || !p2) { showRegError("⚠️ يرجى ملء كافة الحقول!"); return; }
+      if (p1 !== p2) { showRegError("⚠️ كلمات السر غير متطابقة!"); return; }
 
-        const db = getUsersDatabase();
-        if (db[u]) {
-          showRegError("⚠️ هذا الرقم مسجل بالفعل! يمكنك تسجيل الدخول مباشرة.");
+      db.ref('users/' + u).once('value', snapshot => {
+        if (snapshot.exists()) {
+          showRegError("⚠️ الرقم مسجل بالفعل! سجل الدخول مباشرة.");
           return;
         }
 
-        db[u] = p1;
-        saveUsersDatabase(db);
+        db.ref('users/' + u).set({
+          pass: p1,
+          balance: 0,
+          status: 'active',
+          banReason: '',
+          sub: 0,
+          createdAt: new Date().toLocaleDateString('ar-IQ')
+        }).then(() => {
+          activeUser = u;
+          closeModal('registerModal');
+          completeLogin();
+          showToast("تم إنشاء الحساب وتسجيل الدخول بنجاح! 🎉");
+        });
+      });
+    }
 
-        const balances = getUserBalances();
-        if (balances[u] === undefined) balances[u] = 0;
-        saveUserBalances(balances);
+    function showBanScreen(reason) {
+      document.getElementById('banReasonText').innerText = "سبب الحظر: " + reason;
+      document.getElementById('banModal').style.display = 'flex';
+    }
 
-        activeUser = u;
-        saveSessionInfo();
-        closeModal('registerModal');
-        document.getElementById('loginModal').style.display = 'none';
-        document.getElementById('appContent').classList.add('logged-in');
-        updateUserData();
-        showToast("تم إنشاء الحساب وتسجيل الدخول بنجاح! 🎉");
-      } catch (error) {
-        showRegError("⚠️ حدث خطأ أثناء إنشاء الحساب!");
+    function completeLogin() {
+      document.getElementById('loginError').style.display = 'none';
+      document.getElementById('loginModal').style.display = 'none';
+      document.getElementById('appContent').classList.add('logged-in');
+
+      if (activeUser === ADMIN_CREDENTIAL) {
+        setupAdminDashboard();
+      } else {
+        document.getElementById('adminPanel').style.display = 'none';
+        document.getElementById('vipBadge').innerText = 'حساب VIP';
+
+        if (activeUserListener) {
+          db.ref('users/' + activeUser).off('value', activeUserListener);
+        }
+
+        activeUserListener = db.ref('users/' + activeUser).on('value', snapshot => {
+          const data = snapshot.val();
+          if (!data) return;
+
+          if (data.status === 'banned') {
+            logout(false);
+            showBanScreen(data.banReason || "تم حظر حسابك من قبل الإدارة.");
+            return;
+          }
+
+          updateUserData(data);
+        });
       }
     }
 
-    function showLoginError(msg) {
-      const errBox = document.getElementById('loginError');
-      errBox.innerText = msg;
-      errBox.style.display = 'block';
-    }
-    function showRegError(msg) {
-      const errBox = document.getElementById('regError');
-      errBox.innerText = msg;
-      errBox.style.display = 'block';
-    }
+    function updateUserData(data) {
+      const bal = data.balance || 0;
+      const formattedBal = Number(bal).toLocaleString() + " IQD";
 
-    function updateUserData() {
-      if(!activeUser) return;
       document.getElementById('userDisplay').innerText = activeUser;
       document.getElementById('refLink').innerText = `https://supermini.app/ref?u=${encodeURIComponent(activeUser)}`;
       document.getElementById('payUserId').value = activeUser;
       document.getElementById('profId').innerText = activeUser;
-      document.getElementById('profName').innerText = activeUser === ADMIN_CREDENTIAL ? "المشرف (ADMIN)" : activeUser;
+      document.getElementById('profName').innerText = activeUser;
       document.getElementById('profAvatar').innerText = activeUser.charAt(0).toUpperCase();
-
-      const balances = getUserBalances();
-      const subs = getUserSubscriptions();
-      const currentBal = balances[activeUser] !== undefined ? parseFloat(balances[activeUser]) : 0;
-      const formattedBal = Number(currentBal).toLocaleString() + " IQD";
 
       document.getElementById('homeUserBalance').innerText = formattedBal;
       document.getElementById('profBalance').innerText = formattedBal;
       document.getElementById('financeBalance').innerText = formattedBal;
       document.getElementById('withdrawAvailableBal').innerText = formattedBal;
 
-      if(subs[activeUser]) {
-        document.getElementById('financeSub').innerText = `باقة ${Number(subs[activeUser]).toLocaleString()} IQD`;
+      if (data.sub && data.sub > 0) {
+        document.getElementById('financeSub').innerText = `باقة ${Number(data.sub).toLocaleString()} IQD`;
       } else {
         document.getElementById('financeSub').innerText = "لا يوجد اشتراك فعال";
       }
 
-      renderWithdrawHistory();
+      renderWithdrawHistory(data.withdraws || []);
+    }
 
-      const adminPanel = document.getElementById('adminPanel');
-      if (activeUser === ADMIN_CREDENTIAL) {
-        adminPanel.style.display = 'block';
-        document.getElementById('vipBadge').innerText = '👑 حساب الإدارة';
-        renderAdminUsersList();
+    function setupAdminDashboard() {
+      document.getElementById('adminPanel').style.display = 'block';
+      document.getElementById('vipBadge').innerText = '👑 حساب الإدارة';
+      document.getElementById('userDisplay').innerText = "ADMIN";
+      document.getElementById('profId').innerText = "ADMIN";
+      document.getElementById('profName').innerText = "المشرف العام";
+
+      db.ref('users').on('value', snapshot => {
+        const users = snapshot.val() || {};
+        const container = document.getElementById('adminUserList');
+        const userKeys = Object.keys(users).filter(k => k !== ADMIN_CREDENTIAL);
+        const totalUsers = userKeys.length;
+
+        container.innerHTML = `<div style="color:var(--accent-gold); font-weight:900; margin-bottom:12px; text-align:center;">📊 عدد المستخدمين الحقيقيين: ${totalUsers} مستخدم</div>`;
+
+        userKeys.forEach(u => {
+          const usr = users[u];
+          const isBanned = usr.status === 'banned';
+          const subText = usr.sub ? `باقة ${Number(usr.sub).toLocaleString()} IQD` : 'لا يوجد';
+          container.innerHTML += `
+            <div class="admin-user-item">
+              <div class="admin-user-info">
+                <span>📱 <strong style="color:var(--accent-gold);">${u}</strong></span>
+                <span>💰 <strong style="color:var(--accent-green);">${Number(usr.balance || 0).toLocaleString()} IQD</strong></span>
+              </div>
+              <div style="font-size:11px; margin-bottom:8px; color:#ccc;">الاشتراك: <strong style="color:var(--accent-gold);">${subText}</strong> | الحالة: <strong style="color:${isBanned ? 'var(--accent-red)' : 'var(--accent-green)'};">${isBanned ? 'محظور 🚫' : 'نشط ✓'}</strong></div>
+              <div class="admin-actions" style="flex-direction:column; gap:6px;">
+                <div style="display:flex; gap:6px;">
+                  <input type="number" id="amt_${u}" placeholder="المبلغ بالدينار" />
+                  <button class="btn-ultra btn-green" style="padding:6px 12px; font-size:11px;" onclick="modifyBalance('${u}', 'add')">شحن (+)</button>
+                  <button class="btn-ultra btn-red" style="padding:6px 12px; font-size:11px;" onclick="modifyBalance('${u}', 'sub')">خصم (-)</button>
+                </div>
+                <div style="display:flex; gap:6px; margin-top:4px;">
+                  <input type="text" id="reason_${u}" placeholder="سبب الحظر مع التنبيه" value="${usr.banReason || ''}" />
+                  <button class="btn-ultra ${isBanned ? 'btn-green' : 'btn-red'}" style="padding:6px 10px; font-size:11px;" onclick="toggleBan('${u}', '${usr.status}')">
+                    ${isBanned ? 'فك الحظر' : 'حظر الحساب'}
+                  </button>
+                </div>
+              </div>
+            </div>`;
+        });
+      });
+    }
+
+    function modifyBalance(u, action) {
+      const amtInput = document.getElementById(`amt_${u}`);
+      const amt = parseFloat(amtInput.value);
+      if (isNaN(amt) || amt <= 0) { alert("⚠️ أدخل مبلغاً صحيحاً!"); return; }
+
+      db.ref('users/' + u + '/balance').transaction(curr => {
+        curr = curr || 0;
+        return action === 'add' ? curr + amt : Math.max(0, curr - amt);
+      }).then(() => {
+        amtInput.value = '';
+        showToast(`تم تحديث رصيد ${u} بنجاح!`);
+      });
+    }
+
+    function toggleBan(u, currentStatus) {
+      const reasonInput = document.getElementById(`reason_${u}`).value.trim();
+      if (currentStatus === 'banned') {
+        db.ref('users/' + u).update({ status: 'active', banReason: '' });
+        showToast('تم إلغاء الحظر عن الحساب');
       } else {
-        adminPanel.style.display = 'none';
-        document.getElementById('vipBadge').innerText = 'حساب VIP';
+        db.ref('users/' + u).update({
+          status: 'banned',
+          banReason: reasonInput || 'تم حظر حسابك لمخالفة القوانين.'
+        });
+        showToast('تم حظر الحساب وإرسال الملاحظة بنجاح');
       }
+    }
+
+    function adminAddProfitToAll() {
+      db.ref('users').once('value', snapshot => {
+        const users = snapshot.val() || {};
+        let count = 0;
+        Object.keys(users).forEach(u => {
+          if (users[u].sub && users[u].sub > 0) {
+            const daily = Math.round(users[u].sub * 0.35);
+            db.ref('users/' + u + '/balance').transaction(curr => (curr || 0) + daily);
+            count++;
+          }
+        });
+        showToast(`تم ضخ الأرباح لـ ${count} مشترك نشط!`);
+      });
     }
 
     function processWithdrawalRequest() {
@@ -613,37 +654,43 @@
       const amount = parseFloat(document.getElementById('withdrawAmount').value);
 
       if (!accountNum) { alert("⚠️ يرجى إدخال الحساب!"); return; }
-      if (isNaN(amount) || amount < 10000) { alert("⚠️ الحد الأدنى 10,000 IQD!"); return; }
-      
-      const balances = getUserBalances();
-      const currentBal = balances[activeUser] || 0;
+      if (isNaN(amount) || amount < 10000) { alert("⚠️ الحد الأدنى للسحب 10,000 IQD!"); return; }
 
-      if (amount > currentBal) { alert("⚠️ رصيدك غير كافٍ!"); return; }
+      db.ref('users/' + activeUser).once('value', snapshot => {
+        const user = snapshot.val();
+        if (!user || (user.balance || 0) < amount) {
+          alert("⚠️ رصيدك غير كافٍ لإتمام السحب!");
+          return;
+        }
 
-      balances[activeUser] = currentBal - amount;
-      saveUserBalances(balances);
+        const newBal = (user.balance || 0) - amount;
+        const newWithdraw = {
+          id: Math.floor(1000 + Math.random() * 9000),
+          method,
+          account: accountNum,
+          amount,
+          date: new Date().toLocaleDateString('ar-IQ'),
+          status: 'قيد المعالجة'
+        };
 
-      const allHistory = getWithdrawHistory();
-      if (!allHistory[activeUser]) allHistory[activeUser] = [];
-      allHistory[activeUser].unshift({
-        id: Math.floor(1000+Math.random()*9000), method, account: accountNum, amount,
-        date: new Date().toLocaleDateString('ar-IQ'), status: 'قيد المعالجة'
+        const withdraws = user.withdraws || [];
+        withdraws.unshift(newWithdraw);
+
+        db.ref('users/' + activeUser).update({
+          balance: newBal,
+          withdraws: withdraws
+        }).then(() => {
+          document.getElementById('withdrawAccountNum').value = '';
+          document.getElementById('withdrawAmount').value = '';
+          document.getElementById('withdrawNoticeModal').style.display = 'flex';
+        });
       });
-      saveWithdrawHistory(allHistory);
-
-      updateUserData();
-      document.getElementById('withdrawAccountNum').value = '';
-      document.getElementById('withdrawAmount').value = '';
-      document.getElementById('withdrawNoticeModal').style.display = 'flex';
     }
 
-    function renderWithdrawHistory() {
+    function renderWithdrawHistory(userHistory) {
       const container = document.getElementById('withdrawHistoryContainer');
-      const allHistory = getWithdrawHistory();
-      const userHistory = allHistory[activeUser] || [];
-
-      if (userHistory.length === 0) {
-        container.innerHTML = `<p style="font-size:12px; color:var(--text-muted); text-align:center;">لا توجد عمليات سحب</p>`;
+      if (!userHistory || userHistory.length === 0) {
+        container.innerHTML = `<p style="font-size:12px; color:var(--text-muted); text-align:center;">لا توجد عمليات سحب حالياً</p>`;
         return;
       }
       container.innerHTML = '';
@@ -651,94 +698,9 @@
         container.innerHTML += `
           <div class="history-item">
             <div><div style="font-weight:bold; color:var(--accent-gold);">${item.method}</div><div style="font-size:10px; color:var(--text-muted);">${item.account} • ${item.date}</div></div>
-            <div style="text-align:left;"><div style="font-weight:bold; color:var(--accent-green);">${Number(item.amount).toLocaleString()} IQD</div><span class="status-pending">${item.status}</span></div>
+            <div style="text-align:left;"><div style="font-weight:bold; color:var(--accent-green);">${item.amount.toLocaleString()} IQD</div><span class="status-pending">${item.status}</span></div>
           </div>`;
       });
-    }
-
-    function adminAddProfitToAll() {
-      const db = getUsersDatabase();
-      const balances = getUserBalances();
-      const subs = getUserSubscriptions();
-      let count = 0;
-      Object.keys(db).forEach(u => {
-        if (subs[u]) {
-          balances[u] = (parseFloat(balances[u]) || 0) + Math.round(parseFloat(subs[u]) * 0.35);
-          count++;
-        }
-      });
-      saveUserBalances(balances);
-      updateUserData();
-      showToast(`تم توزيع الأرباح لـ ${count} مشترك!`);
-    }
-
-    function renderAdminUsersList() {
-      const container = document.getElementById('adminUserList');
-      const db = getUsersDatabase();
-      const balances = getUserBalances();
-      const subs = getUserSubscriptions();
-      container.innerHTML = '';
-
-      Object.keys(db).forEach(u => {
-        if(u === ADMIN_CREDENTIAL) return;
-        const uBal = balances[u] !== undefined ? parseFloat(balances[u]) : 0;
-        const uSub = subs[u] ? `باقة ${Number(subs[u]).toLocaleString()} IQD` : 'لا يوجد';
-        container.innerHTML += `
-          <div class="admin-user-item">
-            <div class="admin-user-info">
-              <span>📱 <strong style="color:var(--accent-gold);">${u}</strong></span>
-              <span>💰 <strong style="color:var(--accent-green);">${Number(uBal).toLocaleString()} IQD</strong></span>
-            </div>
-            <div style="font-size:11px; margin-bottom:8px; color:#ccc;">الاشتراك الحالي: <strong style="color:var(--accent-gold);">${uSub}</strong></div>
-            <div class="admin-actions">
-              <input type="number" id="amt_${u}" placeholder="المبلغ بالدينار" />
-              <button class="btn-ultra btn-green" style="padding:6px 10px; font-size:11px;" onclick="modifyUserBalance('${u}', 'add')">شحن (+)</button>
-              <button class="btn-ultra btn-red" style="padding:6px 10px; font-size:11px;" onclick="modifyUserBalance('${u}', 'sub')">خصم (-)</button>
-            </div>
-          </div>`;
-      });
-    }
-
-    function modifyUserBalance(u, action) {
-      const valInput = document.getElementById(`amt_${u}`);
-      if (!valInput) return;
-      const val = parseFloat(valInput.value);
-      if (isNaN(val) || val <= 0) { alert("⚠️ أدخل مبلغاً صحيحاً"); return; }
-      
-      const balances = getUserBalances();
-      const current = balances[u] !== undefined ? parseFloat(balances[u]) : 0;
-      
-      if (action === 'add') {
-        balances[u] = current + val;
-      } else if (action === 'sub') {
-        balances[u] = Math.max(0, current - val);
-      }
-      
-      saveUserBalances(balances);
-      updateUserData();
-      valInput.value = '';
-      showToast(`تمت عملية الرصيد للحساب ${u} بنجاح!`);
-    }
-
-    function previewSelectedImage(event) {
-      const file = event.target.files[0];
-      if (file) {
-        selectedImageFile = file;
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          document.getElementById('imagePreview').src = e.target.result;
-          document.getElementById('previewContainer').style.display = 'block';
-        }
-        reader.readAsDataURL(file);
-      }
-    }
-
-    function submitReceiptWithImage() {
-      if (!selectedImageFile) { alert("⚠️ اختر صورة الإشعار أولاً!"); return; }
-      showToast("جاري تحويلك للتليجرام...");
-      const pkgVal = document.getElementById('pkgSelect').value;
-      const msg = `📥 إيداع:\n• الحساب: ${activeUser}\n• الباقة: ${Number(pkgVal).toLocaleString()} IQD`;
-      setTimeout(() => { window.open(`https://t.me/oosbsu?text=${encodeURIComponent(msg)}`, '_blank'); }, 800);
     }
 
     const pkgList = [
@@ -774,25 +736,24 @@
 
     function proceedToPayment() {
       closeModal('subModal');
-      const balances = getUserBalances();
-      const subs = getUserSubscriptions();
-      const userBalance = parseFloat(balances[activeUser]) || 0;
-
-      if (userBalance >= selectedPkg.price) {
-        balances[activeUser] = userBalance - selectedPkg.price;
-        subs[activeUser] = selectedPkg.price;
-        saveUserBalances(balances); 
-        saveUserSubscription(subs); 
-        updateUserData();
-        showToast("🎉 تم تفعيل الباقة بنجاح!");
-      } else {
-        document.getElementById('errModal').style.display = 'flex';
-      }
+      db.ref('users/' + activeUser).once('value', snapshot => {
+        const user = snapshot.val();
+        if (user && (user.balance || 0) >= selectedPkg.price) {
+          db.ref('users/' + activeUser).update({
+            balance: user.balance - selectedPkg.price,
+            sub: selectedPkg.price
+          }).then(() => {
+            showToast("🎉 تم تفعيل الباقة بنجاح!");
+          });
+        } else {
+          document.getElementById('errModal').style.display = 'flex';
+        }
+      });
     }
 
     function goToFinance() {
       closeModal('errModal');
-      if(selectedPkg) document.getElementById('pkgSelect').value = selectedPkg.price;
+      if (selectedPkg) document.getElementById('pkgSelect').value = selectedPkg.price;
       switchTab('tabFinance', document.querySelectorAll('.nav-btn')[3]);
     }
 
@@ -800,10 +761,17 @@
       document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
       document.querySelectorAll('.nav-btn').forEach(n => n.classList.remove('active'));
       document.getElementById(tabId).classList.add('active');
-      if(btn) btn.classList.add('active');
+      if (btn) btn.classList.add('active');
     }
-    
+
     function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+    function openRegisterModal() {
+      document.getElementById('regError').style.display = 'none';
+      document.getElementById('regUser').value = '';
+      document.getElementById('regPass').value = '';
+      document.getElementById('regPassConfirm').value = '';
+      document.getElementById('registerModal').style.display = 'flex';
+    }
     function openTelegramSupport() { window.open('https://t.me/oosbsu', '_blank'); }
     function downloadRealApp() {
       showToast("📲 جاري بدء تنزيل تطبيق Super Mini...");
@@ -818,17 +786,44 @@
     function copyText(val) { navigator.clipboard.writeText(val); showToast('تم النسخ: ' + val); }
     function copyRef() { navigator.clipboard.writeText(document.getElementById('refLink').innerText); showToast('تم نسخ الرابط!'); }
     
-    function logout(userInitiated = true) { 
-      activeUser = null; 
-      localStorage.removeItem(STORAGE_PREFIX + 'SESSION_USER');
-      localStorage.removeItem(STORAGE_PREFIX + 'SESSION_TIME');
-      document.getElementById('appContent').classList.remove('logged-in'); 
-      document.getElementById('loginModal').style.display = 'flex'; 
-      document.getElementById('userInput').value = ''; 
-      document.getElementById('passInput').value = ''; 
-      if(!userInitiated) {
-        showLoginError("⚠️ انتهت مهلة الجلسة (ساعة واحدة). يرجى تسجيل الدخول مجدداً.");
+    function showLoginError(msg) {
+      const errBox = document.getElementById('loginError'); errBox.innerText = msg; errBox.style.display = 'block';
+    }
+    function showRegError(msg) {
+      const errBox = document.getElementById('regError'); errBox.innerText = msg; errBox.style.display = 'block';
+    }
+
+    function previewSelectedImage(event) {
+      const file = event.target.files[0];
+      if (file) {
+        selectedImageFile = file;
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          document.getElementById('imagePreview').src = e.target.result;
+          document.getElementById('previewContainer').style.display = 'block';
+        }
+        reader.readAsDataURL(file);
       }
+    }
+
+    function submitReceiptWithImage() {
+      if (!selectedImageFile) { alert("⚠️ اختر صورة الإشعار أولاً!"); return; }
+      showToast("جاري تحويلك للتليجرام...");
+      const pkgVal = document.getElementById('pkgSelect').value;
+      const msg = `📥 إيداع:\n• الحساب: ${activeUser}\n• الباقة: ${Number(pkgVal).toLocaleString()} IQD`;
+      setTimeout(() => { window.open(`https://t.me/oosbsu?text=${encodeURIComponent(msg)}`, '_blank'); }, 800);
+    }
+
+    function logout(userInitiated = true) {
+      if (activeUserListener && activeUser !== ADMIN_CREDENTIAL) {
+        db.ref('users/' + activeUser).off('value', activeUserListener);
+      }
+      activeUser = null;
+      document.getElementById('banModal').style.display = 'none';
+      document.getElementById('appContent').classList.remove('logged-in');
+      document.getElementById('loginModal').style.display = 'flex';
+      document.getElementById('userInput').value = '';
+      document.getElementById('passInput').value = '';
     }
 
     let currSlide = 0;
