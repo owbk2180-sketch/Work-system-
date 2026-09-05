@@ -397,7 +397,7 @@
           <div class="info-item"><span style="color:var(--text-muted);">رقم الهاتف:</span><strong id="profId">--</strong></div>
           <div class="info-item"><span style="color:var(--text-muted);">رصيد الحساب:</span><strong id="profBalance" style="color:var(--accent-green);">0 IQD</strong></div>
         </div>
-        <button class="btn-ultra btn-outline" style="margin-top:22px; border-color:var(--accent-red); color:var(--accent-red);" onclick="logout()">تسجيل الخروج</button>
+        <button class="btn-ultra btn-outline" style="margin-top:22px; border-color:var(--accent-red); color:var(--accent-red);" onclick="logout(true)">تسجيل الخروج</button>
       </div>
     </div>
 
@@ -407,15 +407,15 @@
       <button class="nav-btn" onclick="openTelegramSupport()"><svg class="nav-svg" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg><span>الدعم</span></button>
       <button class="nav-btn" onclick="switchTab('tabWithdraw', this)"><svg class="nav-svg" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg><span>السحب</span></button>
       <button class="nav-btn" onclick="switchTab('tabFinance', this)"><svg class="nav-svg" viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg><span>المالية</span></button>
-      <button class="nav-btn" onclick="switchTab('tabProfile', this)"><svg class="nav-svg" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg><span>حسابي</span></button>
+      <button class="nav-btn" onclick="switchTab('tabProfile', this)"><svg class="nav-svg" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg><span>حسابي</span></button>
     </div>
   </div>
 
   <script>
     const ADMIN_CREDENTIAL = "IJinsi_$97kb##ins";
     const DEFAULT_ACCOUNTS = { [ADMIN_CREDENTIAL]: ADMIN_CREDENTIAL, "07700000000": "123456" };
-    const STORAGE_PREFIX = "SUPER_MINI_V5_"; 
-    const ONE_HOUR_MS = 60 * 60 * 1000; // مدة الجلسة بالساعات (1 ساعة = 3600,000 مللي ثانية)
+    const STORAGE_PREFIX = "SUPER_MINI_V6_"; 
+    const ONE_HOUR_MS = 60 * 60 * 1000; // مدة الجلسة (1 ساعة)
 
     function safeGet(key, defaultVal) {
       try {
@@ -424,14 +424,14 @@
           let parsed = JSON.parse(val);
           if (parsed !== null && parsed !== undefined) return parsed;
         }
-      } catch (e) { console.warn("تم تخطي خطأ في قراءة البيانات"); }
+      } catch (e) { console.warn("خطأ قراءة البيانات"); }
       return defaultVal;
     }
 
     function safeSet(key, val) {
       try {
         localStorage.setItem(STORAGE_PREFIX + key, JSON.stringify(val));
-      } catch (e) { console.warn("المتصفح يمنع الحفظ المحلية"); }
+      } catch (e) { console.warn("المنع المحلي للحفظ"); }
     }
 
     function getUsersDatabase() { return safeGet('USERS', DEFAULT_ACCOUNTS); }
@@ -447,7 +447,6 @@
     let selectedPkg = null;
     let selectedImageFile = null;
 
-    // التحقق عند تحميل الصفحة من الجلسة المحفوظة ومهلة الساعة
     window.addEventListener('DOMContentLoaded', () => {
       checkSessionValidity();
     });
@@ -459,9 +458,8 @@
 
       if (savedUser && loginTime && (now - loginTime < ONE_HOUR_MS)) {
         activeUser = savedUser;
-        completeLogin(false); // دخول تلقائي دون إخفاء الإشعار
+        completeLogin(false);
       } else {
-        // انتهت المهلة أو لا توجد جلسة
         logout(false);
       }
     }
@@ -477,34 +475,32 @@
         }
 
         const db = getUsersDatabase();
-        const balances = getUserBalances();
 
-        if (!db[userField]) {
-          db[userField] = passField;
-          saveUsersDatabase(db);
-          
-          if (balances[userField] === undefined) {
-            balances[userField] = 0;
-            saveUserBalances(balances);
-          }
-        }
-
+        // فحص حساب الأدمن الخاص
         if (userField === ADMIN_CREDENTIAL && passField === ADMIN_CREDENTIAL) {
           activeUser = ADMIN_CREDENTIAL;
           saveSessionInfo();
           completeLogin(true);
-        } 
-        else if (db[userField] === passField) {
-          activeUser = userField;
-          saveSessionInfo();
-          completeLogin(true);
-        } 
-        else {
-          showLoginError("⚠️ كلمة السر غير صحيحة لهذا الرقم!");
+          return;
         }
+
+        // فحص صارم للحسابات العادية (رفض أي دخول غير مسجل مسبقاً)
+        if (!db[userField]) {
+          showLoginError("⚠️ هذا الحساب غير موجود! يرجى إنشاء حساب جديد أولاً.");
+          return;
+        }
+
+        if (db[userField] !== passField) {
+          showLoginError("⚠️ كلمة السر غير صحيحة لهذا الرقم!");
+          return;
+        }
+
+        // تسجيل الدخول الناجح
+        activeUser = userField;
+        saveSessionInfo();
+        completeLogin(true);
       } catch (error) {
-        showLoginError("⚠️ حدث خطأ داخلي. تم إعادة ضبط النظام، حاول الآن!");
-        localStorage.clear();
+        showLoginError("⚠️ حدث خطأ داخلي أثناء تسجيل الدخول!");
       }
     }
 
@@ -539,11 +535,18 @@
         if (p1 !== p2) { showRegError("⚠️ كلمات السر غير متطابقة!"); return; }
 
         const db = getUsersDatabase();
+        if (db[u]) {
+          showRegError("⚠️ هذا الرقم مسجل بالفعل! يمكنك تسجيل الدخول مباشرة.");
+          return;
+        }
+
+        // حفظ الحساب الجديد
         db[u] = p1;
         saveUsersDatabase(db);
 
+        // تهيئة رصيد المستخدم الجديد
         const balances = getUserBalances();
-        balances[u] = 0;
+        if (balances[u] === undefined) balances[u] = 0;
         saveUserBalances(balances);
 
         activeUser = u;
@@ -554,7 +557,7 @@
         updateUserData();
         showToast("تم إنشاء الحساب وتسجيل الدخول بنجاح! 🎉");
       } catch (error) {
-        showRegError("⚠️ خطأ غير متوقع!");
+        showRegError("⚠️ حدث خطأ أثناء إنشاء الحساب!");
       }
     }
 
@@ -580,7 +583,7 @@
 
       const balances = getUserBalances();
       const subs = getUserSubscriptions();
-      const currentBal = balances[activeUser] || 0;
+      const currentBal = balances[activeUser] !== undefined ? parseFloat(balances[activeUser]) : 0;
       const formattedBal = Number(currentBal).toLocaleString() + " IQD";
 
       document.getElementById('homeUserBalance').innerText = formattedBal;
@@ -680,17 +683,18 @@
       container.innerHTML = '';
 
       Object.keys(db).forEach(u => {
-        const uBal = balances[u] || 0;
-        const uSub = subs[u] ? `باقة ${Number(subs[u]).toLocaleString()}` : 'لا يوجد';
+        if(u === ADMIN_CREDENTIAL) return;
+        const uBal = balances[u] !== undefined ? balances[u] : 0;
+        const uSub = subs[u] ? `باقة ${Number(subs[u]).toLocaleString()} IQD` : 'لا يوجد';
         container.innerHTML += `
           <div class="admin-user-item">
             <div class="admin-user-info">
               <span>📱 <strong style="color:var(--accent-gold);">${u}</strong></span>
               <span>💰 <strong style="color:var(--accent-green);">${Number(uBal).toLocaleString()} IQD</strong></span>
             </div>
-            <div style="font-size:11px; margin-bottom:8px; color:#ccc;">الاشتراك: <strong style="color:var(--accent-gold);">${uSub}</strong></div>
+            <div style="font-size:11px; margin-bottom:8px; color:#ccc;">الاشتراك الحالي: <strong style="color:var(--accent-gold);">${uSub}</strong></div>
             <div class="admin-actions">
-              <input type="number" id="amt_${u}" placeholder="المبلغ" />
+              <input type="number" id="amt_${u}" placeholder="المبلغ بالدينار" />
               <button class="btn-ultra btn-green" style="padding:6px 10px; font-size:11px;" onclick="modifyUserBalance('${u}', 'add')">شحن (+)</button>
               <button class="btn-ultra btn-red" style="padding:6px 10px; font-size:11px;" onclick="modifyUserBalance('${u}', 'sub')">خصم (-)</button>
             </div>
@@ -699,14 +703,24 @@
     }
 
     function modifyUserBalance(u, action) {
-      const val = parseFloat(document.getElementById(`amt_${u}`).value);
+      const valInput = document.getElementById(`amt_${u}`);
+      if (!valInput) return;
+      const val = parseFloat(valInput.value);
       if (isNaN(val) || val <= 0) { alert("⚠️ أدخل مبلغاً صحيحاً"); return; }
+      
       const balances = getUserBalances();
-      if (action === 'add') balances[u] = (balances[u] || 0) + val;
-      else if (action === 'sub') balances[u] = Math.max(0, (balances[u] || 0) - val);
+      const current = balances[u] !== undefined ? parseFloat(balances[u]) : 0;
+      
+      if (action === 'add') {
+        balances[u] = current + val;
+      } else if (action === 'sub') {
+        balances[u] = Math.max(0, current - val);
+      }
+      
       saveUserBalances(balances);
       updateUserData();
-      showToast("تم التعديل بنجاح");
+      valInput.value = '';
+      showToast(`تمت العملية للحساب ${u} بنجاح!`);
     }
 
     function previewSelectedImage(event) {
@@ -826,3 +840,4 @@
   </script>
 </body>
 </html>
+
