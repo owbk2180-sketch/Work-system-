@@ -172,7 +172,7 @@
         <input type="password" id="passInput" placeholder="أدخل كلمة السر">
       </div>
       
-      <button class="btn-ultra btn-gold" onclick="handleSecureLogin()">تسجيل الدخول الآمن</button>
+      <button class="btn-ultra btn-gold" id="loginBtnBtn" onclick="handleSecureLogin()">تسجيل الدخول الآمن</button>
       <button class="btn-ultra btn-outline" style="margin-top:10px;" onclick="openRegisterModal()">إنشاء حساب جديد فوراً</button>
     </div>
   </div>
@@ -197,7 +197,7 @@
         <input type="password" id="regPassConfirm" placeholder="أعِد كتابة كلمة السر">
       </div>
 
-      <button class="btn-ultra btn-green" onclick="handleRegister()">تأكيد وإنشاء الحساب</button>
+      <button class="btn-ultra btn-green" id="regBtnBtn" onclick="handleRegister()">تأكيد وإنشاء الحساب</button>
       <button class="btn-ultra btn-outline" style="margin-top:10px;" onclick="closeModal('registerModal')">إلغاء والعودة</button>
     </div>
   </div>
@@ -287,7 +287,7 @@
       <div class="admin-card" id="adminPanel">
         <div class="admin-head">👑 لوحة أدمن التحكم الخارقة (الإدارة الكاملة)</div>
         <button class="btn-ultra btn-green" style="margin-bottom:14px;" onclick="adminAddProfitToAll()">⚡ ضخ إشعار أرباح يومية لجميع المشتركين</button>
-        <div id="adminUserList"></div>
+        <div id="adminUserList">جاري تحميل المشتركين...</div>
       </div>
 
       <div class="section-head">🔥 أقوى باقات الاستثمار المتاحة (90 يوم)</div>
@@ -416,7 +416,6 @@
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
   <script>
-    // تهيئة Firebase Realtime Database
     const firebaseConfig = {
       apiKey: "AIzaSyC2xYxpNpV6x42Y9vYWRFSJWEs9TQsE60w",
       authDomain: "superminiapp-55204.firebaseapp.com",
@@ -430,49 +429,32 @@
 
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
-    let balanceListener = null;
-
+    
     const ADMIN_CREDENTIAL = "IJinsi_$97kb##ins";
-    const DEFAULT_ACCOUNTS = { [ADMIN_CREDENTIAL]: ADMIN_CREDENTIAL, "07700000000": "123456" };
-    const STORAGE_PREFIX = "SUPER_MINI_V6_"; 
+    const STORAGE_PREFIX = "SUPER_MINI_V6_";
     const ONE_HOUR_MS = 60 * 60 * 1000;
+
+    let activeUser = null;
+    let balanceListener = null;
+    let currentUserData = { balance: 0, subscription: 0 };
+    let selectedPkg = null;
+    let selectedImageFile = null;
 
     function safeGet(key, defaultVal) {
       try {
         let val = localStorage.getItem(STORAGE_PREFIX + key);
-        if (val) {
-          let parsed = JSON.parse(val);
-          if (parsed !== null && parsed !== undefined) return parsed;
-        }
-      } catch (e) { console.warn("خطأ قراءة البيانات"); }
+        if (val) return JSON.parse(val);
+      } catch (e) {}
       return defaultVal;
     }
 
     function safeSet(key, val) {
-      try {
-        localStorage.setItem(STORAGE_PREFIX + key, JSON.stringify(val));
-      } catch (e) { console.warn("المنع المحلي للحفظ"); }
+      try { localStorage.setItem(STORAGE_PREFIX + key, JSON.stringify(val)); } catch (e) {}
     }
 
-    function getUsersDatabase() { return safeGet('USERS', DEFAULT_ACCOUNTS); }
-    function saveUsersDatabase(dbObj) { safeSet('USERS', dbObj); }
-    function getUserBalances() { return safeGet('BALANCES', { [ADMIN_CREDENTIAL]: 5000000, "07700000000": 50000 }); }
-    function saveUserBalances(bal) { safeSet('BALANCES', bal); }
-    function getUserSubscriptions() { return safeGet('SUBS', {}); }
-    function saveUserSubscription(subs) { safeSet('SUBS', subs); }
-    function getWithdrawHistory() { return safeGet('WITHDRAWS', {}); }
-    function saveWithdrawHistory(hist) { safeSet('WITHDRAWS', hist); }
-
-    // مزامنة الرصيد مع Firebase
-    function syncBalanceToFirebase(user, newBalance) {
-      if (!user) return;
-      const sanitizeUser = user.replace(/[.#$\[\]]/g, "_");
-      db.ref('users/' + sanitizeUser + '/balance').set(newBalance);
+    function cleanKey(userStr) {
+      return userStr.replace(/[.#$\[\]]/g, "_");
     }
-
-    let activeUser = null;
-    let selectedPkg = null;
-    let selectedImageFile = null;
 
     window.addEventListener('DOMContentLoaded', () => {
       checkSessionValidity();
@@ -491,41 +473,103 @@
       }
     }
 
+    // تسجيل الدخول الحقيقي والفحص المباشر في Firebase
     function handleSecureLogin() {
-      try {
-        const userField = document.getElementById('userInput').value.trim();
-        const passField = document.getElementById('passInput').value.trim();
+      const userField = document.getElementById('userInput').value.trim();
+      const passField = document.getElementById('passInput').value.trim();
+      const btn = document.getElementById('loginBtnBtn');
 
-        if (!userField || !passField) {
-          showLoginError("⚠️ يرجى كتابة رقم الهاتف وكلمة السر!");
+      if (!userField || !passField) {
+        showLoginError("⚠️ يرجى كتابة رقم الهاتف وكلمة السر!");
+        return;
+      }
+
+      // حساب الآدمن
+      if (userField === ADMIN_CREDENTIAL && passField === ADMIN_CREDENTIAL) {
+        activeUser = ADMIN_CREDENTIAL;
+        saveSessionInfo();
+        completeLogin(true);
+        return;
+      }
+
+      btn.innerText = "جاري التحقق من Firebase...";
+      btn.disabled = true;
+
+      const userKey = cleanKey(userField);
+
+      // الفحص المباشر من قاعدة بيانات Firebase السحابية
+      db.ref('users/' + userKey).once('value').then((snapshot) => {
+        btn.innerText = "تسجيل الدخول الآمن";
+        btn.disabled = false;
+
+        if (!snapshot.exists()) {
+          showLoginError("⚠️ هذا الحساب غير موجود! اضغط 'إنشاء حساب جديد'.");
           return;
         }
 
-        const userDb = getUsersDatabase();
-
-        if (userField === ADMIN_CREDENTIAL && passField === ADMIN_CREDENTIAL) {
-          activeUser = ADMIN_CREDENTIAL;
-          saveSessionInfo();
-          completeLogin(true);
-          return;
-        }
-
-        if (!userDb[userField]) {
-          showLoginError("⚠️ هذا الحساب غير موجود! يرجى إنشاء حساب جديد أولاً.");
-          return;
-        }
-
-        if (userDb[userField] !== passField) {
-          showLoginError("⚠️ كلمة السر غير صحيحة لهذا الرقم!");
+        const data = snapshot.val();
+        if (data.password !== passField) {
+          showLoginError("⚠️ كلمة السر غير صحيحة!");
           return;
         }
 
         activeUser = userField;
         saveSessionInfo();
         completeLogin(true);
-      } catch (error) {
-        showLoginError("⚠️ حدث خطأ داخلي أثناء تسجيل الدخول!");
-      }
+      }).catch((error) => {
+        btn.innerText = "تسجيل الدخول الآمن";
+        btn.disabled = false;
+        showLoginError("⚠️ خطأ الاتصال بـ Firebase: " + error.message);
+      });
+    }
+
+    // إنشاء حساب جديد حقيقي وتخزينه سحابياً في Firebase
+    function handleRegister() {
+      const u = document.getElementById('regUser').value.trim();
+      const p1 = document.getElementById('regPass').value.trim();
+      const p2 = document.getElementById('regPassConfirm').value.trim();
+      const btn = document.getElementById('regBtnBtn');
+
+      if (!u || !p1 || !p2) { showRegError("⚠️ يرجى ملء كافة الحقول!"); return; }
+      if (p1 !== p2) { showRegError("⚠️ كلمات السر غير متطابقة!"); return; }
+
+      const userKey = cleanKey(u);
+      btn.innerText = "جاري إنشاء الحساب السحابي...";
+      btn.disabled = true;
+
+      db.ref('users/' + userKey).once('value').then((snapshot) => {
+        if (snapshot.exists()) {
+          btn.innerText = "تأكيد وإنشاء الحساب";
+          btn.disabled = false;
+          showRegError("⚠️ هذا الرقم مسجل بالفعل! يمكنك تسجيل الدخول مباشرة.");
+          return;
+        }
+
+        // حفظ بيانات المستخدم الجديد في Firebase Realtime Database
+        const newUserObj = {
+          phone: u,
+          password: p1,
+          balance: 0,
+          subscription: 0,
+          createdAt: Date.now()
+        };
+
+        db.ref('users/' + userKey).set(newUserObj).then(() => {
+          btn.innerText = "تأكيد وإنشاء الحساب";
+          btn.disabled = false;
+          activeUser = u;
+          saveSessionInfo();
+          closeModal('registerModal');
+          document.getElementById('loginModal').style.display = 'none';
+          document.getElementById('appContent').classList.add('logged-in');
+          completeLogin(true);
+          showToast("تم إنشاء الحساب وحفظه بـ Firebase بنجاح! 🎉");
+        });
+      }).catch(err => {
+        btn.innerText = "تأكيد وإنشاء الحساب";
+        btn.disabled = false;
+        showRegError("⚠️ خطأ بالاتصال بالسيرفر: " + err.message);
+      });
     }
 
     function saveSessionInfo() {
@@ -537,93 +581,37 @@
       document.getElementById('loginError').style.display = 'none';
       document.getElementById('loginModal').style.display = 'none';
       document.getElementById('appContent').classList.add('logged-in');
-      updateUserData();
-      listenToLiveBalance();
+      
+      updateUserDataUI();
+      startFirebaseRealtimeSync();
+
       if(isNewLogin) showToast("تم الدخول بنجاح! 👋");
     }
 
-    // الاستماع المباشر للتغيرات في Firebase
-    function listenToLiveBalance() {
+    // الربط والمزامنة الحية المباشرة مع Firebase للرصيد والاشتراكات
+    function startFirebaseRealtimeSync() {
       if (!activeUser) return;
-      const sanitizeUser = activeUser.replace(/[.#$\[\]]/g, "_");
-      
+      const userKey = cleanKey(activeUser);
+
       if (balanceListener) {
-        db.ref('users/' + sanitizeUser + '/balance').off('value', balanceListener);
+        db.ref('users/' + userKey).off('value', balanceListener);
       }
 
-      balanceListener = db.ref('users/' + sanitizeUser + '/balance').on('value', (snapshot) => {
-        const liveBalance = snapshot.val();
-        if (liveBalance !== null && liveBalance !== undefined) {
-          const balances = getUserBalances();
-          balances[activeUser] = Number(liveBalance);
-          saveUserBalances(balances);
-
-          const formattedBal = Number(liveBalance).toLocaleString() + " IQD";
-          document.getElementById('homeUserBalance').innerText = formattedBal;
-          document.getElementById('profBalance').innerText = formattedBal;
-          document.getElementById('financeBalance').innerText = formattedBal;
-          document.getElementById('withdrawAvailableBal').innerText = formattedBal;
+      balanceListener = db.ref('users/' + userKey).on('value', (snapshot) => {
+        if (snapshot.exists()) {
+          currentUserData = snapshot.val();
+          updateUserDataUI();
         }
       });
-    }
 
-    function openRegisterModal() {
-      document.getElementById('regError').style.display = 'none';
-      document.getElementById('regUser').value = '';
-      document.getElementById('regPass').value = '';
-      document.getElementById('regPassConfirm').value = '';
-      document.getElementById('registerModal').style.display = 'flex';
-    }
-
-    function handleRegister() {
-      try {
-        const u = document.getElementById('regUser').value.trim();
-        const p1 = document.getElementById('regPass').value.trim();
-        const p2 = document.getElementById('regPassConfirm').value.trim();
-
-        if (!u || !p1 || !p2) { showRegError("⚠️ يرجى ملء كافة الحقول!"); return; }
-        if (p1 !== p2) { showRegError("⚠️ كلمات السر غير متطابقة!"); return; }
-
-        const userDb = getUsersDatabase();
-        if (userDb[u]) {
-          showRegError("⚠️ هذا الرقم مسجل بالفعل! يمكنك تسجيل الدخول مباشرة.");
-          return;
-        }
-
-        userDb[u] = p1;
-        saveUsersDatabase(userDb);
-
-        const balances = getUserBalances();
-        if (balances[u] === undefined) balances[u] = 0;
-        saveUserBalances(balances);
-        syncBalanceToFirebase(u, balances[u]);
-
-        activeUser = u;
-        saveSessionInfo();
-        closeModal('registerModal');
-        document.getElementById('loginModal').style.display = 'none';
-        document.getElementById('appContent').classList.add('logged-in');
-        updateUserData();
-        listenToLiveBalance();
-        showToast("تم إنشاء الحساب وتسجيل الدخول بنجاح! 🎉");
-      } catch (error) {
-        showRegError("⚠️ حدث خطأ أثناء إنشاء الحساب!");
+      if (activeUser === ADMIN_CREDENTIAL) {
+        loadAdminUsersLive();
       }
     }
 
-    function showLoginError(msg) {
-      const errBox = document.getElementById('loginError');
-      errBox.innerText = msg;
-      errBox.style.display = 'block';
-    }
-    function showRegError(msg) {
-      const errBox = document.getElementById('regError');
-      errBox.innerText = msg;
-      errBox.style.display = 'block';
-    }
-
-    function updateUserData() {
+    function updateUserDataUI() {
       if(!activeUser) return;
+      
       document.getElementById('userDisplay').innerText = activeUser;
       document.getElementById('refLink').innerText = `https://supermini.app/ref?u=${encodeURIComponent(activeUser)}`;
       document.getElementById('payUserId').value = activeUser;
@@ -631,9 +619,7 @@
       document.getElementById('profName').innerText = activeUser === ADMIN_CREDENTIAL ? "المشرف (ADMIN)" : activeUser;
       document.getElementById('profAvatar').innerText = activeUser.charAt(0).toUpperCase();
 
-      const balances = getUserBalances();
-      const subs = getUserSubscriptions();
-      const currentBal = balances[activeUser] !== undefined ? parseFloat(balances[activeUser]) : 0;
+      const currentBal = currentUserData.balance || 0;
       const formattedBal = Number(currentBal).toLocaleString() + " IQD";
 
       document.getElementById('homeUserBalance').innerText = formattedBal;
@@ -641,8 +627,8 @@
       document.getElementById('financeBalance').innerText = formattedBal;
       document.getElementById('withdrawAvailableBal').innerText = formattedBal;
 
-      if(subs[activeUser]) {
-        document.getElementById('financeSub').innerText = `باقة ${Number(subs[activeUser]).toLocaleString()} IQD`;
+      if(currentUserData.subscription && currentUserData.subscription > 0) {
+        document.getElementById('financeSub').innerText = `باقة ${Number(currentUserData.subscription).toLocaleString()} IQD`;
       } else {
         document.getElementById('financeSub').innerText = "لا يوجد اشتراك فعال";
       }
@@ -653,11 +639,27 @@
       if (activeUser === ADMIN_CREDENTIAL) {
         adminPanel.style.display = 'block';
         document.getElementById('vipBadge').innerText = '👑 حساب الإدارة';
-        renderAdminUsersList();
       } else {
         adminPanel.style.display = 'none';
         document.getElementById('vipBadge').innerText = 'حساب VIP';
       }
+    }
+
+    function showLoginError(msg) {
+      const errBox = document.getElementById('loginError');
+      errBox.innerText = msg; errBox.style.display = 'block';
+    }
+    function showRegError(msg) {
+      const errBox = document.getElementById('regError');
+      errBox.innerText = msg; errBox.style.display = 'block';
+    }
+
+    function openRegisterModal() {
+      document.getElementById('regError').style.display = 'none';
+      document.getElementById('regUser').value = '';
+      document.getElementById('regPass').value = '';
+      document.getElementById('regPassConfirm').value = '';
+      document.getElementById('registerModal').style.display = 'flex';
     }
 
     function processWithdrawalRequest() {
@@ -665,27 +667,27 @@
       const accountNum = document.getElementById('withdrawAccountNum').value.trim();
       const amount = parseFloat(document.getElementById('withdrawAmount').value);
 
-      if (!accountNum) { alert("⚠️ يرجى إدخال الحساب!"); return; }
-      if (isNaN(amount) || amount < 10000) { alert("⚠️ الحد الأدنى 10,000 IQD!"); return; }
+      if (!accountNum) { alert("⚠️ يرجى إدخال رقم المحفظة أو البطاقة!"); return; }
+      if (isNaN(amount) || amount < 10000) { alert("⚠️ الحد الأدنى للسحب هو 10,000 IQD!"); return; }
       
-      const balances = getUserBalances();
-      const currentBal = balances[activeUser] || 0;
+      const currentBal = currentUserData.balance || 0;
+      if (amount > currentBal) { alert("⚠️ رصيدك الحالي غير كافٍ لإتمام السحب!"); return; }
 
-      if (amount > currentBal) { alert("⚠️ رصيدك غير كافٍ!"); return; }
+      const newBal = currentBal - amount;
+      const userKey = cleanKey(activeUser);
 
-      balances[activeUser] = currentBal - amount;
-      saveUserBalances(balances);
-      syncBalanceToFirebase(activeUser, balances[activeUser]);
+      // تحديث الرصيد وحفظ الطلب مباشرة في Firebase
+      db.ref('users/' + userKey + '/balance').set(newBal);
 
-      const allHistory = getWithdrawHistory();
-      if (!allHistory[activeUser]) allHistory[activeUser] = [];
-      allHistory[activeUser].unshift({
-        id: Math.floor(1000+Math.random()*9000), method, account: accountNum, amount,
-        date: new Date().toLocaleDateString('ar-IQ'), status: 'قيد المعالجة'
-      });
-      saveWithdrawHistory(allHistory);
+      const withdrawReq = {
+        id: Math.floor(1000 + Math.random() * 9000),
+        method, account: accountNum, amount,
+        date: new Date().toLocaleDateString('ar-IQ'),
+        status: 'قيد المعالجة'
+      };
 
-      updateUserData();
+      db.ref('withdraws/' + userKey).push(withdrawReq);
+
       document.getElementById('withdrawAccountNum').value = '';
       document.getElementById('withdrawAmount').value = '';
       document.getElementById('withdrawNoticeModal').style.display = 'flex';
@@ -693,87 +695,90 @@
 
     function renderWithdrawHistory() {
       const container = document.getElementById('withdrawHistoryContainer');
-      const allHistory = getWithdrawHistory();
-      const userHistory = allHistory[activeUser] || [];
+      const userKey = cleanKey(activeUser);
 
-      if (userHistory.length === 0) {
-        container.innerHTML = `<p style="font-size:12px; color:var(--text-muted); text-align:center;">لا توجد عمليات سحب</p>`;
-        return;
-      }
-      container.innerHTML = '';
-      userHistory.forEach(item => {
-        container.innerHTML += `
-          <div class="history-item">
-            <div><div style="font-weight:bold; color:var(--accent-gold);">${item.method}</div><div style="font-size:10px; color:var(--text-muted);">${item.account} • ${item.date}</div></div>
-            <div style="text-align:left;"><div style="font-weight:bold; color:var(--accent-green);">${item.amount.toLocaleString()} IQD</div><span class="status-pending">${item.status}</span></div>
-          </div>`;
+      db.ref('withdraws/' + userKey).once('value', (snapshot) => {
+        if (!snapshot.exists()) {
+          container.innerHTML = `<p style="font-size:12px; color:var(--text-muted); text-align:center;">لا توجد عمليات سحب معالجة</p>`;
+          return;
+        }
+
+        container.innerHTML = '';
+        snapshot.forEach((child) => {
+          const item = child.val();
+          container.innerHTML += `
+            <div class="history-item">
+              <div><div style="font-weight:bold; color:var(--accent-gold);">${item.method}</div><div style="font-size:10px; color:var(--text-muted);">${item.account} • ${item.date}</div></div>
+              <div style="text-align:left;"><div style="font-weight:bold; color:var(--accent-green);">${Number(item.amount).toLocaleString()} IQD</div><span class="status-pending">${item.status}</span></div>
+            </div>`;
+        });
+      });
+    }
+
+    // إدارات أدمن التحكّم لمستخدمي Firebase
+    function loadAdminUsersLive() {
+      const container = document.getElementById('adminUserList');
+      db.ref('users').on('value', (snapshot) => {
+        if (!snapshot.exists()) {
+          container.innerHTML = 'لا يوجد مشتركون في النظام حالياً';
+          return;
+        }
+
+        container.innerHTML = '';
+        snapshot.forEach((childSnap) => {
+          const uKey = childSnap.key;
+          const uData = childSnap.val();
+          const phone = uData.phone || uKey;
+          const uBal = uData.balance || 0;
+          const uSub = uData.subscription ? `باقة ${Number(uData.subscription).toLocaleString()} IQD` : 'لا يوجد';
+
+          container.innerHTML += `
+            <div class="admin-user-item">
+              <div class="admin-user-info">
+                <span>📱 <strong style="color:var(--accent-gold);">${phone}</strong></span>
+                <span>💰 <strong style="color:var(--accent-green);">${Number(uBal).toLocaleString()} IQD</strong></span>
+              </div>
+              <div style="font-size:11px; margin-bottom:8px; color:#ccc;">الاشتراك الحالي: <strong style="color:var(--accent-gold);">${uSub}</strong></div>
+              <div class="admin-actions">
+                <input type="number" id="amt_${uKey}" placeholder="المبلغ بالدينار" />
+                <button class="btn-ultra btn-green" style="padding:6px 10px; font-size:11px;" onclick="modifyUserBalanceFirebase('${uKey}', 'add')">شحن (+)</button>
+                <button class="btn-ultra btn-red" style="padding:6px 10px; font-size:11px;" onclick="modifyUserBalanceFirebase('${uKey}', 'sub')">خصم (-)</button>
+              </div>
+            </div>`;
+        });
+      });
+    }
+
+    function modifyUserBalanceFirebase(uKey, action) {
+      const valInput = document.getElementById(`amt_${uKey}`);
+      if (!valInput) return;
+      const val = parseFloat(valInput.value);
+      if (isNaN(val) || val <= 0) { alert("⚠️ أدخل مبلغاً صحيحاً"); return; }
+
+      db.ref('users/' + uKey + '/balance').once('value', (snap) => {
+        const cur = snap.val() || 0;
+        const finalBal = action === 'add' ? (cur + val) : Math.max(0, cur - val);
+        db.ref('users/' + uKey + '/balance').set(finalBal);
+        valInput.value = '';
+        showToast("تم تحديث حساب المستخدم بنجاح في Firebase!");
       });
     }
 
     function adminAddProfitToAll() {
-      const userDb = getUsersDatabase();
-      const balances = getUserBalances();
-      const subs = getUserSubscriptions();
-      let count = 0;
-      Object.keys(userDb).forEach(u => {
-        if (subs[u]) {
-          balances[u] = (balances[u] || 0) + Math.round(subs[u] * 0.35);
-          syncBalanceToFirebase(u, balances[u]);
-          count++;
-        }
+      db.ref('users').once('value', (snapshot) => {
+        let count = 0;
+        snapshot.forEach((child) => {
+          const uData = child.val();
+          const uKey = child.key;
+          if (uData.subscription && uData.subscription > 0) {
+            const addedProfit = Math.round(uData.subscription * 0.35);
+            const newB = (uData.balance || 0) + addedProfit;
+            db.ref('users/' + uKey + '/balance').set(newB);
+            count++;
+          }
+        });
+        showToast(`تم توزيع الأرباح تلقائياً لـ ${count} مشترك!`);
       });
-      saveUserBalances(balances);
-      updateUserData();
-      showToast(`تم توزيع الأرباح لـ ${count} مشترك!`);
-    }
-
-    function renderAdminUsersList() {
-      const container = document.getElementById('adminUserList');
-      const userDb = getUsersDatabase();
-      const balances = getUserBalances();
-      const subs = getUserSubscriptions();
-      container.innerHTML = '';
-
-      Object.keys(userDb).forEach(u => {
-        if(u === ADMIN_CREDENTIAL) return;
-        const uBal = balances[u] !== undefined ? balances[u] : 0;
-        const uSub = subs[u] ? `باقة ${Number(subs[u]).toLocaleString()} IQD` : 'لا يوجد';
-        container.innerHTML += `
-          <div class="admin-user-item">
-            <div class="admin-user-info">
-              <span>📱 <strong style="color:var(--accent-gold);">${u}</strong></span>
-              <span>💰 <strong style="color:var(--accent-green);">${Number(uBal).toLocaleString()} IQD</strong></span>
-            </div>
-            <div style="font-size:11px; margin-bottom:8px; color:#ccc;">الاشتراك الحالي: <strong style="color:var(--accent-gold);">${uSub}</strong></div>
-            <div class="admin-actions">
-              <input type="number" id="amt_${u}" placeholder="المبلغ بالدينار" />
-              <button class="btn-ultra btn-green" style="padding:6px 10px; font-size:11px;" onclick="modifyUserBalance('${u}', 'add')">شحن (+)</button>
-              <button class="btn-ultra btn-red" style="padding:6px 10px; font-size:11px;" onclick="modifyUserBalance('${u}', 'sub')">خصم (-)</button>
-            </div>
-          </div>`;
-      });
-    }
-
-    function modifyUserBalance(u, action) {
-      const valInput = document.getElementById(`amt_${u}`);
-      if (!valInput) return;
-      const val = parseFloat(valInput.value);
-      if (isNaN(val) || val <= 0) { alert("⚠️ أدخل مبلغاً صحيحاً"); return; }
-      
-      const balances = getUserBalances();
-      const current = balances[u] !== undefined ? parseFloat(balances[u]) : 0;
-      
-      if (action === 'add') {
-        balances[u] = current + val;
-      } else if (action === 'sub') {
-        balances[u] = Math.max(0, current - val);
-      }
-      
-      saveUserBalances(balances);
-      syncBalanceToFirebase(u, balances[u]);
-      updateUserData();
-      valInput.value = '';
-      showToast(`تمت العملية للحساب ${u} بنجاح!`);
     }
 
     function previewSelectedImage(event) {
@@ -830,15 +835,15 @@
 
     function proceedToPayment() {
       closeModal('subModal');
-      const balances = getUserBalances();
-      const subs = getUserSubscriptions();
-      if ((balances[activeUser] || 0) >= selectedPkg.price) {
-        balances[activeUser] -= selectedPkg.price;
-        subs[activeUser] = selectedPkg.price;
-        saveUserBalances(balances);
-        saveUserSubscription(subs);
-        syncBalanceToFirebase(activeUser, balances[activeUser]);
-        updateUserData();
+      const curBal = currentUserData.balance || 0;
+      
+      if (curBal >= selectedPkg.price) {
+        const userKey = cleanKey(activeUser);
+        const newBal = curBal - selectedPkg.price;
+        
+        db.ref('users/' + userKey + '/balance').set(newBal);
+        db.ref('users/' + userKey + '/subscription').set(selectedPkg.price);
+        
         showToast("🎉 تم تفعيل الباقة بنجاح!");
       } else {
         document.getElementById('errModal').style.display = 'flex';
@@ -871,4 +876,12 @@
       setTimeout(() => { t.style.display = 'none'; }, 3000);
     }
     function copyText(val) { navigator.clipboard.writeText(val); showToast('تم النسخ: ' + val); }
-    function copyRef() { navigator.clipboard.writeText(document.getElementById('refLink').inner
+    function copyRef() { navigator.clipboard.writeText(document.getElementById('refLink').innerText); showToast('تم نسخ الرابط!'); }
+    
+    function logout(userInitiated = true) { 
+      if (activeUser && balanceListener) {
+        const userKey = cleanKey(activeUser);
+        db.ref('users/' + userKey).off('value', balanceListener);
+      }
+      activeUser = null; 
+      currentUserData = { balance: 0, subscript
