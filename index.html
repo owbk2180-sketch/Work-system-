@@ -421,12 +421,8 @@
     </div>
   </div>
 
-  <!-- مكتبات Firebase السحابية الرسمية -->
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-
   <script>
-    // قائمة الباقات الاستثمارية المعتمدة
+    // قائمة الباقات
     const pkgList = [
       { price: 30000, daily: 10000, days: 90 },
       { price: 50000, daily: 35000, days: 90 },
@@ -437,25 +433,25 @@
       { price: 1000000, daily: 380000, days: 90 }
     ];
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyCz7kMpA8v04XZY9VYWAYS_WEuYTQst46w",
-      authDomain: "superminiapp-55204.firebaseapp.com",
-      databaseURL: "https://superminiapp-55204-default-rtdb.firebaseio.com",
-      projectId: "superminiapp-55204",
-      storageBucket: "superminiapp-55204.appspot.com",
-      messagingSenderId: "485993240803",
-      appId: "1:485993240803:web:c59be6938fb92da78cddb"
-    };
-
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
-
     const ADMIN_CREDENTIAL = "IJinsi_$97kb##ins";
     let activeUser = null;
     let selectedPkg = null;
     let selectedImageFile = null;
-    let activeUserListener = null;
 
+    // محرك قاعدة البيانات الذاتي (يعمل فوراً داخل المتصفح بدون تعليق نهائياً)
+    function getDB() {
+      try {
+        return JSON.parse(localStorage.getItem('supermini_users') || '{}');
+      } catch (e) {
+        return {};
+      }
+    }
+
+    function saveDB(data) {
+      localStorage.setItem('supermini_users', JSON.stringify(data));
+    }
+
+    // تسجيل الدخول الفوري
     function handleSecureLogin() {
       const userField = document.getElementById('userInput').value.trim();
       const passField = document.getElementById('passInput').value.trim();
@@ -465,34 +461,36 @@
         return;
       }
 
+      // تسجيل دخول الأدمن
       if (userField === ADMIN_CREDENTIAL && passField === ADMIN_CREDENTIAL) {
         activeUser = ADMIN_CREDENTIAL;
         completeLogin();
         return;
       }
 
-      db.ref('users/' + userField).once('value').then(snapshot => {
-        const userData = snapshot.val();
-        if (!userData) {
-          showLoginError("⚠️ هذا الحساب غير موجود! سجل حساباً أولاً.");
-          return;
-        }
-        if (String(userData.pass) !== String(passField)) {
-          showLoginError("⚠️ كلمة السر غير صحيحة!");
-          return;
-        }
-        if (userData.status === 'banned') {
-          showBanScreen(userData.banReason || "تم حظر حسابك لمخالفة الشروط.");
-          return;
-        }
+      const users = getDB();
+      const userData = users[userField];
 
-        activeUser = userField;
-        completeLogin();
-      }).catch(err => {
-        showLoginError("⚠️ خطأ في الاتصال بالسيرفر: " + err.message);
-      });
+      if (!userData) {
+        showLoginError("⚠️ هذا الحساب غير موجود! اضغط إنشاء حساب جديد بالأسفل.");
+        return;
+      }
+
+      if (String(userData.pass) !== String(passField)) {
+        showLoginError("⚠️ كلمة السر غير صحيحة!");
+        return;
+      }
+
+      if (userData.status === 'banned') {
+        showBanScreen(userData.banReason || "تم حظر حسابك لمخالفة الشروط.");
+        return;
+      }
+
+      activeUser = userField;
+      completeLogin();
     }
 
+    // إنشاء حساب فوري
     function handleRegister() {
       const u = document.getElementById('regUser').value.trim();
       const p1 = document.getElementById('regPass').value.trim();
@@ -501,33 +499,27 @@
       if (!u || !p1 || !p2) { showRegError("⚠️ يرجى ملء كافة الحقول!"); return; }
       if (p1 !== p2) { showRegError("⚠️ كلمات السر غير متطابقة!"); return; }
 
-      db.ref('users/' + u).once('value').then(snapshot => {
-        if (snapshot.exists()) {
-          showRegError("⚠️ الرقم مسجل بالفعل! سجل الدخول مباشرة.");
-          return;
-        }
+      const users = getDB();
+      if (users[u]) {
+        showRegError("⚠️ هذا الرقم مسجل بالفعل! سجل الدخول مباشرة.");
+        return;
+      }
 
-        return db.ref('users/' + u).set({
-          pass: String(p1),
-          balance: 0,
-          status: 'active',
-          banReason: '',
-          sub: 0,
-          createdAt: new Date().toLocaleDateString('ar-IQ')
-        });
-      }).then(() => {
-        activeUser = u;
-        closeModal('registerModal');
-        completeLogin();
-        showToast("تم إنشاء الحساب وتسجيل الدخول بنجاح! 🎉");
-      }).catch(err => {
-        showRegError("⚠️ خطأ أثناء التسجيل: " + err.message);
-      });
-    }
+      users[u] = {
+        pass: String(p1),
+        balance: 0,
+        status: 'active',
+        banReason: '',
+        sub: 0,
+        withdraws: [],
+        createdAt: new Date().toLocaleDateString('ar-IQ')
+      };
 
-    function showBanScreen(reason) {
-      document.getElementById('banReasonText').innerText = "سبب الحظر: " + reason;
-      document.getElementById('banModal').style.display = 'flex';
+      saveDB(users);
+      activeUser = u;
+      closeModal('registerModal');
+      completeLogin();
+      showToast("تم إنشاء الحساب وتسجيل الدخول بنجاح! 🎉");
     }
 
     function completeLogin() {
@@ -540,27 +532,21 @@
       } else {
         document.getElementById('adminPanel').style.display = 'none';
         document.getElementById('vipBadge').innerText = 'حساب VIP';
-
-        if (activeUserListener) {
-          db.ref('users/' + activeUser).off('value', activeUserListener);
-        }
-
-        activeUserListener = db.ref('users/' + activeUser).on('value', snapshot => {
-          const data = snapshot.val();
-          if (!data) return;
-
-          if (data.status === 'banned') {
-            logout(false);
-            showBanScreen(data.banReason || "تم حظر حسابك من قبل الإدارة.");
-            return;
-          }
-
-          updateUserData(data);
-        });
+        syncCurrentUserData();
       }
     }
 
-    function updateUserData(data) {
+    function syncCurrentUserData() {
+      if (!activeUser || activeUser === ADMIN_CREDENTIAL) return;
+      const users = getDB();
+      const data = users[activeUser] || {};
+
+      if (data.status === 'banned') {
+        logout(false);
+        showBanScreen(data.banReason || "تم حظر حسابك من قبل الإدارة.");
+        return;
+      }
+
       const bal = Number(data.balance) || 0;
       const formattedBal = bal.toLocaleString() + " IQD";
 
@@ -592,42 +578,48 @@
       document.getElementById('userDisplay').innerText = "ADMIN";
       document.getElementById('profId').innerText = "ADMIN";
       document.getElementById('profName').innerText = "المشرف العام";
+      renderAdminList();
+    }
 
-      db.ref('users').on('value', snapshot => {
-        const users = snapshot.val() || {};
-        const container = document.getElementById('adminUserList');
-        const userKeys = Object.keys(users).filter(k => k !== ADMIN_CREDENTIAL);
-        const totalUsers = userKeys.length;
+    function renderAdminList() {
+      const users = getDB();
+      const container = document.getElementById('adminUserList');
+      const userKeys = Object.keys(users).filter(k => k !== ADMIN_CREDENTIAL);
+      const totalUsers = userKeys.length;
 
-        container.innerHTML = `<div style="color:var(--accent-gold); font-weight:900; margin-bottom:12px; text-align:center;">📊 عدد المستخدمين الحقيقيين: ${totalUsers} مستخدم</div>`;
+      container.innerHTML = `<div style="color:var(--accent-gold); font-weight:900; margin-bottom:12px; text-align:center;">📊 عدد المستخدمين: ${totalUsers} مستخدم</div>`;
 
-        userKeys.forEach(u => {
-          const usr = users[u];
-          const isBanned = usr.status === 'banned';
-          const subAmount = Number(usr.sub) || 0;
-          const subText = subAmount > 0 ? `باقة ${subAmount.toLocaleString()} IQD` : 'لا يوجد';
-          container.innerHTML += `
-            <div class="admin-user-item">
-              <div class="admin-user-info">
-                <span>📱 <strong style="color:var(--accent-gold);">${u}</strong></span>
-                <span>💰 <strong style="color:var(--accent-green);">${Number(usr.balance || 0).toLocaleString()} IQD</strong></span>
+      if (totalUsers === 0) {
+        container.innerHTML += `<div style="color:var(--text-muted); font-size:12px; text-align:center;">لا يوجد مستخدمين مسجلين حتى الآن.</div>`;
+        return;
+      }
+
+      userKeys.forEach(u => {
+        const usr = users[u];
+        const isBanned = usr.status === 'banned';
+        const subAmount = Number(usr.sub) || 0;
+        const subText = subAmount > 0 ? `باقة ${subAmount.toLocaleString()} IQD` : 'لا يوجد';
+        container.innerHTML += `
+          <div class="admin-user-item">
+            <div class="admin-user-info">
+              <span>📱 <strong style="color:var(--accent-gold);">${u}</strong></span>
+              <span>💰 <strong style="color:var(--accent-green);">${Number(usr.balance || 0).toLocaleString()} IQD</strong></span>
+            </div>
+            <div style="font-size:11px; margin-bottom:8px; color:#ccc;">الاشتراك: <strong style="color:var(--accent-gold);">${subText}</strong> | الحالة: <strong style="color:${isBanned ? 'var(--accent-red)' : 'var(--accent-green)'};">${isBanned ? 'محظور 🚫' : 'نشط ✓'}</strong></div>
+            <div class="admin-actions" style="flex-direction:column; gap:6px;">
+              <div style="display:flex; gap:6px;">
+                <input type="number" id="amt_${u}" placeholder="المبلغ بالدينار" />
+                <button class="btn-ultra btn-green" style="padding:6px 12px; font-size:11px;" onclick="modifyBalance('${u}', 'add')">شحن (+)</button>
+                <button class="btn-ultra btn-red" style="padding:6px 12px; font-size:11px;" onclick="modifyBalance('${u}', 'sub')">خصم (-)</button>
               </div>
-              <div style="font-size:11px; margin-bottom:8px; color:#ccc;">الاشتراك: <strong style="color:var(--accent-gold);">${subText}</strong> | الحالة: <strong style="color:${isBanned ? 'var(--accent-red)' : 'var(--accent-green)'};">${isBanned ? 'محظور 🚫' : 'نشط ✓'}</strong></div>
-              <div class="admin-actions" style="flex-direction:column; gap:6px;">
-                <div style="display:flex; gap:6px;">
-                  <input type="number" id="amt_${u}" placeholder="المبلغ بالدينار" />
-                  <button class="btn-ultra btn-green" style="padding:6px 12px; font-size:11px;" onclick="modifyBalance('${u}', 'add')">شحن (+)</button>
-                  <button class="btn-ultra btn-red" style="padding:6px 12px; font-size:11px;" onclick="modifyBalance('${u}', 'sub')">خصم (-)</button>
-                </div>
-                <div style="display:flex; gap:6px; margin-top:4px;">
-                  <input type="text" id="reason_${u}" placeholder="سبب الحظر مع التنبيه" value="${usr.banReason || ''}" />
-                  <button class="btn-ultra ${isBanned ? 'btn-green' : 'btn-red'}" style="padding:6px 10px; font-size:11px;" onclick="toggleBan('${u}', '${usr.status}')">
-                    ${isBanned ? 'فك الحظر' : 'حظر الحساب'}
-                  </button>
-                </div>
+              <div style="display:flex; gap:6px; margin-top:4px;">
+                <input type="text" id="reason_${u}" placeholder="سبب الحظر مع التنبيه" value="${usr.banReason || ''}" />
+                <button class="btn-ultra ${isBanned ? 'btn-green' : 'btn-red'}" style="padding:6px 10px; font-size:11px;" onclick="toggleBan('${u}', '${usr.status}')">
+                  ${isBanned ? 'فك الحظر' : 'حظر الحساب'}
+                </button>
               </div>
-            </div>`;
-        });
+            </div>
+          </div>`;
       });
     }
 
@@ -636,53 +628,55 @@
       const amt = parseFloat(amtInput.value);
       if (isNaN(amt) || amt <= 0) { alert("⚠️ أدخل مبلغاً صحيحاً!"); return; }
 
-      db.ref('users/' + u + '/balance').transaction(curr => {
-        curr = Number(curr) || 0;
-        return action === 'add' ? curr + amt : Math.max(0, curr - amt);
-      }).then(() => {
-        amtInput.value = '';
-        showToast(`تم تحديث رصيد ${u} بنجاح!`);
-      });
+      const users = getDB();
+      if (!users[u]) return;
+
+      const curr = Number(users[u].balance) || 0;
+      users[u].balance = action === 'add' ? curr + amt : Math.max(0, curr - amt);
+      saveDB(users);
+      amtInput.value = '';
+      showToast(`تم تحديث رصيد ${u} بنجاح!`);
+      renderAdminList();
     }
 
     function toggleBan(u, currentStatus) {
       const reasonInput = document.getElementById(`reason_${u}`).value.trim();
+      const users = getDB();
+      if (!users[u]) return;
+
       if (currentStatus === 'banned') {
-        db.ref('users/' + u).update({ status: 'active', banReason: '' });
+        users[u].status = 'active';
+        users[u].banReason = '';
         showToast('تم إلغاء الحظر عن الحساب');
       } else {
-        db.ref('users/' + u).update({
-          status: 'banned',
-          banReason: reasonInput || 'تم حظر حسابك لمخالفة القوانين.'
-        });
-        showToast('تم حظر الحساب وإرسال الملاحظة بنجاح');
+        users[u].status = 'banned';
+        users[u].banReason = reasonInput || 'تم حظر حسابك لمخالفة القوانين.';
+        showToast('تم حظر الحساب بنجاح');
       }
+      saveDB(users);
+      renderAdminList();
     }
 
-    // توزيع الأرباح اليومية بدقة وفق الباقة المشترك بها المستخدم
+    // توزيع الأرباح على الجميع فوراً وحفظها
     function adminAddProfitToAll() {
-      db.ref('users').once('value').then(snapshot => {
-        const users = snapshot.val() || {};
-        let count = 0;
-        
-        Object.keys(users).forEach(u => {
-          if (u === ADMIN_CREDENTIAL) return;
-          
-          const subPrice = Number(users[u].sub) || 0;
-          if (subPrice > 0) {
-            // مطابقة باقة المستخدم مع قائمة الباقات المعتمدة
-            const matchedPkg = pkgList.find(p => p.price === subPrice);
-            const dailyProfit = matchedPkg ? matchedPkg.daily : 0;
+      const users = getDB();
+      let count = 0;
 
-            if (dailyProfit > 0) {
-              db.ref('users/' + u + '/balance').transaction(curr => (Number(curr) || 0) + dailyProfit);
-              count++;
-            }
+      Object.keys(users).forEach(u => {
+        const subPrice = Number(users[u].sub) || 0;
+        if (subPrice > 0) {
+          const matchedPkg = pkgList.find(p => p.price === subPrice);
+          const dailyProfit = matchedPkg ? matchedPkg.daily : 0;
+          if (dailyProfit > 0) {
+            users[u].balance = (Number(users[u].balance) || 0) + dailyProfit;
+            count++;
           }
-        });
-        
-        showToast(`تم ضخ الأرباح الصحيحة لـ ${count} مشترك نشط!`);
+        }
       });
+
+      saveDB(users);
+      renderAdminList();
+      showToast(`تم ضخ الأرباح لـ ${count} مشترك نشط!`);
     }
 
     function processWithdrawalRequest() {
@@ -693,37 +687,33 @@
       if (!accountNum) { alert("⚠️ يرجى إدخال الحساب!"); return; }
       if (isNaN(amount) || amount < 10000) { alert("⚠️ الحد الأدنى للسحب 10,000 IQD!"); return; }
 
-      db.ref('users/' + activeUser).once('value').then(snapshot => {
-        const user = snapshot.val();
-        const currentBal = Number(user.balance) || 0;
-        
-        if (!user || currentBal < amount) {
-          alert("⚠️ رصيدك غير كافٍ لإتمام السحب!");
-          return;
-        }
+      const users = getDB();
+      const user = users[activeUser];
+      const currentBal = Number(user.balance) || 0;
 
-        const newBal = currentBal - amount;
-        const newWithdraw = {
-          id: Math.floor(1000 + Math.random() * 9000),
-          method,
-          account: accountNum,
-          amount,
-          date: new Date().toLocaleDateString('ar-IQ'),
-          status: 'قيد المعالجة'
-        };
+      if (!user || currentBal < amount) {
+        alert("⚠️ رصيدك غير كافٍ لإتمام السحب!");
+        return;
+      }
 
-        const withdraws = user.withdraws || [];
-        withdraws.unshift(newWithdraw);
+      user.balance = currentBal - amount;
+      const newWithdraw = {
+        id: Math.floor(1000 + Math.random() * 9000),
+        method,
+        account: accountNum,
+        amount,
+        date: new Date().toLocaleDateString('ar-IQ'),
+        status: 'قيد المعالجة'
+      };
 
-        db.ref('users/' + activeUser).update({
-          balance: newBal,
-          withdraws: withdraws
-        }).then(() => {
-          document.getElementById('withdrawAccountNum').value = '';
-          document.getElementById('withdrawAmount').value = '';
-          document.getElementById('withdrawNoticeModal').style.display = 'flex';
-        });
-      });
+      user.withdraws = user.withdraws || [];
+      user.withdraws.unshift(newWithdraw);
+      saveDB(users);
+
+      document.getElementById('withdrawAccountNum').value = '';
+      document.getElementById('withdrawAmount').value = '';
+      syncCurrentUserData();
+      document.getElementById('withdrawNoticeModal').style.display = 'flex';
     }
 
     function renderWithdrawHistory(userHistory) {
@@ -770,20 +760,19 @@
 
     function proceedToPayment() {
       closeModal('subModal');
-      db.ref('users/' + activeUser).once('value').then(snapshot => {
-        const user = snapshot.val();
-        const currentBal = Number(user.balance) || 0;
-        if (user && currentBal >= selectedPkg.price) {
-          db.ref('users/' + activeUser).update({
-            balance: currentBal - selectedPkg.price,
-            sub: selectedPkg.price
-          }).then(() => {
-            showToast("🎉 تم تفعيل الباقة بنجاح!");
-          });
-        } else {
-          document.getElementById('errModal').style.display = 'flex';
-        }
-      });
+      const users = getDB();
+      const user = users[activeUser];
+      const currentBal = Number(user.balance) || 0;
+
+      if (user && currentBal >= selectedPkg.price) {
+        user.balance = currentBal - selectedPkg.price;
+        user.sub = selectedPkg.price;
+        saveDB(users);
+        syncCurrentUserData();
+        showToast("🎉 تم تفعيل الباقة بنجاح!");
+      } else {
+        document.getElementById('errModal').style.display = 'flex';
+      }
     }
 
     function goToFinance() {
@@ -800,7 +789,6 @@
     }
 
     function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-    
     function openRegisterModal() {
       document.getElementById('regError').style.display = 'none';
       document.getElementById('regUser').value = '';
@@ -808,31 +796,25 @@
       document.getElementById('regPassConfirm').value = '';
       document.getElementById('registerModal').style.display = 'flex';
     }
-
+    function showBanScreen(reason) {
+      document.getElementById('banReasonText').innerText = "سبب الحظر: " + reason;
+      document.getElementById('banModal').style.display = 'flex';
+    }
     function openTelegramSupport() { window.open('https://t.me/oosbsu', '_blank'); }
-
     function downloadRealApp() {
       showToast("📲 جاري بدء تنزيل تطبيق Super Mini...");
       const blob = new Blob(["Super Mini APK Binary"], { type: "application/vnd.android.package-archive" });
       const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = "SuperMini.apk";
       document.body.appendChild(a); a.click(); document.body.removeChild(a);
     }
-
     function showToast(msg) {
       const t = document.getElementById('toast'); t.innerText = msg; t.style.display = 'block';
       setTimeout(() => { t.style.display = 'none'; }, 3000);
     }
-
     function copyText(val) { navigator.clipboard.writeText(val); showToast('تم النسخ: ' + val); }
     function copyRef() { navigator.clipboard.writeText(document.getElementById('refLink').innerText); showToast('تم نسخ الرابط!'); }
-    
-    function showLoginError(msg) {
-      const errBox = document.getElementById('loginError'); errBox.innerText = msg; errBox.style.display = 'block';
-    }
-
-    function showRegError(msg) {
-      const errBox = document.getElementById('regError'); errBox.innerText = msg; errBox.style.display = 'block';
-    }
+    function showLoginError(msg) { const errBox = document.getElementById('loginError'); errBox.innerText = msg; errBox.style.display = 'block'; }
+    function showRegError(msg) { const errBox = document.getElementById('regError'); errBox.innerText = msg; errBox.style.display = 'block'; }
 
     function previewSelectedImage(event) {
       const file = event.target.files[0];
@@ -856,5 +838,23 @@
     }
 
     function logout(userInitiated = true) {
-      if (activeUserListener && activeUser !== ADMIN_CREDENTIAL) {
-        db.ref('users/' + activeUser).off('value', activeUs
+      activeUser = null;
+      document.getElementById('banModal').style.display = 'none';
+      document.getElementById('appContent').classList.remove('logged-in');
+      document.getElementById('loginModal').style.display = 'flex';
+      document.getElementById('userInput').value = '';
+      document.getElementById('passInput').value = '';
+    }
+
+    let currSlide = 0;
+    setInterval(() => {
+      currSlide = (currSlide + 1) % 3;
+      const track = document.getElementById('slidesTrack');
+      if (track) track.style.transform = `translateX(${currSlide * 100}%)`;
+    }, 4000);
+
+    renderPackages();
+  </script>
+</body>
+</html>
+
