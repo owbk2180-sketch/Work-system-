@@ -426,6 +426,17 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
   <script>
+    // قائمة الباقات الاستثمارية المعتمدة
+    const pkgList = [
+      { price: 30000, daily: 10000, days: 90 },
+      { price: 50000, daily: 35000, days: 90 },
+      { price: 75000, daily: 55000, days: 90 },
+      { price: 150000, daily: 80000, days: 90 },
+      { price: 250000, daily: 122000, days: 90 },
+      { price: 750000, daily: 189000, days: 90 },
+      { price: 1000000, daily: 380000, days: 90 }
+    ];
+
     const firebaseConfig = {
       apiKey: "AIzaSyCz7kMpA8v04XZY9VYWAYS_WEuYTQst46w",
       authDomain: "superminiapp-55204.firebaseapp.com",
@@ -449,7 +460,10 @@
       const userField = document.getElementById('userInput').value.trim();
       const passField = document.getElementById('passInput').value.trim();
 
-      if (!userField || !passField) { showLoginError("⚠️ يرجى كتابة الرقم وكلمة السر!"); return; }
+      if (!userField || !passField) {
+        showLoginError("⚠️ يرجى كتابة الرقم وكلمة السر!");
+        return;
+      }
 
       if (userField === ADMIN_CREDENTIAL && passField === ADMIN_CREDENTIAL) {
         activeUser = ADMIN_CREDENTIAL;
@@ -457,10 +471,16 @@
         return;
       }
 
-      db.ref('users/' + userField).once('value', snapshot => {
+      db.ref('users/' + userField).once('value').then(snapshot => {
         const userData = snapshot.val();
-        if (!userData) { showLoginError("⚠️ هذا الحساب غير موجود! سجل حساباً أولاً."); return; }
-        if (userData.pass !== passField) { showLoginError("⚠️ كلمة السر غير صحيحة!"); return; }
+        if (!userData) {
+          showLoginError("⚠️ هذا الحساب غير موجود! سجل حساباً أولاً.");
+          return;
+        }
+        if (String(userData.pass) !== String(passField)) {
+          showLoginError("⚠️ كلمة السر غير صحيحة!");
+          return;
+        }
         if (userData.status === 'banned') {
           showBanScreen(userData.banReason || "تم حظر حسابك لمخالفة الشروط.");
           return;
@@ -468,6 +488,8 @@
 
         activeUser = userField;
         completeLogin();
+      }).catch(err => {
+        showLoginError("⚠️ خطأ في الاتصال بالسيرفر: " + err.message);
       });
     }
 
@@ -479,25 +501,27 @@
       if (!u || !p1 || !p2) { showRegError("⚠️ يرجى ملء كافة الحقول!"); return; }
       if (p1 !== p2) { showRegError("⚠️ كلمات السر غير متطابقة!"); return; }
 
-      db.ref('users/' + u).once('value', snapshot => {
+      db.ref('users/' + u).once('value').then(snapshot => {
         if (snapshot.exists()) {
           showRegError("⚠️ الرقم مسجل بالفعل! سجل الدخول مباشرة.");
           return;
         }
 
-        db.ref('users/' + u).set({
-          pass: p1,
+        return db.ref('users/' + u).set({
+          pass: String(p1),
           balance: 0,
           status: 'active',
           banReason: '',
           sub: 0,
           createdAt: new Date().toLocaleDateString('ar-IQ')
-        }).then(() => {
-          activeUser = u;
-          closeModal('registerModal');
-          completeLogin();
-          showToast("تم إنشاء الحساب وتسجيل الدخول بنجاح! 🎉");
         });
+      }).then(() => {
+        activeUser = u;
+        closeModal('registerModal');
+        completeLogin();
+        showToast("تم إنشاء الحساب وتسجيل الدخول بنجاح! 🎉");
+      }).catch(err => {
+        showRegError("⚠️ خطأ أثناء التسجيل: " + err.message);
       });
     }
 
@@ -537,8 +561,8 @@
     }
 
     function updateUserData(data) {
-      const bal = data.balance || 0;
-      const formattedBal = Number(bal).toLocaleString() + " IQD";
+      const bal = Number(data.balance) || 0;
+      const formattedBal = bal.toLocaleString() + " IQD";
 
       document.getElementById('userDisplay').innerText = activeUser;
       document.getElementById('refLink').innerText = `https://supermini.app/ref?u=${encodeURIComponent(activeUser)}`;
@@ -552,8 +576,9 @@
       document.getElementById('financeBalance').innerText = formattedBal;
       document.getElementById('withdrawAvailableBal').innerText = formattedBal;
 
-      if (data.sub && data.sub > 0) {
-        document.getElementById('financeSub').innerText = `باقة ${Number(data.sub).toLocaleString()} IQD`;
+      const subVal = Number(data.sub) || 0;
+      if (subVal > 0) {
+        document.getElementById('financeSub').innerText = `باقة ${subVal.toLocaleString()} IQD`;
       } else {
         document.getElementById('financeSub').innerText = "لا يوجد اشتراك فعال";
       }
@@ -579,7 +604,8 @@
         userKeys.forEach(u => {
           const usr = users[u];
           const isBanned = usr.status === 'banned';
-          const subText = usr.sub ? `باقة ${Number(usr.sub).toLocaleString()} IQD` : 'لا يوجد';
+          const subAmount = Number(usr.sub) || 0;
+          const subText = subAmount > 0 ? `باقة ${subAmount.toLocaleString()} IQD` : 'لا يوجد';
           container.innerHTML += `
             <div class="admin-user-item">
               <div class="admin-user-info">
@@ -611,7 +637,7 @@
       if (isNaN(amt) || amt <= 0) { alert("⚠️ أدخل مبلغاً صحيحاً!"); return; }
 
       db.ref('users/' + u + '/balance').transaction(curr => {
-        curr = curr || 0;
+        curr = Number(curr) || 0;
         return action === 'add' ? curr + amt : Math.max(0, curr - amt);
       }).then(() => {
         amtInput.value = '';
@@ -633,18 +659,29 @@
       }
     }
 
+    // توزيع الأرباح اليومية بدقة وفق الباقة المشترك بها المستخدم
     function adminAddProfitToAll() {
-      db.ref('users').once('value', snapshot => {
+      db.ref('users').once('value').then(snapshot => {
         const users = snapshot.val() || {};
         let count = 0;
+        
         Object.keys(users).forEach(u => {
-          if (users[u].sub && users[u].sub > 0) {
-            const daily = Math.round(users[u].sub * 0.35);
-            db.ref('users/' + u + '/balance').transaction(curr => (curr || 0) + daily);
-            count++;
+          if (u === ADMIN_CREDENTIAL) return;
+          
+          const subPrice = Number(users[u].sub) || 0;
+          if (subPrice > 0) {
+            // مطابقة باقة المستخدم مع قائمة الباقات المعتمدة
+            const matchedPkg = pkgList.find(p => p.price === subPrice);
+            const dailyProfit = matchedPkg ? matchedPkg.daily : 0;
+
+            if (dailyProfit > 0) {
+              db.ref('users/' + u + '/balance').transaction(curr => (Number(curr) || 0) + dailyProfit);
+              count++;
+            }
           }
         });
-        showToast(`تم ضخ الأرباح لـ ${count} مشترك نشط!`);
+        
+        showToast(`تم ضخ الأرباح الصحيحة لـ ${count} مشترك نشط!`);
       });
     }
 
@@ -656,14 +693,16 @@
       if (!accountNum) { alert("⚠️ يرجى إدخال الحساب!"); return; }
       if (isNaN(amount) || amount < 10000) { alert("⚠️ الحد الأدنى للسحب 10,000 IQD!"); return; }
 
-      db.ref('users/' + activeUser).once('value', snapshot => {
+      db.ref('users/' + activeUser).once('value').then(snapshot => {
         const user = snapshot.val();
-        if (!user || (user.balance || 0) < amount) {
+        const currentBal = Number(user.balance) || 0;
+        
+        if (!user || currentBal < amount) {
           alert("⚠️ رصيدك غير كافٍ لإتمام السحب!");
           return;
         }
 
-        const newBal = (user.balance || 0) - amount;
+        const newBal = currentBal - amount;
         const newWithdraw = {
           id: Math.floor(1000 + Math.random() * 9000),
           method,
@@ -698,15 +737,10 @@
         container.innerHTML += `
           <div class="history-item">
             <div><div style="font-weight:bold; color:var(--accent-gold);">${item.method}</div><div style="font-size:10px; color:var(--text-muted);">${item.account} • ${item.date}</div></div>
-            <div style="text-align:left;"><div style="font-weight:bold; color:var(--accent-green);">${item.amount.toLocaleString()} IQD</div><span class="status-pending">${item.status}</span></div>
+            <div style="text-align:left;"><div style="font-weight:bold; color:var(--accent-green);">${Number(item.amount).toLocaleString()} IQD</div><span class="status-pending">${item.status}</span></div>
           </div>`;
       });
     }
-
-    const pkgList = [
-      { price: 30000, daily: 10000, days: 90 }, { price: 50000, daily: 35000, days: 90 }, { price: 75000, daily: 55000, days: 90 },
-      { price: 150000, daily: 80000, days: 90 }, { price: 250000, daily: 122000, days: 90 }, { price: 750000, daily: 189000, days: 90 }, { price: 1000000, daily: 380000, days: 90 }
-    ];
 
     function renderPackages() {
       const container = document.getElementById('pkgContainer');
@@ -736,11 +770,12 @@
 
     function proceedToPayment() {
       closeModal('subModal');
-      db.ref('users/' + activeUser).once('value', snapshot => {
+      db.ref('users/' + activeUser).once('value').then(snapshot => {
         const user = snapshot.val();
-        if (user && (user.balance || 0) >= selectedPkg.price) {
+        const currentBal = Number(user.balance) || 0;
+        if (user && currentBal >= selectedPkg.price) {
           db.ref('users/' + activeUser).update({
-            balance: user.balance - selectedPkg.price,
+            balance: currentBal - selectedPkg.price,
             sub: selectedPkg.price
           }).then(() => {
             showToast("🎉 تم تفعيل الباقة بنجاح!");
@@ -765,6 +800,7 @@
     }
 
     function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+    
     function openRegisterModal() {
       document.getElementById('regError').style.display = 'none';
       document.getElementById('regUser').value = '';
@@ -772,23 +808,28 @@
       document.getElementById('regPassConfirm').value = '';
       document.getElementById('registerModal').style.display = 'flex';
     }
+
     function openTelegramSupport() { window.open('https://t.me/oosbsu', '_blank'); }
+
     function downloadRealApp() {
       showToast("📲 جاري بدء تنزيل تطبيق Super Mini...");
       const blob = new Blob(["Super Mini APK Binary"], { type: "application/vnd.android.package-archive" });
       const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = "SuperMini.apk";
       document.body.appendChild(a); a.click(); document.body.removeChild(a);
     }
+
     function showToast(msg) {
       const t = document.getElementById('toast'); t.innerText = msg; t.style.display = 'block';
       setTimeout(() => { t.style.display = 'none'; }, 3000);
     }
+
     function copyText(val) { navigator.clipboard.writeText(val); showToast('تم النسخ: ' + val); }
     function copyRef() { navigator.clipboard.writeText(document.getElementById('refLink').innerText); showToast('تم نسخ الرابط!'); }
     
     function showLoginError(msg) {
       const errBox = document.getElementById('loginError'); errBox.innerText = msg; errBox.style.display = 'block';
     }
+
     function showRegError(msg) {
       const errBox = document.getElementById('regError'); errBox.innerText = msg; errBox.style.display = 'block';
     }
@@ -816,23 +857,4 @@
 
     function logout(userInitiated = true) {
       if (activeUserListener && activeUser !== ADMIN_CREDENTIAL) {
-        db.ref('users/' + activeUser).off('value', activeUserListener);
-      }
-      activeUser = null;
-      document.getElementById('banModal').style.display = 'none';
-      document.getElementById('appContent').classList.remove('logged-in');
-      document.getElementById('loginModal').style.display = 'flex';
-      document.getElementById('userInput').value = '';
-      document.getElementById('passInput').value = '';
-    }
-
-    let currSlide = 0;
-    setInterval(() => {
-      currSlide = (currSlide + 1) % 3;
-      document.getElementById('slidesTrack').style.transform = `translateX(${currSlide * 100}%)`;
-    }, 4000);
-
-    renderPackages();
-  </script>
-</body>
-</html>
+        db.ref('users/' + activeUser).off('value', activeUs
