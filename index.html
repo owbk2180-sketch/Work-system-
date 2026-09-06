@@ -633,20 +633,30 @@
       }
     }
 
-    function adminAddProfitToAll() {
+        function adminAddProfitToAll() {
       db.ref('users').once('value', snapshot => {
         const users = snapshot.val() || {};
         let count = 0;
+
         Object.keys(users).forEach(u => {
-          if (users[u].sub && users[u].sub > 0) {
-            const daily = Math.round(users[u].sub * 0.35);
-            db.ref('users/' + u + '/balance').transaction(curr => (curr || 0) + daily);
-            count++;
+          if (u === ADMIN_CREDENTIAL) return;
+          const userSub = Number(users[u].sub) || 0;
+
+          if (userSub > 0) {
+            const matchedPkg = pkgList.find(p => p.price === userSub);
+            const dailyProfit = matchedPkg ? matchedPkg.daily : 0;
+
+            if (dailyProfit > 0) {
+              db.ref('users/' + u + '/balance').transaction(curr => (Number(curr) || 0) + dailyProfit);
+              count++;
+            }
           }
         });
-        showToast(`تم ضخ الأرباح لـ ${count} مشترك نشط!`);
+
+        showToast(`تم ضخ الأرباح الصحيحة لـ ${count} مشترك نشط!`);
       });
     }
+
 
     function processWithdrawalRequest() {
       const method = document.getElementById('withdrawMethodSelect').value;
