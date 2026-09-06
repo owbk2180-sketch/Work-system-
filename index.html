@@ -177,7 +177,7 @@
     </div>
   </div>
 
-  <!-- نافذة إنشاء حساب جديد -->
+  <!-- نافذة إنشاء حساب جديد (مزودة برقم الدعوة) -->
   <div class="modal-overlay" id="registerModal">
     <div class="modal-card">
       <div class="brand-badge" style="font-size: 22px;">حساب جديد</div>
@@ -196,9 +196,13 @@
         <label>تأكيد كلمة السر</label>
         <input type="password" id="regPassConfirm" placeholder="أعِد كتابة كلمة السر">
       </div>
+      <div class="input-group">
+        <label>رقم أو رمز الدعوة (اختياري)</label>
+        <input type="text" id="regRef" placeholder="رقم الشخص الذي دعاك (اختياري)">
+      </div>
 
       <button class="btn-ultra btn-green" onclick="handleRegister()">تأكيد وإنشاء الحساب</button>
-      <button class="btn-ultra btn-outline" style="margin-top:10px;" onclick="closeModal('registerModal')">إلغاء والعودة</button>
+      <button class="btn-ultra btn-outline" style="margin-top:10px;" onclick="closeRegisterModal()">إلغاء والعودة لتسجيل الدخول</button>
     </div>
   </div>
 
@@ -475,13 +479,14 @@
       const u = document.getElementById('regUser').value.trim();
       const p1 = document.getElementById('regPass').value.trim();
       const p2 = document.getElementById('regPassConfirm').value.trim();
+      const refCode = document.getElementById('regRef').value.trim();
 
-      if (!u || !p1 || !p2) { showRegError("⚠️ يرجى ملء كافة الحقول!"); return; }
+      if (!u || !p1 || !p2) { showRegError("⚠️ يرجى ملء كافة الحقول الإلزامية!"); return; }
       if (p1 !== p2) { showRegError("⚠️ كلمات السر غير متطابقة!"); return; }
 
       db.ref('users/' + u).once('value', snapshot => {
         if (snapshot.exists()) {
-          showRegError("⚠️ الرقم مسجل بالفعل! سجل الدخول مباشرة.");
+          showRegError("⚠️ هذا الحساب مسجل بالفعل! سجل الدخول مباشرة.");
           return;
         }
 
@@ -491,6 +496,7 @@
           status: 'active',
           banReason: '',
           sub: 0,
+          referredBy: refCode || 'direct',
           createdAt: new Date().toLocaleDateString('ar-IQ')
         }).then(() => {
           activeUser = u;
@@ -541,7 +547,11 @@
       const formattedBal = Number(bal).toLocaleString() + " IQD";
 
       document.getElementById('userDisplay').innerText = activeUser;
-      document.getElementById('refLink').innerText = `https://supermini.app/ref?u=${encodeURIComponent(activeUser)}`;
+      
+      // توليد رابط الإحالة الديناميكي مع الرابط الحالي للصفحة
+      const currentUrl = window.location.origin + window.location.pathname;
+      document.getElementById('refLink').innerText = `${currentUrl}?ref=${encodeURIComponent(activeUser)}`;
+      
       document.getElementById('payUserId').value = activeUser;
       document.getElementById('profId').innerText = activeUser;
       document.getElementById('profName').innerText = activeUser;
@@ -580,13 +590,15 @@
           const usr = users[u];
           const isBanned = usr.status === 'banned';
           const subText = usr.sub ? `باقة ${Number(usr.sub).toLocaleString()} IQD` : 'لا يوجد';
+          const refSource = usr.referredBy ? usr.referredBy : 'مباشر';
           container.innerHTML += `
             <div class="admin-user-item">
               <div class="admin-user-info">
                 <span>📱 <strong style="color:var(--accent-gold);">${u}</strong></span>
                 <span>💰 <strong style="color:var(--accent-green);">${Number(usr.balance || 0).toLocaleString()} IQD</strong></span>
               </div>
-              <div style="font-size:11px; margin-bottom:8px; color:#ccc;">الاشتراك: <strong style="color:var(--accent-gold);">${subText}</strong> | الحالة: <strong style="color:${isBanned ? 'var(--accent-red)' : 'var(--accent-green)'};">${isBanned ? 'محظور 🚫' : 'نشط ✓'}</strong></div>
+              <div style="font-size:11px; margin-bottom:4px; color:#ccc;">الاشتراك: <strong style="color:var(--accent-gold);">${subText}</strong> | الحالة: <strong style="color:${isBanned ? 'var(--accent-red)' : 'var(--accent-green)'};">${isBanned ? 'محظور 🚫' : 'نشط ✓'}</strong></div>
+              <div style="font-size:11px; margin-bottom:8px; color:#9ca3af;">المُحيل (الدعوة): <strong style="color:var(--accent-blue);">${refSource}</strong></div>
               <div class="admin-actions" style="flex-direction:column; gap:6px;">
                 <div style="display:flex; gap:6px;">
                   <input type="number" id="amt_${u}" placeholder="المبلغ بالدينار" />
@@ -765,13 +777,29 @@
     }
 
     function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-    function openRegisterModal() {
+
+    function openRegisterModal(refCode = '') {
       document.getElementById('regError').style.display = 'none';
       document.getElementById('regUser').value = '';
       document.getElementById('regPass').value = '';
       document.getElementById('regPassConfirm').value = '';
+      
+      const refInput = document.getElementById('regRef');
+      if (refInput) {
+        refInput.value = refCode || '';
+      }
+
+      document.getElementById('loginModal').style.display = 'none';
       document.getElementById('registerModal').style.display = 'flex';
     }
+
+    function closeRegisterModal() {
+      closeModal('registerModal');
+      if (!activeUser) {
+        document.getElementById('loginModal').style.display = 'flex';
+      }
+    }
+
     function openTelegramSupport() { window.open('https://t.me/oosbsu', '_blank'); }
     function downloadRealApp() {
       showToast("📲 جاري بدء تنزيل تطبيق Super Mini...");
@@ -814,26 +842,4 @@
       setTimeout(() => { window.open(`https://t.me/oosbsu?text=${encodeURIComponent(msg)}`, '_blank'); }, 800);
     }
 
-    function logout(userInitiated = true) {
-      if (activeUserListener && activeUser !== ADMIN_CREDENTIAL) {
-        db.ref('users/' + activeUser).off('value', activeUserListener);
-      }
-      activeUser = null;
-      document.getElementById('banModal').style.display = 'none';
-      document.getElementById('appContent').classList.remove('logged-in');
-      document.getElementById('loginModal').style.display = 'flex';
-      document.getElementById('userInput').value = '';
-      document.getElementById('passInput').value = '';
-    }
-
-    let currSlide = 0;
-    setInterval(() => {
-      currSlide = (currSlide + 1) % 3;
-      document.getElementById('slidesTrack').style.transform = `translateX(${currSlide * 100}%)`;
-    }, 4000);
-
-    renderPackages();
-  </script>
-</body>
-</html>
-
+    functi
