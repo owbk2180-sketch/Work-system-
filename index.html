@@ -1029,13 +1029,11 @@
       document.getElementById('regPassConfirm').value = '';
       document.getElementById('registerModal').style.display = 'flex';
     }
-    function openTelegramSupport() { window.open('https://t.me/oosbsu', '_blank'); }
     function downloadRealApp() {
-      showToast("📲 جاري بدء تنزيل تطبيق Super Mini...");
-      const blob = new Blob(["Super Mini APK Binary"], { type: "application/vnd.android.package-archive" });
-      const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = "SuperMini.apk";
-      document.body.appendChild(a); a.click(); document.body.removeChild(a);
-    }
+  showToast("جاري توجيهك لتحميل Super Mini...");
+  window.open('https://appsgeyser.io/20148584/Super%20Mini', '_blank');
+}
+
     function showToast(msg) {
       const t = document.getElementById('toast'); t.innerText = msg; t.style.display = 'block';
       setTimeout(() => { t.style.display = 'none'; }, 3000);
