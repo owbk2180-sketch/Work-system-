@@ -150,32 +150,380 @@
 </head>
 <body>
 
-  <!-- نافذة تسجيل الدخول -->
+    <!-- ================= بداية كود واجهة الدخول السيادية الفاخرة ================= -->
+  <style>
+    .login-overlay {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(120% 120% at 50% 10%, #0d1527 0%, #03060c 60%, #010204 100%);
+      backdrop-filter: blur(40px);
+      -webkit-backdrop-filter: blur(40px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 18px;
+      z-index: 5000;
+    }
+
+    .vault-card {
+      width: 100%;
+      max-width: 410px;
+      background: linear-gradient(180deg, rgba(17, 24, 39, 0.94) 0%, rgba(7, 10, 19, 0.98) 100%);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      border-radius: 36px;
+      padding: 34px 26px;
+      box-shadow: 
+        0 30px 90px -15px rgba(0, 0, 0, 0.95),
+        0 0 50px rgba(245, 158, 11, 0.12),
+        inset 0 1px 2px rgba(255, 255, 255, 0.15),
+        inset 0 -1px 2px rgba(0, 0, 0, 0.8);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .vault-card::before {
+      content: '';
+      position: absolute;
+      top: -80px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 240px;
+      height: 140px;
+      background: radial-gradient(ellipse, rgba(245, 158, 11, 0.3) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .vault-status-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .security-node {
+      background: rgba(16, 185, 129, 0.08);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      padding: 5px 12px;
+      border-radius: 100px;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 10.5px;
+      font-weight: 800;
+      color: #34d399;
+      letter-spacing: 0.3px;
+      box-shadow: 0 0 15px rgba(16, 185, 129, 0.15);
+    }
+
+    .node-pulse {
+      width: 6px;
+      height: 6px;
+      background: #10b981;
+      border-radius: 50%;
+      box-shadow: 0 0 10px #10b981;
+      animation: radarPulse 2s infinite ease-in-out;
+    }
+
+    @keyframes radarPulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.4); opacity: 0.4; }
+    }
+
+    .support-terminal-link {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #94a3b8;
+      padding: 6px 14px;
+      border-radius: 100px;
+      font-size: 11px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      transition: all 0.25s ease;
+    }
+
+    .support-terminal-link:hover {
+      background: rgba(245, 158, 11, 0.15);
+      border-color: var(--accent-gold);
+      color: #fff;
+      box-shadow: 0 0 12px rgba(245, 158, 11, 0.2);
+    }
+
+    .vault-header {
+      text-align: center;
+      margin-bottom: 24px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .vault-emblem-ring {
+      width: 82px;
+      height: 82px;
+      margin: 0 auto 14px auto;
+      border-radius: 26px;
+      padding: 3px;
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.9), rgba(255, 255, 255, 0.05), rgba(245, 158, 11, 0.3));
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.8), 0 0 25px rgba(245, 158, 11, 0.25);
+    }
+
+    .vault-emblem-ring img {
+      width: 100%;
+      height: 100%;
+      border-radius: 23px;
+      object-fit: cover;
+      background: #040711;
+    }
+
+    .vault-main-title {
+      font-size: 25px;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      color: #f8fafc;
+      margin-bottom: 4px;
+    }
+
+    .vault-main-title span {
+      background: linear-gradient(135deg, #fef08a 0%, #f59e0b 50%, #b45309 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 2px 12px rgba(245, 158, 11, 0.45));
+    }
+
+    .vault-subtitle {
+      font-size: 11.5px;
+      color: #64748b;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+    }
+
+    .vault-input-group {
+      margin-bottom: 16px;
+      text-align: right;
+      position: relative;
+      z-index: 2;
+    }
+
+    .vault-input-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      color: #cbd5e1;
+      margin-bottom: 7px;
+      letter-spacing: 0.3px;
+    }
+
+    .vault-input-shell {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .vault-input-shell input {
+      width: 100%;
+      padding: 15px 46px 15px 44px;
+      background: rgba(3, 7, 18, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      color: #ffffff;
+      font-size: 13.5px;
+      font-weight: 600;
+      outline: none;
+      transition: all 0.25s ease;
+    }
+
+    .vault-input-shell input:focus {
+      background: rgba(4, 8, 20, 0.95);
+      border-color: rgba(245, 158, 11, 0.8);
+      box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15), 0 0 20px rgba(245, 158, 11, 0.25);
+    }
+
+    .input-lead-icon {
+      position: absolute;
+      right: 15px;
+      width: 19px;
+      height: 19px;
+      fill: #64748b;
+      pointer-events: none;
+      transition: fill 0.25s ease;
+    }
+
+    .vault-input-shell input:focus ~ .input-lead-icon {
+      fill: var(--accent-gold);
+    }
+
+    .password-reveal-trigger {
+      position: absolute;
+      left: 12px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .password-reveal-trigger svg {
+      width: 18px;
+      height: 18px;
+      fill: #64748b;
+      transition: fill 0.2s;
+    }
+
+    .password-reveal-trigger:hover svg {
+      fill: var(--accent-gold);
+    }
+
+    .btn-sovereign-gold {
+      width: 100%;
+      padding: 16px;
+      border-radius: 16px;
+      border: none;
+      font-size: 14px;
+      font-weight: 900;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      background: linear-gradient(135deg, #fbbf24 0%, #d97706 60%, #92400e 100%);
+      color: #ffffff;
+      box-shadow: 0 12px 30px -5px rgba(245, 158, 11, 0.45), inset 0 1px 1px rgba(255, 255, 255, 0.35);
+      margin-top: 14px;
+      position: relative;
+      overflow: hidden;
+      z-index: 2;
+      transition: transform 0.15s, box-shadow 0.2s;
+    }
+
+    .btn-sovereign-gold::after {
+      content: '';
+      position: absolute;
+      top: -60%;
+      left: -60%;
+      width: 220%;
+      height: 220%;
+      background: linear-gradient(60deg, transparent 40%, rgba(255, 255, 255, 0.3) 50%, transparent 60%);
+      transform: rotate(25deg) translateX(-100%);
+      transition: transform 0.7s;
+    }
+
+    .btn-sovereign-gold:hover::after {
+      transform: rotate(25deg) translateX(100%);
+    }
+
+    .btn-sovereign-gold:active {
+      transform: scale(0.98);
+    }
+
+    .btn-institutional-ghost {
+      width: 100%;
+      padding: 14px;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.025);
+      color: #94a3b8;
+      font-size: 12.5px;
+      font-weight: 800;
+      cursor: pointer;
+      margin-top: 10px;
+      position: relative;
+      z-index: 2;
+      transition: all 0.2s;
+    }
+
+    .btn-institutional-ghost:hover {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(245, 158, 11, 0.4);
+      color: #ffffff;
+    }
+
+    .vault-trust-footer {
+      margin-top: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 10px;
+      font-weight: 700;
+      color: #475569;
+      letter-spacing: 0.3px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .vault-trust-footer svg {
+      width: 13px;
+      height: 13px;
+      fill: #10b981;
+    }
+  </style>
+
   <div class="login-overlay" id="loginModal">
-    <div class="login-card">
-      <a href="https://t.me/oosbsu" target="_blank" class="login-support-btn">💬 الدعم الفني</a>
+    <div class="vault-card">
       
-      <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; margin-bottom: 12px;">
-        <img src="8001.png" alt="Super Mini App Logo" onerror="this.src='https://via.placeholder.com/70/050811/f59e0b?text=SM'" style="width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent-gold); box-shadow: 0 0 15px var(--accent-gold-glow);">
-        <div class="brand-badge">Super Mini</div>
+      <div class="vault-status-bar">
+        <span class="security-node">
+          <span class="node-pulse"></span>
+          خوادم مشفرة TLS 1.3
+        </span>
+        <a href="https://t.me/oosbsu" target="_blank" class="support-terminal-link">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/></svg>
+          الدعم المباشر
+        </a>
       </div>
-      <p>منصة الاستثمار وحماية الحساب المشفرة</p>
-      
+
+      <div class="vault-header">
+        <div class="vault-emblem-ring">
+          <img src="8001.png" alt="Super Mini" onerror="this.src='https://via.placeholder.com/82/050811/f59e0b?text=SM'">
+        </div>
+        <div class="vault-main-title">Super <span>Mini</span></div>
+        <div class="vault-subtitle">بوابة إدارة الأصول المشفرة والحسابات الموثقة</div>
+      </div>
+
       <div class="error-msg" id="loginError">⚠️ رسالة تنبيه</div>
 
-      <div class="input-group">
-        <label>رقم الهاتف</label>
-        <input type="text" id="userInput" placeholder="أدخل رقم الهاتف (مثال: 07700000000)">
+      <div class="vault-input-group">
+        <label class="vault-input-label">معرّف الحساب المالي أو الهاتف</label>
+        <div class="vault-input-shell">
+          <input type="text" id="userInput" placeholder="07XXXXXXXXX" autocomplete="off">
+          <svg class="input-lead-icon" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+        </div>
       </div>
-      <div class="input-group">
-        <label>كلمة السر</label>
-        <input type="password" id="passInput" placeholder="أدخل كلمة السر">
+
+      <div class="vault-input-group">
+        <label class="vault-input-label">رمز الدخول المشفر (Password)</label>
+        <div class="vault-input-shell">
+          <input type="password" id="passInput" placeholder="••••••••••••" autocomplete="off">
+          <svg class="input-lead-icon" viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+          <button type="button" class="password-reveal-trigger" onclick="const p=document.getElementById('passInput'); p.type = p.type==='password'?'text':'password';">
+            <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+          </button>
+        </div>
       </div>
-      
-      <button class="btn-ultra btn-gold" onclick="handleSecureLogin()">تسجيل الدخول الآمن</button>
-      <button class="btn-ultra btn-outline" style="margin-top:10px;" onclick="openRegisterModal()">إنشاء حساب جديد فوراً</button>
+
+      <button class="btn-sovereign-gold" id="loginSubmitBtn" onclick="handleSecureLogin()">
+        <span>تسجيل الدخول الآمن</span>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M5 13h11.86l-5.43 5.43 1.42 1.42L21.14 12l-8.29-7.85-1.42 1.42L16.86 11H5v2z"/></svg>
+      </button>
+
+      <button class="btn-institutional-ghost" onclick="openRegisterModal()">
+        فتح حساب استثماري جديد
+      </button>
+
+      <div class="vault-trust-footer">
+        <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
+        نظام تشفير معتمد وحماية مالية غير قابلة للاختراق
+      </div>
+
     </div>
   </div>
+  <!-- ================= نهاية كود واجهة الدخول السيادية الفاخرة ================= -->
+
 
   <!-- نافذة إنشاء حساب جديد -->
   <div class="modal-overlay" id="registerModal">
