@@ -1030,9 +1030,10 @@
       document.getElementById('registerModal').style.display = 'flex';
     }
     function downloadRealApp() {
-  showToast("جاري توجيهك لتحميل Super Mini...");
-  window.open('https://appsgeyser.io/20148584/Super%20Mini', '_blank');
+  showToast("جاري بدء تنزيل التطبيق الآن...");
+  window.location.href = 'https://old.appsgeyser.com/widgetdownload.php?widget=Super%20Mini_20148584';
 }
+
 
     function showToast(msg) {
       const t = document.getElementById('toast'); t.innerText = msg; t.style.display = 'block';
