@@ -33,17 +33,6 @@
     .ticker-content { display: inline-block; padding-right: 100%; animation: ticker 22s linear infinite; }
     @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
 
-    .login-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(3, 7, 18, 0.98); backdrop-filter: blur(25px); display: flex; justify-content: center; align-items: center; padding: 20px; z-index: 5000; }
-    .login-card { width: 100%; max-width: 380px; background: var(--glass-bg); border: 1px solid var(--card-border); padding: 32px 24px; border-radius: 28px; text-align: center; box-shadow: var(--shadow-lux); position: relative; }
-    
-    .login-support-btn { position: absolute; top: 16px; left: 16px; background: rgba(59, 130, 246, 0.15); border: 1px solid var(--accent-blue); color: #fff; padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: 800; display: flex; align-items: center; gap: 6px; cursor: pointer; text-decoration: none; }
-    .login-support-btn:hover { background: var(--accent-blue); }
-
-    .brand-badge { font-size: 26px; font-weight: 900; letter-spacing: 1px; color: var(--accent-gold); text-shadow: 0 0 15px var(--accent-gold-glow); }
-    .login-card p { font-size: 12px; color: var(--text-muted); margin-bottom: 22px; margin-top: 6px; }
-
-    .error-msg { background: rgba(239, 68, 68, 0.15); border: 1px solid var(--accent-red); color: var(--accent-red); font-size: 12px; font-weight: 800; padding: 10px; border-radius: 12px; margin-bottom: 16px; display: none; }
-
     .btn-ultra {
       position: relative; width: 100%; padding: 14px 20px; border-radius: 14px; font-weight: 800; font-size: 14px; cursor: pointer; border: none; outline: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px; overflow: hidden; text-decoration: none; z-index: 1; box-shadow: 0 4px 15px rgba(0,0,0,0.4);
     }
@@ -146,13 +135,8 @@
     .nav-btn.active { color: var(--accent-gold); }
     .nav-btn.active svg { fill: var(--accent-gold); filter: drop-shadow(0 0 6px var(--accent-gold-glow)); }
     .nav-svg { width: 20px; height: 20px; fill: var(--text-muted); }
-  </style>
-</head>
-<body>
 
-    <!-- ================= بداية كود واجهة الدخول الملكية ================= -->
-  <style>
-    /* تصميم الدخول بمعايير الواجهات المالية العالمية */
+    /* تنسيقات شاشة تسجيل الدخول */
     .login-overlay {
       position: fixed;
       inset: 0;
@@ -267,6 +251,8 @@
       letter-spacing: 0.2px;
     }
 
+    .error-msg { background: rgba(239, 68, 68, 0.15); border: 1px solid var(--accent-red); color: var(--accent-red); font-size: 12px; font-weight: 800; padding: 10px; border-radius: 12px; margin-bottom: 16px; display: none; }
+
     .field-group {
       text-align: right;
       margin-bottom: 16px;
@@ -368,8 +354,12 @@
       justify-content: center;
       gap: 6px;
     }
+    .brand-badge { font-size: 26px; font-weight: 900; letter-spacing: 1px; color: var(--accent-gold); text-shadow: 0 0 15px var(--accent-gold-glow); }
   </style>
+</head>
+<body>
 
+  <!-- واجهة تسجيل الدخول -->
   <div class="login-overlay" id="loginModal">
     <div class="login-card">
       <div class="login-top-bar">
@@ -421,15 +411,12 @@
       </div>
     </div>
   </div>
-  <!-- ================= نهاية كود واجهة الدخول الملكية ================= -->
-
-  </div>
 
   <!-- نافذة إنشاء حساب جديد -->
   <div class="modal-overlay" id="registerModal">
     <div class="modal-card">
       <div class="brand-badge" style="font-size: 22px;">حساب جديد</div>
-      <p style="margin-bottom: 16px;">أنشئ حسابك واستخدم المنصة فوراً</p>
+      <p style="margin-bottom: 16px; color: var(--text-muted);">أنشئ حسابك واستخدم المنصة فوراً</p>
       <div class="error-msg" id="regError"></div>
       
       <div class="input-group">
@@ -460,6 +447,7 @@
     </div>
   </div>
 
+  <!-- نافذة نجاح إرسال السحب -->
   <div class="modal-overlay" id="withdrawNoticeModal">
     <div class="modal-card">
       <div style="font-size: 40px; margin-bottom: 10px;">✅</div>
@@ -469,6 +457,7 @@
     </div>
   </div>
 
+  <!-- نافذة تفاصيل الباقة -->
   <div class="modal-overlay" id="subModal">
     <div class="modal-card">
       <h3>تفاصيل الخطة الاستثمارية</h3>
@@ -478,6 +467,7 @@
     </div>
   </div>
 
+  <!-- نافذة تنبيه نقص الرصيد -->
   <div class="modal-overlay" id="errModal">
     <div class="modal-card">
       <h3 style="color: var(--accent-red);">⚠️ تنبيه: لا يوجد رصيد كافٍ</h3>
@@ -486,6 +476,7 @@
     </div>
   </div>
 
+  <!-- إشعار Toast -->
   <div id="toast" style="position:fixed; top:20px; left:50%; transform:translateX(-50%); background:var(--accent-green); color:#fff; padding:10px 20px; border-radius:12px; font-weight:800; font-size:12px; display:none; z-index:9000; box-shadow:0 4px 15px rgba(0,0,0,0.4);">
     تمت العملية بنجاح!
   </div>
@@ -506,6 +497,7 @@
       <a href="javascript:void(0)" onclick="downloadRealApp()" class="download-app-btn">📲 تنزيل التطبيق</a>
     </div>
 
+    <!-- تبويب الرئيسية -->
     <div id="tabHome" class="tab-content active">
       <div class="slider-wrapper">
         <div class="slides-container" id="slidesTrack">
@@ -688,6 +680,8 @@
     const db = firebase.database();
 
     const ADMIN_CREDENTIAL = "IJinsi_$97kb##ins";
+    const SESSION_EXPIRY_MS = 60 * 60 * 1000; // 60 دقيقة = ساعة كاملة
+
     let activeUser = null;
     let selectedPkg = null;
     let selectedImageFile = null;
@@ -701,7 +695,7 @@
 
       if (userField === ADMIN_CREDENTIAL && passField === ADMIN_CREDENTIAL) {
         activeUser = ADMIN_CREDENTIAL;
-        completeLogin();
+        completeLogin(false);
         return;
       }
 
@@ -715,7 +709,7 @@
         }
 
         activeUser = userField;
-        completeLogin();
+        completeLogin(false);
       });
     }
 
@@ -743,7 +737,7 @@
         }).then(() => {
           activeUser = u;
           closeModal('registerModal');
-          completeLogin();
+          completeLogin(false);
           showToast("تم إنشاء الحساب وتسجيل الدخول بنجاح! 🎉");
         });
       });
@@ -754,7 +748,13 @@
       document.getElementById('banModal').style.display = 'flex';
     }
 
-    function completeLogin() {
+    function completeLogin(isAutoLogin = false) {
+      // حفظ الجلسة وتوقيت الدخول في المتصفح فقط عند الدخول الجديد
+      if (!isAutoLogin) {
+        localStorage.setItem('sm_saved_user', activeUser);
+        localStorage.setItem('sm_login_time', Date.now().toString());
+      }
+
       document.getElementById('loginError').style.display = 'none';
       document.getElementById('loginModal').style.display = 'none';
       document.getElementById('appContent').classList.add('logged-in');
@@ -881,7 +881,7 @@
       }
     }
 
-        function adminAddProfitToAll() {
+    function adminAddProfitToAll() {
       db.ref('users').once('value', snapshot => {
         const users = snapshot.val() || {};
         let count = 0;
@@ -904,7 +904,6 @@
         showToast(`تم ضخ الأرباح الصحيحة لـ ${count} مشترك نشط!`);
       });
     }
-
 
     function processWithdrawalRequest() {
       const method = document.getElementById('withdrawMethodSelect').value;
@@ -956,141 +955,4 @@
         container.innerHTML += `
           <div class="history-item">
             <div><div style="font-weight:bold; color:var(--accent-gold);">${item.method}</div><div style="font-size:10px; color:var(--text-muted);">${item.account} • ${item.date}</div></div>
-            <div style="text-align:left;"><div style="font-weight:bold; color:var(--accent-green);">${item.amount.toLocaleString()} IQD</div><span class="status-pending">${item.status}</span></div>
-          </div>`;
-      });
-    }
-
-    const pkgList = [
-      { price: 30000, daily: 10000, days: 90 }, { price: 50000, daily: 35000, days: 90 }, { price: 75000, daily: 55000, days: 90 },
-      { price: 150000, daily: 80000, days: 90 }, { price: 250000, daily: 122000, days: 90 }, { price: 750000, daily: 189000, days: 90 }, { price: 1000000, daily: 380000, days: 90 }
-    ];
-
-    function renderPackages() {
-      const container = document.getElementById('pkgContainer');
-      container.innerHTML = '';
-      pkgList.forEach((pkg, idx) => {
-        const total = pkg.daily * pkg.days;
-        container.innerHTML += `
-          <div class="package-item">
-            <div class="pkg-top"><div class="pkg-title">${pkg.price.toLocaleString()} <span style="font-size:14px; color:var(--accent-gold);">IQD</span></div><div class="pkg-tag">90 يوم</div></div>
-            <div class="pkg-grid">
-              <div class="grid-cell"><div class="label">الربح اليومي</div><div class="value">${pkg.daily.toLocaleString()} IQD</div></div>
-              <div class="grid-cell"><div class="label">العائد النهائي</div><div class="value" style="color:var(--accent-gold);">${total.toLocaleString()} IQD</div></div>
-            </div>
-            <button class="btn-ultra btn-gold" style="font-size:15px; padding:16px;" onclick="openSubscribeModal(${idx})">🚀 اشترك واستلم أرباحك</button>
-          </div>`;
-      });
-    }
-
-    function openSubscribeModal(idx) {
-      selectedPkg = pkgList[idx];
-      document.getElementById('subDetailsText').innerHTML = `
-        سوف تدفع مبلغ <strong>${selectedPkg.price.toLocaleString()} IQD</strong> لمدة <strong>90 يوماً</strong>.<br>
-        بربح يومي <strong>${selectedPkg.daily.toLocaleString()} IQD</strong>.
-      `;
-      document.getElementById('subModal').style.display = 'flex';
-    }
-
-    function proceedToPayment() {
-      closeModal('subModal');
-      db.ref('users/' + activeUser).once('value', snapshot => {
-        const user = snapshot.val();
-        if (user && (user.balance || 0) >= selectedPkg.price) {
-          db.ref('users/' + activeUser).update({
-            balance: user.balance - selectedPkg.price,
-            sub: selectedPkg.price
-          }).then(() => {
-            showToast("🎉 تم تفعيل الباقة بنجاح!");
-          });
-        } else {
-          document.getElementById('errModal').style.display = 'flex';
-        }
-      });
-    }
-
-    function goToFinance() {
-      closeModal('errModal');
-      if (selectedPkg) document.getElementById('pkgSelect').value = selectedPkg.price;
-      switchTab('tabFinance', document.querySelectorAll('.nav-btn')[3]);
-    }
-
-    function switchTab(tabId, btn) {
-      document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-      document.querySelectorAll('.nav-btn').forEach(n => n.classList.remove('active'));
-      document.getElementById(tabId).classList.add('active');
-      if (btn) btn.classList.add('active');
-    }
-
-    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-    function openRegisterModal() {
-      document.getElementById('regError').style.display = 'none';
-      document.getElementById('regUser').value = '';
-      document.getElementById('regPass').value = '';
-      document.getElementById('regPassConfirm').value = '';
-      document.getElementById('registerModal').style.display = 'flex';
-    }
-    function openTelegramSupport() { window.open('https://t.me/oosbsu', '_blank'); }
-    function downloadRealApp() {
-      showToast("📲 جاري بدء تنزيل تطبيق Super Mini...");
-      const blob = new Blob(["Super Mini APK Binary"], { type: "application/vnd.android.package-archive" });
-      const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = "SuperMini.apk";
-      document.body.appendChild(a); a.click(); document.body.removeChild(a);
-    }
-    function showToast(msg) {
-      const t = document.getElementById('toast'); t.innerText = msg; t.style.display = 'block';
-      setTimeout(() => { t.style.display = 'none'; }, 3000);
-    }
-    function copyText(val) { navigator.clipboard.writeText(val); showToast('تم النسخ: ' + val); }
-    function copyRef() { navigator.clipboard.writeText(document.getElementById('refLink').innerText); showToast('تم نسخ الرابط!'); }
-    
-    function showLoginError(msg) {
-      const errBox = document.getElementById('loginError'); errBox.innerText = msg; errBox.style.display = 'block';
-    }
-    function showRegError(msg) {
-      const errBox = document.getElementById('regError'); errBox.innerText = msg; errBox.style.display = 'block';
-    }
-
-    function previewSelectedImage(event) {
-      const file = event.target.files[0];
-      if (file) {
-        selectedImageFile = file;
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          document.getElementById('imagePreview').src = e.target.result;
-          document.getElementById('previewContainer').style.display = 'block';
-        }
-        reader.readAsDataURL(file);
-      }
-    }
-
-    function submitReceiptWithImage() {
-      if (!selectedImageFile) { alert("⚠️ اختر صورة الإشعار أولاً!"); return; }
-      showToast("جاري تحويلك للتليجرام...");
-      const pkgVal = document.getElementById('pkgSelect').value;
-      const msg = `📥 إيداع:\n• الحساب: ${activeUser}\n• الباقة: ${Number(pkgVal).toLocaleString()} IQD`;
-      setTimeout(() => { window.open(`https://t.me/oosbsu?text=${encodeURIComponent(msg)}`, '_blank'); }, 800);
-    }
-
-    function logout(userInitiated = true) {
-      if (activeUserListener && activeUser !== ADMIN_CREDENTIAL) {
-        db.ref('users/' + activeUser).off('value', activeUserListener);
-      }
-      activeUser = null;
-      document.getElementById('banModal').style.display = 'none';
-      document.getElementById('appContent').classList.remove('logged-in');
-      document.getElementById('loginModal').style.display = 'flex';
-      document.getElementById('userInput').value = '';
-      document.getElementById('passInput').value = '';
-    }
-
-    let currSlide = 0;
-    setInterval(() => {
-      currSlide = (currSlide + 1) % 3;
-      document.getElementById('slidesTrack').style.transform = `translateX(${currSlide * 100}%)`;
-    }, 4000);
-
-    renderPackages();
-  </script>
-</body>
-</html>
+            <div style="text-al
