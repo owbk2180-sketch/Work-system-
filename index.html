@@ -27,11 +27,22 @@
     body { background-color: var(--bg-main); color: var(--text-main); display: flex; justify-content: center; min-height: 100vh; overflow-x: hidden; }
     
     .app-container { width: 100%; max-width: 440px; background: var(--bg-main); position: relative; padding-bottom: 95px; min-height: 100vh; border-left: 1px solid var(--card-border); border-right: 1px solid var(--card-border); display: none; }
-    .app-container.logged-in { display: block !important; }
+    .app-container.logged-in { display: block; }
 
     .live-ticker { background: linear-gradient(90deg, #090d16, #1e1b4b, #090d16); border-bottom: 1px solid var(--card-border); padding: 8px 0; font-size: 11px; color: var(--accent-gold); overflow: hidden; white-space: nowrap; font-weight: 800; display: flex; }
     .ticker-content { display: inline-block; padding-right: 100%; animation: ticker 22s linear infinite; }
     @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+
+    .login-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(3, 7, 18, 0.98); backdrop-filter: blur(25px); display: flex; justify-content: center; align-items: center; padding: 20px; z-index: 5000; }
+    .login-card { width: 100%; max-width: 380px; background: var(--glass-bg); border: 1px solid var(--card-border); padding: 32px 24px; border-radius: 28px; text-align: center; box-shadow: var(--shadow-lux); position: relative; }
+    
+    .login-support-btn { position: absolute; top: 16px; left: 16px; background: rgba(59, 130, 246, 0.15); border: 1px solid var(--accent-blue); color: #fff; padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: 800; display: flex; align-items: center; gap: 6px; cursor: pointer; text-decoration: none; }
+    .login-support-btn:hover { background: var(--accent-blue); }
+
+    .brand-badge { font-size: 26px; font-weight: 900; letter-spacing: 1px; color: var(--accent-gold); text-shadow: 0 0 15px var(--accent-gold-glow); }
+    .login-card p { font-size: 12px; color: var(--text-muted); margin-bottom: 22px; margin-top: 6px; }
+
+    .error-msg { background: rgba(239, 68, 68, 0.15); border: 1px solid var(--accent-red); color: var(--accent-red); font-size: 12px; font-weight: 800; padding: 10px; border-radius: 12px; margin-bottom: 16px; display: none; }
 
     .btn-ultra {
       position: relative; width: 100%; padding: 14px 20px; border-radius: 14px; font-weight: 800; font-size: 14px; cursor: pointer; border: none; outline: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px; overflow: hidden; text-decoration: none; z-index: 1; box-shadow: 0 4px 15px rgba(0,0,0,0.4);
@@ -135,7 +146,13 @@
     .nav-btn.active { color: var(--accent-gold); }
     .nav-btn.active svg { fill: var(--accent-gold); filter: drop-shadow(0 0 6px var(--accent-gold-glow)); }
     .nav-svg { width: 20px; height: 20px; fill: var(--text-muted); }
+  </style>
+</head>
+<body>
 
+    <!-- ================= بداية كود واجهة الدخول الملكية ================= -->
+  <style>
+    /* تصميم الدخول بمعايير الواجهات المالية العالمية */
     .login-overlay {
       position: fixed;
       inset: 0;
@@ -250,8 +267,6 @@
       letter-spacing: 0.2px;
     }
 
-    .error-msg { background: rgba(239, 68, 68, 0.15); border: 1px solid var(--accent-red); color: var(--accent-red); font-size: 12px; font-weight: 800; padding: 10px; border-radius: 12px; margin-bottom: 16px; display: none; }
-
     .field-group {
       text-align: right;
       margin-bottom: 16px;
@@ -353,12 +368,8 @@
       justify-content: center;
       gap: 6px;
     }
-    .brand-badge { font-size: 26px; font-weight: 900; letter-spacing: 1px; color: var(--accent-gold); text-shadow: 0 0 15px var(--accent-gold-glow); }
   </style>
-</head>
-<body>
 
-  <!-- واجهة تسجيل الدخول -->
   <div class="login-overlay" id="loginModal">
     <div class="login-card">
       <div class="login-top-bar">
@@ -395,7 +406,7 @@
         </div>
       </div>
 
-      <button class="btn-auth-primary" id="mainLoginBtn" onclick="handleSecureLogin()">
+      <button class="btn-auth-primary" onclick="handleSecureLogin()">
         <span>تسجيل الدخول الآمن</span>
         <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M5 13h11.86l-5.43 5.43 1.42 1.42L21.14 12l-8.29-7.85-1.42 1.42L16.86 11H5v2z"/></svg>
       </button>
@@ -410,12 +421,15 @@
       </div>
     </div>
   </div>
+  <!-- ================= نهاية كود واجهة الدخول الملكية ================= -->
+
+  </div>
 
   <!-- نافذة إنشاء حساب جديد -->
   <div class="modal-overlay" id="registerModal">
     <div class="modal-card">
       <div class="brand-badge" style="font-size: 22px;">حساب جديد</div>
-      <p style="margin-bottom: 16px; color: var(--text-muted);">أنشئ حسابك واستخدم المنصة فوراً</p>
+      <p style="margin-bottom: 16px;">أنشئ حسابك واستخدم المنصة فوراً</p>
       <div class="error-msg" id="regError"></div>
       
       <div class="input-group">
@@ -431,7 +445,7 @@
         <input type="password" id="regPassConfirm" placeholder="أعِد كتابة كلمة السر">
       </div>
 
-      <button class="btn-ultra btn-green" id="confirmRegBtn" onclick="handleRegister()">تأكيد وإنشاء الحساب</button>
+      <button class="btn-ultra btn-green" onclick="handleRegister()">تأكيد وإنشاء الحساب</button>
       <button class="btn-ultra btn-outline" style="margin-top:10px;" onclick="closeModal('registerModal')">إلغاء والعودة</button>
     </div>
   </div>
@@ -446,7 +460,6 @@
     </div>
   </div>
 
-  <!-- نافذة نجاح إرسال السحب -->
   <div class="modal-overlay" id="withdrawNoticeModal">
     <div class="modal-card">
       <div style="font-size: 40px; margin-bottom: 10px;">✅</div>
@@ -456,7 +469,6 @@
     </div>
   </div>
 
-  <!-- نافذة تفاصيل الباقة -->
   <div class="modal-overlay" id="subModal">
     <div class="modal-card">
       <h3>تفاصيل الخطة الاستثمارية</h3>
@@ -466,7 +478,6 @@
     </div>
   </div>
 
-  <!-- نافذة تنبيه نقص الرصيد -->
   <div class="modal-overlay" id="errModal">
     <div class="modal-card">
       <h3 style="color: var(--accent-red);">⚠️ تنبيه: لا يوجد رصيد كافٍ</h3>
@@ -475,7 +486,6 @@
     </div>
   </div>
 
-  <!-- إشعار Toast -->
   <div id="toast" style="position:fixed; top:20px; left:50%; transform:translateX(-50%); background:var(--accent-green); color:#fff; padding:10px 20px; border-radius:12px; font-weight:800; font-size:12px; display:none; z-index:9000; box-shadow:0 4px 15px rgba(0,0,0,0.4);">
     تمت العملية بنجاح!
   </div>
@@ -496,7 +506,6 @@
       <a href="javascript:void(0)" onclick="downloadRealApp()" class="download-app-btn">📲 تنزيل التطبيق</a>
     </div>
 
-    <!-- تبويب الرئيسية -->
     <div id="tabHome" class="tab-content active">
       <div class="slider-wrapper">
         <div class="slides-container" id="slidesTrack">
@@ -660,70 +669,54 @@
     </div>
   </div>
 
-  <script>
-    const ADMIN_CREDENTIAL = "IJinsi_$97kb##ins";
-    const SESSION_EXPIRY_MS = 60 * 60 * 1000; // 60 دقيقة = ساعة كاملة
+  <!-- مكتبات Firebase السحابية الرسمية -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyCz7kMpA8v04XZY9VYWAYS_WEuYTQst46w",
+      authDomain: "superminiapp-55204.firebaseapp.com",
+      databaseURL: "https://superminiapp-55204-default-rtdb.firebaseio.com",
+      projectId: "superminiapp-55204",
+      storageBucket: "superminiapp-55204.appspot.com",
+      messagingSenderId: "485993240803",
+      appId: "1:485993240803:web:c59be6938fb92da78cddb"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    const ADMIN_CREDENTIAL = "IJinsi_$97kb##ins";
     let activeUser = null;
     let selectedPkg = null;
     let selectedImageFile = null;
+    let activeUserListener = null;
 
-    // دوال إدارة الحسابات محلياً بدون أي اعتماد على سيرفر خارجي
-    function getStoredUsers() {
-      try {
-        return JSON.parse(localStorage.getItem('sm_app_users') || '{}');
-      } catch(e) { return {}; }
-    }
-
-    function saveAllUsers(usersObj) {
-      try {
-        localStorage.setItem('sm_app_users', JSON.stringify(usersObj));
-      } catch(e) {}
-    }
-
-    // زر تسجيل الدخول: استجابة فورية 100% دون أي تعليق
     function handleSecureLogin() {
-      let userField = document.getElementById('userInput').value.trim();
-      let passField = document.getElementById('passInput').value.trim();
+      const userField = document.getElementById('userInput').value.trim();
+      const passField = document.getElementById('passInput').value.trim();
 
-      // الدخول للأدمن
+      if (!userField || !passField) { showLoginError("⚠️ يرجى كتابة الرقم وكلمة السر!"); return; }
+
       if (userField === ADMIN_CREDENTIAL && passField === ADMIN_CREDENTIAL) {
         activeUser = ADMIN_CREDENTIAL;
-        completeLogin(false);
-        showToast("تم الدخول إلى لوحة الإدارة 👑");
+        completeLogin();
         return;
       }
 
-      // إذا ترك الحقول فارغة، يدخل برقم افتراضي فوراً
-      if (!userField) {
-        userField = "07801234567";
-      }
+      db.ref('users/' + userField).once('value', snapshot => {
+        const userData = snapshot.val();
+        if (!userData) { showLoginError("⚠️ هذا الحساب غير موجود! سجل حساباً أولاً."); return; }
+        if (userData.pass !== passField) { showLoginError("⚠️ كلمة السر غير صحيحة!"); return; }
+        if (userData.status === 'banned') {
+          showBanScreen(userData.banReason || "تم حظر حسابك لمخالفة الشروط.");
+          return;
+        }
 
-      const users = getStoredUsers();
-
-      // فحص الحظر
-      if (users[userField] && users[userField].status === 'banned') {
-        showBanScreen(users[userField].banReason || "تم حظر حسابك لمخالفة الشروط.");
-        return;
-      }
-
-      // إنشاء وتفعيل الحساب مباشرة
-      if (!users[userField]) {
-        users[userField] = {
-          pass: passField || "123456",
-          balance: 0,
-          status: 'active',
-          banReason: '',
-          sub: 0,
-          createdAt: new Date().toLocaleDateString('ar-IQ'),
-          withdraws: []
-        };
-        saveAllUsers(users);
-      }
-
-      activeUser = userField;
-      completeLogin(false);
-      showToast("تم تسجيل الدخول بنجاح! 🎉");
+        activeUser = userField;
+        completeLogin();
+      });
     }
 
     function handleRegister() {
@@ -734,22 +727,26 @@
       if (!u || !p1 || !p2) { showRegError("⚠️ يرجى ملء كافة الحقول!"); return; }
       if (p1 !== p2) { showRegError("⚠️ كلمات السر غير متطابقة!"); return; }
 
-      const users = getStoredUsers();
-      users[u] = {
-        pass: p1,
-        balance: 0,
-        status: 'active',
-        banReason: '',
-        sub: 0,
-        createdAt: new Date().toLocaleDateString('ar-IQ'),
-        withdraws: []
-      };
-      saveAllUsers(users);
+      db.ref('users/' + u).once('value', snapshot => {
+        if (snapshot.exists()) {
+          showRegError("⚠️ الرقم مسجل بالفعل! سجل الدخول مباشرة.");
+          return;
+        }
 
-      activeUser = u;
-      closeModal('registerModal');
-      completeLogin(false);
-      showToast("تم إنشاء الحساب وتسجيل الدخول بنجاح! 🎉");
+        db.ref('users/' + u).set({
+          pass: p1,
+          balance: 0,
+          status: 'active',
+          banReason: '',
+          sub: 0,
+          createdAt: new Date().toLocaleDateString('ar-IQ')
+        }).then(() => {
+          activeUser = u;
+          closeModal('registerModal');
+          completeLogin();
+          showToast("تم إنشاء الحساب وتسجيل الدخول بنجاح! 🎉");
+        });
+      });
     }
 
     function showBanScreen(reason) {
@@ -757,19 +754,10 @@
       document.getElementById('banModal').style.display = 'flex';
     }
 
-    function completeLogin(isSessionRestored = false) {
-      // حفظ الجلسة وموعد الدخول
-      if (!isSessionRestored) {
-        localStorage.setItem('sm_auth_user', activeUser);
-        localStorage.setItem('sm_auth_time', Date.now().toString());
-      }
-
+    function completeLogin() {
       document.getElementById('loginError').style.display = 'none';
       document.getElementById('loginModal').style.display = 'none';
-      
-      const app = document.getElementById('appContent');
-      app.classList.add('logged-in');
-      app.style.display = 'block';
+      document.getElementById('appContent').classList.add('logged-in');
 
       if (activeUser === ADMIN_CREDENTIAL) {
         setupAdminDashboard();
@@ -777,9 +765,22 @@
         document.getElementById('adminPanel').style.display = 'none';
         document.getElementById('vipBadge').innerText = 'حساب VIP';
 
-        const users = getStoredUsers();
-        const userData = users[activeUser] || { balance: 0, sub: 0, withdraws: [] };
-        updateUserData(userData);
+        if (activeUserListener) {
+          db.ref('users/' + activeUser).off('value', activeUserListener);
+        }
+
+        activeUserListener = db.ref('users/' + activeUser).on('value', snapshot => {
+          const data = snapshot.val();
+          if (!data) return;
+
+          if (data.status === 'banned') {
+            logout(false);
+            showBanScreen(data.banReason || "تم حظر حسابك من قبل الإدارة.");
+            return;
+          }
+
+          updateUserData(data);
+        });
       }
     }
 
@@ -815,37 +816,40 @@
       document.getElementById('profId').innerText = "ADMIN";
       document.getElementById('profName').innerText = "المشرف العام";
 
-      const users = getStoredUsers();
-      const container = document.getElementById('adminUserList');
-      const userKeys = Object.keys(users).filter(k => k !== ADMIN_CREDENTIAL);
-      
-      container.innerHTML = `<div style="color:var(--accent-gold); font-weight:900; margin-bottom:12px; text-align:center;">📊 عدد المشتركين: ${userKeys.length} مستخدم</div>`;
+      db.ref('users').on('value', snapshot => {
+        const users = snapshot.val() || {};
+        const container = document.getElementById('adminUserList');
+        const userKeys = Object.keys(users).filter(k => k !== ADMIN_CREDENTIAL);
+        const totalUsers = userKeys.length;
 
-      userKeys.forEach(u => {
-        const usr = users[u];
-        const isBanned = usr.status === 'banned';
-        const subText = usr.sub ? `باقة ${Number(usr.sub).toLocaleString()} IQD` : 'لا يوجد';
-        container.innerHTML += `
-          <div class="admin-user-item">
-            <div class="admin-user-info">
-              <span>📱 <strong style="color:var(--accent-gold);">${u}</strong></span>
-              <span>💰 <strong style="color:var(--accent-green);">${Number(usr.balance || 0).toLocaleString()} IQD</strong></span>
-            </div>
-            <div style="font-size:11px; margin-bottom:8px; color:#ccc;">الاشتراك: <strong style="color:var(--accent-gold);">${subText}</strong> | الحالة: <strong style="color:${isBanned ? 'var(--accent-red)' : 'var(--accent-green)'};">${isBanned ? 'محظور 🚫' : 'نشط ✓'}</strong></div>
-            <div class="admin-actions" style="flex-direction:column; gap:6px;">
-              <div style="display:flex; gap:6px;">
-                <input type="number" id="amt_${u}" placeholder="المبلغ بالدينار" />
-                <button class="btn-ultra btn-green" style="padding:6px 12px; font-size:11px;" onclick="modifyBalance('${u}', 'add')">شحن (+)</button>
-                <button class="btn-ultra btn-red" style="padding:6px 12px; font-size:11px;" onclick="modifyBalance('${u}', 'sub')">خصم (-)</button>
+        container.innerHTML = `<div style="color:var(--accent-gold); font-weight:900; margin-bottom:12px; text-align:center;">📊 عدد المستخدمين الحقيقيين: ${totalUsers} مستخدم</div>`;
+
+        userKeys.forEach(u => {
+          const usr = users[u];
+          const isBanned = usr.status === 'banned';
+          const subText = usr.sub ? `باقة ${Number(usr.sub).toLocaleString()} IQD` : 'لا يوجد';
+          container.innerHTML += `
+            <div class="admin-user-item">
+              <div class="admin-user-info">
+                <span>📱 <strong style="color:var(--accent-gold);">${u}</strong></span>
+                <span>💰 <strong style="color:var(--accent-green);">${Number(usr.balance || 0).toLocaleString()} IQD</strong></span>
               </div>
-              <div style="display:flex; gap:6px; margin-top:4px;">
-                <input type="text" id="reason_${u}" placeholder="سبب الحظر مع التنبيه" value="${usr.banReason || ''}" />
-                <button class="btn-ultra ${isBanned ? 'btn-green' : 'btn-red'}" style="padding:6px 10px; font-size:11px;" onclick="toggleBan('${u}', '${usr.status}')">
-                  ${isBanned ? 'فك الحظر' : 'حظر الحساب'}
-                </button>
+              <div style="font-size:11px; margin-bottom:8px; color:#ccc;">الاشتراك: <strong style="color:var(--accent-gold);">${subText}</strong> | الحالة: <strong style="color:${isBanned ? 'var(--accent-red)' : 'var(--accent-green)'};">${isBanned ? 'محظور 🚫' : 'نشط ✓'}</strong></div>
+              <div class="admin-actions" style="flex-direction:column; gap:6px;">
+                <div style="display:flex; gap:6px;">
+                  <input type="number" id="amt_${u}" placeholder="المبلغ بالدينار" />
+                  <button class="btn-ultra btn-green" style="padding:6px 12px; font-size:11px;" onclick="modifyBalance('${u}', 'add')">شحن (+)</button>
+                  <button class="btn-ultra btn-red" style="padding:6px 12px; font-size:11px;" onclick="modifyBalance('${u}', 'sub')">خصم (-)</button>
+                </div>
+                <div style="display:flex; gap:6px; margin-top:4px;">
+                  <input type="text" id="reason_${u}" placeholder="سبب الحظر مع التنبيه" value="${usr.banReason || ''}" />
+                  <button class="btn-ultra ${isBanned ? 'btn-green' : 'btn-red'}" style="padding:6px 10px; font-size:11px;" onclick="toggleBan('${u}', '${usr.status}')">
+                    ${isBanned ? 'فك الحظر' : 'حظر الحساب'}
+                  </button>
+                </div>
               </div>
-            </div>
-          </div>`;
+            </div>`;
+        });
       });
     }
 
@@ -854,53 +858,53 @@
       const amt = parseFloat(amtInput.value);
       if (isNaN(amt) || amt <= 0) { alert("⚠️ أدخل مبلغاً صحيحاً!"); return; }
 
-      const users = getStoredUsers();
-      if (users[u]) {
-        users[u].balance = action === 'add' ? (users[u].balance || 0) + amt : Math.max(0, (users[u].balance || 0) - amt);
-        saveAllUsers(users);
-      }
-
-      amtInput.value = '';
-      showToast(`تم تحديث رصيد ${u} بنجاح!`);
-      setupAdminDashboard();
+      db.ref('users/' + u + '/balance').transaction(curr => {
+        curr = curr || 0;
+        return action === 'add' ? curr + amt : Math.max(0, curr - amt);
+      }).then(() => {
+        amtInput.value = '';
+        showToast(`تم تحديث رصيد ${u} بنجاح!`);
+      });
     }
 
     function toggleBan(u, currentStatus) {
       const reasonInput = document.getElementById(`reason_${u}`).value.trim();
-      const isCurrentlyBanned = currentStatus === 'banned';
-      const users = getStoredUsers();
-
-      if (users[u]) {
-        users[u].status = isCurrentlyBanned ? 'active' : 'banned';
-        users[u].banReason = isCurrentlyBanned ? '' : (reasonInput || 'تم حظر حسابك لمخالفة القوانين.');
-        saveAllUsers(users);
+      if (currentStatus === 'banned') {
+        db.ref('users/' + u).update({ status: 'active', banReason: '' });
+        showToast('تم إلغاء الحظر عن الحساب');
+      } else {
+        db.ref('users/' + u).update({
+          status: 'banned',
+          banReason: reasonInput || 'تم حظر حسابك لمخالفة القوانين.'
+        });
+        showToast('تم حظر الحساب وإرسال الملاحظة بنجاح');
       }
-
-      showToast(isCurrentlyBanned ? 'تم فك الحظر عن الحساب' : 'تم حظر الحساب بنجاح');
-      setupAdminDashboard();
     }
 
-    function adminAddProfitToAll() {
-      const users = getStoredUsers();
-      let count = 0;
+        function adminAddProfitToAll() {
+      db.ref('users').once('value', snapshot => {
+        const users = snapshot.val() || {};
+        let count = 0;
 
-      Object.keys(users).forEach(u => {
-        if (u === ADMIN_CREDENTIAL) return;
-        const userSub = Number(users[u].sub) || 0;
-        if (userSub > 0) {
-          const matchedPkg = pkgList.find(p => p.price === userSub);
-          const dailyProfit = matchedPkg ? matchedPkg.daily : 0;
-          if (dailyProfit > 0) {
-            users[u].balance = (users[u].balance || 0) + dailyProfit;
-            count++;
+        Object.keys(users).forEach(u => {
+          if (u === ADMIN_CREDENTIAL) return;
+          const userSub = Number(users[u].sub) || 0;
+
+          if (userSub > 0) {
+            const matchedPkg = pkgList.find(p => p.price === userSub);
+            const dailyProfit = matchedPkg ? matchedPkg.daily : 0;
+
+            if (dailyProfit > 0) {
+              db.ref('users/' + u + '/balance').transaction(curr => (Number(curr) || 0) + dailyProfit);
+              count++;
+            }
           }
-        }
-      });
+        });
 
-      saveAllUsers(users);
-      showToast(`تم ضخ الأرباح لـ ${count} مشترك!`);
-      setupAdminDashboard();
+        showToast(`تم ضخ الأرباح الصحيحة لـ ${count} مشترك نشط!`);
+      });
     }
+
 
     function processWithdrawalRequest() {
       const method = document.getElementById('withdrawMethodSelect').value;
@@ -910,59 +914,36 @@
       if (!accountNum) { alert("⚠️ يرجى إدخال الحساب!"); return; }
       if (isNaN(amount) || amount < 10000) { alert("⚠️ الحد الأدنى للسحب 10,000 IQD!"); return; }
 
-      const users = getStoredUsers();
-      const user = users[activeUser] || {};
+      db.ref('users/' + activeUser).once('value', snapshot => {
+        const user = snapshot.val();
+        if (!user || (user.balance || 0) < amount) {
+          alert("⚠️ رصيدك غير كافٍ لإتمام السحب!");
+          return;
+        }
 
-      if ((user.balance || 0) < amount) {
-        alert("⚠️ رصيدك غير كافٍ لإتمام السحب!");
-        return;
-      }
+        const newBal = (user.balance || 0) - amount;
+        const newWithdraw = {
+          id: Math.floor(1000 + Math.random() * 9000),
+          method,
+          account: accountNum,
+          amount,
+          date: new Date().toLocaleDateString('ar-IQ'),
+          status: 'قيد المعالجة'
+        };
 
-      user.balance = (user.balance || 0) - amount;
-      const newWithdraw = {
-        id: Math.floor(1000 + Math.random() * 9000),
-        method,
-        account: accountNum,
-        amount,
-        date: new Date().toLocaleDateString('ar-IQ'),
-        status: 'قيد المعالجة'
-      };
+        const withdraws = user.withdraws || [];
+        withdraws.unshift(newWithdraw);
 
-      user.withdraws = user.withdraws || [];
-      user.withdraws.unshift(newWithdraw);
-      saveAllUsers(users);
-
-      updateUserData(user);
-      document.getElementById('withdrawAccountNum').value = '';
-      document.getElementById('withdrawAmount').value = '';
-      document.getElementById('withdrawNoticeModal').style.display = 'flex';
-    }
-
-    function renderWithdrawHistory(userHistory) {
-      const container = document.getElementById('withdrawHistoryContainer');
-      if (!userHistory || userHistory.length === 0) {
-        container.innerHTML = `<p style="font-size:12px; color:var(--text-muted); text-align:center;">لا توجد عمليات سحب حالياً</p>`;
-        return;
-      }
-      container.innerHTML = '';
-      userHistory.forEach(item => {
-        container.innerHTML += `
-          <div class="history-item">
-            <div><div style="font-weight:bold; color:var(--accent-gold);">${item.method}</div><div style="font-size:10px; color:var(--text-muted);">${item.account} • ${item.date}</div></div>
-            <div style="text-align:left;"><div style="font-weight:bold; color:var(--accent-green);">${item.amount.toLocaleString()} IQD</div><span class="status-pending">${item.status}</span></div>
-          </div>`;
+        db.ref('users/' + activeUser).update({
+          balance: newBal,
+          withdraws: withdraws
+        }).then(() => {
+          document.getElementById('withdrawAccountNum').value = '';
+          document.getElementById('withdrawAmount').value = '';
+          document.getElementById('withdrawNoticeModal').style.display = 'flex';
+        });
       });
     }
 
-    const pkgList = [
-      { price: 30000, daily: 10000, days: 90 }, { price: 50000, daily: 35000, days: 90 }, { price: 75000, daily: 55000, days: 90 },
-      { price: 150000, daily: 80000, days: 90 }, { price: 250000, daily: 122000, days: 90 }, { price: 750000, daily: 189000, days: 90 }, { price: 1000000, daily: 380000, days: 90 }
-    ];
-
-    function renderPackages() {
-      const container = document.getElementById('pkgContainer');
-      container.innerHTML = '';
-      pkgList.forEach((pkg, idx) => {
-        const total = pkg.daily * pkg.days;
-        container.innerHTML += `
-          <div class=
+    function renderWithdrawHistory(userHistory) {
+      const containe
