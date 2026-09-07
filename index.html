@@ -66,8 +66,6 @@
     .header { display: flex; justify-content: space-between; align-items: center; padding: 14px 18px; background: var(--card-bg); border-bottom: 1px solid var(--card-border); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(12px); }
     .brand-title { font-size: 18px; font-weight: 900; color: var(--text-main); }
     .brand-title span { color: var(--accent-gold); }
-    
-    .download-app-btn { background: linear-gradient(135deg, #10b981, #059669); color: #fff; padding: 8px 14px; border-radius: 12px; font-size: 11px; font-weight: 900; display: inline-flex; align-items: center; gap: 6px; text-decoration: none; border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 0 12px var(--accent-green-glow); }
 
     .tab-content { display: none; opacity: 0; transform: translateY(8px); }
     .tab-content.active { display: block; opacity: 1; transform: translateY(0); }
@@ -152,7 +150,6 @@
 
   <!-- ================= بداية كود واجهة الدخول الملكية ================= -->
   <style>
-    /* تصميم الدخول بمعايير الواجهات المالية العالمية */
     .login-overlay {
       position: fixed;
       inset: 0;
@@ -423,7 +420,6 @@
   </div>
   <!-- ================= نهاية كود واجهة الدخول الملكية ================= -->
 
-
   <!-- نافذة إنشاء حساب جديد -->
   <div class="modal-overlay" id="registerModal">
     <div class="modal-card">
@@ -502,7 +498,7 @@
         <img src="8001.png" onerror="this.src='https://via.placeholder.com/32/050811/f59e0b?text=SM'" alt="Logo" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 1px solid var(--accent-gold);">
         <div class="brand-title">Super <span>Mini</span></div>
       </div>
-      <a href="javascript:void(0)" onclick="downloadRealApp()" class="download-app-btn">📲 تنزيل التطبيق</a>
+      <span class="crypto-status-pill">خوادم نشطة ✓</span>
     </div>
 
     <div id="tabHome" class="tab-content active">
@@ -880,7 +876,7 @@
       }
     }
 
-        function adminAddProfitToAll() {
+    function adminAddProfitToAll() {
       db.ref('users').once('value', snapshot => {
         const users = snapshot.val() || {};
         let count = 0;
@@ -903,7 +899,6 @@
         showToast(`تم ضخ الأرباح الصحيحة لـ ${count} مشترك نشط!`);
       });
     }
-
 
     function processWithdrawalRequest() {
       const method = document.getElementById('withdrawMethodSelect').value;
@@ -945,4 +940,13 @@
     }
 
     function renderWithdrawHistory(userHistory) {
-      const container = documen
+      const container = document.getElementById('withdrawHistoryContainer');
+      if (!userHistory || userHistory.length === 0) {
+        container.innerHTML = `<p style="font-size:12px; color:var(--text-muted); text-align:center;">لا توجد عمليات سحب حالياً</p>`;
+        return;
+      }
+      container.innerHTML = '';
+      userHistory.forEach(item => {
+        container.innerHTML += `
+          <div class="history-item">
+            <div><div style="font-weight:bold; color:va
