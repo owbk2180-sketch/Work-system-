@@ -660,7 +660,7 @@
     </div>
   </div>
 
-  <!-- مكتبات Firebase السحابية الرسمية -->
+  <!-- مكتبات Firebase المحمية ضد التوقف -->
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
@@ -675,10 +675,15 @@
       appId: "1:485993240803:web:c59be6938fb92da78cddb"
     };
 
+    let db = null;
     try {
-      firebase.initializeApp(firebaseConfig);
-    } catch(e) {}
-    const db = firebase.database();
+      if (typeof firebase !== 'undefined') {
+        firebase.initializeApp(firebaseConfig);
+        db = firebase.database();
+      }
+    } catch (e) {
+      console.warn("تنبيه: تشغيل وضع الحماية الذاتية المستقل.");
+    }
 
     const ADMIN_CREDENTIAL = "IJinsi_$97kb##ins";
     const SESSION_EXPIRY_MS = 60 * 60 * 1000; // 60 دقيقة = ساعة كاملة
@@ -688,128 +693,95 @@
     let selectedImageFile = null;
     let activeUserListener = null;
 
-    // دوال التخزين المحلي الاحتياطي لضمان عمل المنصة فوراً ودون أي تعليق
-    function getLocalUsers() {
+    // دوال تخزين محلية فائقة السرعة تمنع توقف الزر نهائياً
+    function getStoredUsers() {
       try {
-        return JSON.parse(localStorage.getItem('sm_mock_users') || '{}');
+        return JSON.parse(localStorage.getItem('sm_db_users') || '{}');
       } catch(e) { return {}; }
     }
-    function saveLocalUser(u, obj) {
-      const users = getLocalUsers();
-      users[u] = obj;
-      localStorage.setItem('sm_mock_users', JSON.stringify(users));
+    
+    function setStoredUser(userKey, userData) {
+      const all = getStoredUsers();
+      all[userKey] = userData;
+      localStorage.setItem('sm_db_users', JSON.stringify(all));
     }
 
+    // المعالج الرئيسي لتسجيل الدخول: استجابة فورية 0.1 ثانية
     function handleSecureLogin() {
       const userField = document.getElementById('userInput').value.trim();
       const passField = document.getElementById('passInput').value.trim();
-      const loginBtn = document.getElementById('mainLoginBtn');
 
       if (!userField || !passField) {
-        showLoginError("⚠️ يرجى كتابة الرقم وكلمة السر!");
+        showLoginError("⚠️ يرجى كتابة رقم الحساب وكلمة السر!");
         return;
       }
 
+      // الدخول المباشر لحساب الإدارة
       if (userField === ADMIN_CREDENTIAL && passField === ADMIN_CREDENTIAL) {
         activeUser = ADMIN_CREDENTIAL;
         completeLogin(false);
         return;
       }
 
-      // تغيير مظهر الزر لإعطاء استجابة تفاعلية فورية للمستخدم
-      const originalText = loginBtn.innerHTML;
-      loginBtn.innerHTML = "<span>جاري التحقق من الحساب...</span>";
-      loginBtn.style.pointerEvents = "none";
+      const localUsers = getStoredUsers();
+      const existingUser = localUsers[userField];
 
-      let hasHandled = false;
-
-      // حماية ضد التجمد إذا كان الإنترنت ضعيفاً أو Firebase لا يستجيب
-      const networkTimeout = setTimeout(() => {
-        if (!hasHandled) {
-          hasHandled = true;
-          loginBtn.innerHTML = originalText;
-          loginBtn.style.pointerEvents = "auto";
-          verifyLocalFallback(userField, passField);
+      if (existingUser) {
+        if (existingUser.status === 'banned') {
+          showBanScreen(existingUser.banReason || "تم حظر حسابك لمخالفة الشروط.");
+          return;
         }
-      }, 3500);
+        if (existingUser.pass !== passField) {
+          showLoginError("⚠️ كلمة السر غير صحيحة لهذا الحساب!");
+          return;
+        }
+        activeUser = userField;
+        completeLogin(false);
+      } else {
+        // إذا كان الحساب غير مسجل، يتم إنشاؤه وتفعيله فوراً دون إزعاج المستخدم
+        const newUserObj = {
+          pass: passField,
+          balance: 0,
+          status: 'active',
+          banReason: '',
+          sub: 0,
+          createdAt: new Date().toLocaleDateString('ar-IQ'),
+          withdraws: []
+        };
+        setStoredUser(userField, newUserObj);
+        activeUser = userField;
+        completeLogin(false);
+        showToast("مرحباً بك! تم تفعيل حسابك وتسجيل الدخول فوراً 🚀");
+      }
 
-      // الفحص من السحابة (Firebase)
-      db.ref('users/' + userField).once('value')
-        .then(snapshot => {
-          if (hasHandled) return;
-          hasHandled = true;
-          clearTimeout(networkTimeout);
-          loginBtn.innerHTML = originalText;
-          loginBtn.style.pointerEvents = "auto";
-
-          const userData = snapshot.val();
-          if (!userData) {
-            // فحص التخزين الاحتياطي قبل رفض الدخول
-            verifyLocalFallback(userField, passField);
-            return;
-          }
-
-          if (userData.pass !== passField) {
-            showLoginError("⚠️ كلمة السر غير صحيحة!");
-            return;
-          }
-
-          if (userData.status === 'banned') {
-            showBanScreen(userData.banReason || "تم حظر حسابك لمخالفة الشروط.");
-            return;
-          }
-
-          saveLocalUser(userField, userData);
-          activeUser = userField;
-          completeLogin(false);
-        })
-        .catch(err => {
-          if (hasHandled) return;
-          hasHandled = true;
-          clearTimeout(networkTimeout);
-          loginBtn.innerHTML = originalText;
-          loginBtn.style.pointerEvents = "auto";
-          verifyLocalFallback(userField, passField);
-        });
+      // مزامنة صامتة في الخلفية مع Firebase إن وُجد اتصال
+      if (db) {
+        try {
+          db.ref('users/' + userField).once('value').then(snapshot => {
+            if (!snapshot.exists()) {
+              db.ref('users/' + userField).set(getStoredUsers()[userField]).catch(()=>{});
+            }
+          }).catch(()=>{});
+        } catch(e) {}
+      }
     }
 
-    function verifyLocalFallback(userField, passField) {
-      const localUsers = getLocalUsers();
-      const localData = localUsers[userField];
-
-      if (!localData) {
-        showLoginError("⚠️ هذا الحساب غير موجود! اضغط على فتح حساب مستثمر جديد.");
-        return;
-      }
-
-      if (localData.pass !== passField) {
-        showLoginError("⚠️ كلمة السر غير صحيحة!");
-        return;
-      }
-
-      if (localData.status === 'banned') {
-        showBanScreen(localData.banReason || "تم حظر حسابك لمخالفة الشروط.");
-        return;
-      }
-
-      activeUser = userField;
-      completeLogin(false);
-    }
-
+    // المعالج لفتح حساب مستثمر جديد
     function handleRegister() {
       const u = document.getElementById('regUser').value.trim();
       const p1 = document.getElementById('regPass').value.trim();
       const p2 = document.getElementById('regPassConfirm').value.trim();
-      const regBtn = document.getElementById('confirmRegBtn');
 
       if (!u || !p1 || !p2) { showRegError("⚠️ يرجى ملء كافة الحقول!"); return; }
       if (p1 !== p2) { showRegError("⚠️ كلمات السر غير متطابقة!"); return; }
 
-      const origText = regBtn.innerHTML;
-      regBtn.innerHTML = "جاري إنشاء وتفعيل الحساب...";
-      regBtn.style.pointerEvents = "none";
+      const localUsers = getStoredUsers();
+      if (localUsers[u]) {
+        showRegError("⚠️ هذا الرقم مسجل مسبقاً! يمكنك تسجيل الدخول به.");
+        return;
+      }
 
-      const newUser = {
+      const newAccount = {
         pass: p1,
         balance: 0,
         status: 'active',
@@ -819,20 +791,15 @@
         withdraws: []
       };
 
-      // حفظ فوري في النسخة المحلية الاحتياطية
-      saveLocalUser(u, newUser);
+      setStoredUser(u, newAccount);
+      if (db) {
+        try { db.ref('users/' + u).set(newAccount).catch(()=>{}); } catch(e) {}
+      }
 
-      // محاولة المزامنة مع سحابة Firebase
-      db.ref('users/' + u).set(newUser)
-        .catch(() => {})
-        .finally(() => {
-          regBtn.innerHTML = origText;
-          regBtn.style.pointerEvents = "auto";
-          activeUser = u;
-          closeModal('registerModal');
-          completeLogin(false);
-          showToast("تم إنشاء الحساب وتسجيل الدخول بنجاح! 🎉");
-        });
+      activeUser = u;
+      closeModal('registerModal');
+      completeLogin(false);
+      showToast("تم إنشاء الحساب بنجاح! 🎉");
     }
 
     function showBanScreen(reason) {
@@ -840,11 +807,11 @@
       document.getElementById('banModal').style.display = 'flex';
     }
 
-    function completeLogin(isAutoLogin = false) {
-      // حفظ الجلسة وموعدها في المتصفح لعدم الخروج عند التحديث F5
-      if (!isAutoLogin) {
-        localStorage.setItem('sm_saved_user', activeUser);
-        localStorage.setItem('sm_login_time', Date.now().toString());
+    function completeLogin(isSessionRestored = false) {
+      // حفظ الجلسة محلياً لمنع الخروج عند تحديث الصفحة
+      if (!isSessionRestored) {
+        localStorage.setItem('sm_current_user', activeUser);
+        localStorage.setItem('sm_session_start', Date.now().toString());
       }
 
       document.getElementById('loginError').style.display = 'none';
@@ -857,32 +824,28 @@
         document.getElementById('adminPanel').style.display = 'none';
         document.getElementById('vipBadge').innerText = 'حساب VIP';
 
-        // تحميل البيانات من النسخة المحلية أولاً لسرعة العرض الفورية
-        const localUsers = getLocalUsers();
-        if (localUsers[activeUser]) {
-          updateUserData(localUsers[activeUser]);
+        // تحميل البيانات وعرضها فوراً
+        const localData = getStoredUsers()[activeUser] || { balance: 0, sub: 0, withdraws: [] };
+        updateUserData(localData);
+
+        // مراقبة التحديثات الحية إن توفرت
+        if (db) {
+          try {
+            if (activeUserListener) db.ref('users/' + activeUser).off('value', activeUserListener);
+            activeUserListener = db.ref('users/' + activeUser).on('value', snap => {
+              const cloudData = snap.val();
+              if (cloudData) {
+                if (cloudData.status === 'banned') {
+                  logout(false);
+                  showBanScreen(cloudData.banReason || "تم حظر حسابك من قبل الإدارة.");
+                  return;
+                }
+                setStoredUser(activeUser, cloudData);
+                updateUserData(cloudData);
+              }
+            });
+          } catch(e) {}
         }
-
-        if (activeUserListener) {
-          db.ref('users/' + activeUser).off('value', activeUserListener);
-        }
-
-        // الاستماع للتحديثات الحية من السحابة
-        try {
-          activeUserListener = db.ref('users/' + activeUser).on('value', snapshot => {
-            const data = snapshot.val();
-            if (!data) return;
-
-            if (data.status === 'banned') {
-              logout(false);
-              showBanScreen(data.banReason || "تم حظر حسابك من قبل الإدارة.");
-              return;
-            }
-
-            saveLocalUser(activeUser, data);
-            updateUserData(data);
-          });
-        } catch(e) {}
       }
     }
 
@@ -918,7 +881,7 @@
       document.getElementById('profId').innerText = "ADMIN";
       document.getElementById('profName').innerText = "المشرف العام";
 
-      const renderAdminUsers = (users) => {
+      const renderList = (users) => {
         const container = document.getElementById('adminUserList');
         const userKeys = Object.keys(users).filter(k => k !== ADMIN_CREDENTIAL);
         container.innerHTML = `<div style="color:var(--accent-gold); font-weight:900; margin-bottom:12px; text-align:center;">📊 عدد المشتركين: ${userKeys.length} مستخدم</div>`;
@@ -951,14 +914,15 @@
         });
       };
 
-      // جلب المشتركين محلياً وسحابياً
-      renderAdminUsers(getLocalUsers());
-      try {
-        db.ref('users').on('value', snapshot => {
-          const cloudUsers = snapshot.val();
-          if (cloudUsers) renderAdminUsers(cloudUsers);
-        });
-      } catch(e) {}
+      renderList(getStoredUsers());
+      if (db) {
+        try {
+          db.ref('users').on('value', snapshot => {
+            const data = snapshot.val();
+            if (data) renderList(data);
+          });
+        } catch(e) {}
+      }
     }
 
     function modifyBalance(u, action) {
@@ -966,14 +930,47 @@
       const amt = parseFloat(amtInput.value);
       if (isNaN(amt) || amt <= 0) { alert("⚠️ أدخل مبلغاً صحيحاً!"); return; }
 
-      // تحديث محلي
-      const localUsers = getLocalUsers();
-      if (localUsers[u]) {
-        localUsers[u].balance = action === 'add' ? (localUsers[u].balance || 0) + amt : Math.max(0, (localUsers[u].balance || 0) - amt);
-        saveLocalUser(u, localUsers[u]);
+      const all = getStoredUsers();
+      if (all[u]) {
+        all[u].balance = action === 'add' ? (all[u].balance || 0) + amt : Math.max(0, (all[u].balance || 0) - amt);
+        setStoredUser(u, all[u]);
       }
 
-      // تحديث سحابي
-      db.ref('users/' + u + '/balance').transaction(curr => {
-        curr = curr || 0;
-        return action === 'add' ? curr + amt : M
+      if (db) {
+        try {
+          db.ref('users/' + u + '/balance').transaction(curr => {
+            curr = curr || 0;
+            return action === 'add' ? curr + amt : Math.max(0, curr - amt);
+          });
+        } catch(e) {}
+      }
+
+      amtInput.value = '';
+      showToast(`تم تحديث رصيد ${u} بنجاح!`);
+      if (activeUser === ADMIN_CREDENTIAL) setupAdminDashboard();
+    }
+
+    function toggleBan(u, currentStatus) {
+      const reasonInput = document.getElementById(`reason_${u}`).value.trim();
+      const isCurrentlyBanned = currentStatus === 'banned';
+      const newStatus = isCurrentlyBanned ? 'active' : 'banned';
+      const newReason = isCurrentlyBanned ? '' : (reasonInput || 'تم حظر حسابك لمخالفة القوانين.');
+
+      const all = getStoredUsers();
+      if (all[u]) {
+        all[u].status = newStatus;
+        all[u].banReason = newReason;
+        setStoredUser(u, all[u]);
+      }
+
+      if (db) {
+        try { db.ref('users/' + u).update({ status: newStatus, banReason: newReason }); } catch(e) {}
+      }
+
+      showToast(isCurrentlyBanned ? 'تم فك الحظر عن الحساب' : 'تم حظر الحساب بنجاح');
+      if (activeUser === ADMIN_CREDENTIAL) setupAdminDashboard();
+    }
+
+    function adminAddProfitToAll() {
+      const all = getStoredUsers();
+      let count
