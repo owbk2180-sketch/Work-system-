@@ -1191,6 +1191,37 @@
     }, 4000);
 
     renderPackages();
+        // نظام البقاء مسجلاً لمدة ساعة كاملة
+    const originalCompleteLogin = completeLogin;
+    completeLogin = function() {
+      const oneHour = 60 * 60 * 1000;
+      localStorage.setItem('superMiniUser', activeUser);
+      localStorage.setItem('superMiniExpiry', new Date().getTime() + oneHour);
+      originalCompleteLogin();
+    };
+
+    const originalLogout = logout;
+    logout = function(userInitiated = true) {
+      localStorage.removeItem('superMiniUser');
+      localStorage.removeItem('superMiniExpiry');
+      originalLogout(userInitiated);
+    };
+
+    function checkSession() {
+      const storedUser = localStorage.getItem('superMiniUser');
+      const expiry = localStorage.getItem('superMiniExpiry');
+      if (storedUser && expiry) {
+        if (new Date().getTime() < parseInt(expiry)) {
+          activeUser = storedUser;
+          completeLogin();
+        } else {
+          logout();
+        }
+      }
+    }
+
+    checkSession();
+
   </script>
 </body>
 </html>
