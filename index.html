@@ -253,7 +253,7 @@
     </div>
   </div>
 
-  <!-- شاشة الحظر الكاملة -->
+  <!-- نافذة شاشة الحظر الكاملة -->
   <div class="login-overlay" id="banModal" style="display:none; z-index:9999; background: rgba(5, 0, 0, 0.98);">
     <div class="login-card" style="border-color: var(--accent-red); box-shadow: 0 0 30px rgba(239, 68, 68, 0.4);">
       <div style="font-size: 50px; margin-bottom: 10px;">🚫</div>
@@ -523,7 +523,7 @@
       }
     }
 
-    // التوزيع التلقائي اليومي للمشتركين فقط عند الساعة 12:00 ليلاً
+    // التوزيع التلقائي اليومي للمشتركين حصراً عند الساعة 12:00 ليلاً
     function distributeDailyProfitsToAll() {
       const today = getTodayDateKey();
 
@@ -583,7 +583,7 @@
       document.getElementById(id).style.display = 'none';
     }
 
-    // زر الدخول التفاعلي مع تنبيهات مباشرة وإنشاء تلقائي للحساب
+    // تسجيل الدخول الذكي المرن (يبحث عن رقمك القديم بدقة مهما كانت صيغته)
     function handleSecureLogin() {
       const userField = document.getElementById('userInput').value.trim();
       const passField = document.getElementById('passInput').value.trim();
@@ -602,19 +602,34 @@
 
       btn.disabled = true;
       const originalHTML = btn.innerHTML;
-      btn.innerHTML = "<span>⏳ جاري التحقق من السيرفر...</span>";
+      btn.innerHTML = "<span>⏳ جاري التحقق من حسابك القديم...</span>";
 
-      db.ref('users/' + userField).once('value')
+      db.ref('users').once('value')
         .then(snapshot => {
           btn.disabled = false;
           btn.innerHTML = originalHTML;
 
-          const userData = snapshot.val();
+          const users = snapshot.val() || {};
+          
+          // بحث مرن عن الحساب القديم (مع أو بدون أصفار البداية)
+          let foundKey = Object.keys(users).find(key => key === userField || key === userField.replace(/^0+/, '') || ('0' + key) === userField);
 
-          // إذا لم يجد الرقم مسجلاً، ينشئه ويدخله فوراً
-          if (!userData) {
-            btn.innerHTML = "<span>⏳ جاري تفعيل حسابك الجديد...</span>";
-            return db.ref('users/' + userField).set({
+          if (foundKey) {
+            const userData = users[foundKey];
+            if (userData.pass !== passField) { 
+              alert("⚠️ كلمة السر غير صحيحة لهذا الحساب!"); 
+              return; 
+            }
+            if (userData.status === 'banned') {
+              showBanScreen(userData.banReason || "تم حظر حسابك لمخالفة الشروط.");
+              return;
+            }
+            activeUser = foundKey;
+            completeLogin();
+          } else {
+            // إذا لم يوجد، ينشئه فوراً ويدخله ليتجنب أي تعليق
+            btn.innerHTML = "<span>⏳ جاري تفعيل الحساب...</span>";
+            db.ref('users/' + userField).set({
               pass: passField,
               balance: 0,
               status: 'active',
@@ -626,22 +641,9 @@
               btn.innerHTML = originalHTML;
               activeUser = userField;
               completeLogin();
-              alert("🎉 أهلاً بك! تم إنشاء حسابك الجديد وتسجيل دخولك بنجاح!");
+              alert("🎉 أهلاً بك! تم ربط حسابك وتسجيل دخولك بنجاح.");
             });
           }
-
-          if (userData.pass !== passField) { 
-            alert("⚠️ كلمة السر غير صحيحة لهذا الحساب!"); 
-            return; 
-          }
-
-          if (userData.status === 'banned') {
-            showBanScreen(userData.banReason || "تم حظر حسابك لمخالفة الشروط.");
-            return;
-          }
-
-          activeUser = userField;
-          completeLogin();
         })
         .catch(err => {
           btn.disabled = false;
@@ -783,10 +785,4 @@
 
         container.innerHTML = `<div style="color:var(--accent-gold); font-weight:900; margin-bottom:12px; text-align:center;">📊 عدد المستخدمين الحقيقيين: ${totalUsers} مستخدم</div>`;
 
-        userKeys.forEach(u => {
-          const usr = users[u];
-          const isBanned = usr.status === 'banned';
-          const subText = usr.sub ? `باقة ${Number(usr.sub).toLocaleString()} IQD` : 'لا يوجد';
-          container.innerHTML += `
-            <div class="admin-user-item">
-          
+ 
