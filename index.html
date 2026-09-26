@@ -172,7 +172,7 @@
 </head>
 <body>
 
-  <!-- واجهة الدخول الذكية والتفاعلية -->
+  <!-- واجهة الدخول -->
   <div class="login-overlay" id="loginModal">
     <div class="vault-card">
       <div class="vault-status-bar">
@@ -253,7 +253,7 @@
     </div>
   </div>
 
-  <!-- نافذة شاشة الحظر الكاملة -->
+  <!-- شاشة الحظر الكاملة -->
   <div class="login-overlay" id="banModal" style="display:none; z-index:9999; background: rgba(5, 0, 0, 0.98);">
     <div class="login-card" style="border-color: var(--accent-red); box-shadow: 0 0 30px rgba(239, 68, 68, 0.4);">
       <div style="font-size: 50px; margin-bottom: 10px;">🚫</div>
@@ -583,7 +583,7 @@
       document.getElementById(id).style.display = 'none';
     }
 
-    // تسجيل الدخول الذكي التفاعلي مع تنبيهات مباشرة وإنشاء تلقائي للحساب
+    // زر الدخول التفاعلي مع تنبيهات مباشرة وإنشاء تلقائي للحساب
     function handleSecureLogin() {
       const userField = document.getElementById('userInput').value.trim();
       const passField = document.getElementById('passInput').value.trim();
@@ -611,7 +611,7 @@
 
           const userData = snapshot.val();
 
-          // إذا كان الحساب غير مسجل، يتم إنشاؤه وتفعيله تلقائياً والدخول فوراً
+          // إذا لم يجد الرقم مسجلاً، ينشئه ويدخله فوراً
           if (!userData) {
             btn.innerHTML = "<span>⏳ جاري تفعيل حسابك الجديد...</span>";
             return db.ref('users/' + userField).set({
@@ -787,4 +787,6 @@
           const usr = users[u];
           const isBanned = usr.status === 'banned';
           const subText = usr.sub ? `باقة ${Number(usr.sub).toLocaleString()} IQD` : 'لا يوجد';
-          container.innerHTML +
+          container.innerHTML += `
+            <div class="admin-user-item">
+          
