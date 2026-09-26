@@ -523,7 +523,6 @@
       }
     }
 
-    // التوزيع التلقائي اليومي للمشتركين حصراً عند الساعة 12:00 ليلاً
     function distributeDailyProfitsToAll() {
       const today = getTodayDateKey();
 
@@ -583,7 +582,7 @@
       document.getElementById(id).style.display = 'none';
     }
 
-    // تسجيل الدخول الذكي المرن (يبحث عن رقمك القديم بدقة مهما كانت صيغته)
+    // دالة تسجيل الدخول المحسنة مع رسائل تفاعلية فورية لتأكيد استجابة الأزرار
     function handleSecureLogin() {
       const userField = document.getElementById('userInput').value.trim();
       const passField = document.getElementById('passInput').value.trim();
@@ -602,7 +601,7 @@
 
       btn.disabled = true;
       const originalHTML = btn.innerHTML;
-      btn.innerHTML = "<span>⏳ جاري التحقق من حسابك القديم...</span>";
+      btn.innerHTML = "<span>⏳ جاري الاتصال وجلب حسابك القديم...</span>";
 
       db.ref('users').once('value')
         .then(snapshot => {
@@ -610,8 +609,6 @@
           btn.innerHTML = originalHTML;
 
           const users = snapshot.val() || {};
-          
-          // بحث مرن عن الحساب القديم (مع أو بدون أصفار البداية)
           let foundKey = Object.keys(users).find(key => key === userField || key === userField.replace(/^0+/, '') || ('0' + key) === userField);
 
           if (foundKey) {
@@ -627,29 +624,13 @@
             activeUser = foundKey;
             completeLogin();
           } else {
-            // إذا لم يوجد، ينشئه فوراً ويدخله ليتجنب أي تعليق
-            btn.innerHTML = "<span>⏳ جاري تفعيل الحساب...</span>";
-            db.ref('users/' + userField).set({
-              pass: passField,
-              balance: 0,
-              status: 'active',
-              banReason: '',
-              sub: 0,
-              lastProfitDate: '',
-              createdAt: new Date().toLocaleDateString('ar-IQ')
-            }).then(() => {
-              btn.innerHTML = originalHTML;
-              activeUser = userField;
-              completeLogin();
-              alert("🎉 أهلاً بك! تم ربط حسابك وتسجيل دخولك بنجاح.");
-            });
+            alert("⚠️ هذا الرقم غير مسجل في قاعدة البيانات القديمة! يرجى التأكد من الرقم أو الضغط على فتح حساب جديد.");
           }
         })
         .catch(err => {
           btn.disabled = false;
           btn.innerHTML = originalHTML;
-          alert("⚠️ تعذر الاتصال بقاعدة البيانات:\n" + err.message);
-          console.error(err);
+          alert("⚠️ تعذر الاتصال بـ Firebase:\n" + err.message);
         });
     }
 
@@ -785,4 +766,14 @@
 
         container.innerHTML = `<div style="color:var(--accent-gold); font-weight:900; margin-bottom:12px; text-align:center;">📊 عدد المستخدمين الحقيقيين: ${totalUsers} مستخدم</div>`;
 
- 
+        userKeys.forEach(u => {
+          const usr = users[u];
+          const isBanned = usr.status === 'banned';
+          const subText = usr.sub ? `باقة ${Number(usr.sub).toLocaleString()} IQD` : 'لا يوجد';
+          container.innerHTML += `
+            <div class="admin-user-item">
+              <div class="admin-user-info">
+                <span>📱 <strong style="color:var(--accent-gold);">${u}</strong></span>
+                <span>💰 <strong style="color:var(--accent-green);">${Number(usr.balance || 0).toLocaleString()} IQD</strong></span>
+              </div>
+              <div style="font-size:11px; margin-bottom:8px; color:#ccc;">الاشتراك: <strong style="color:var(--accent-gol
