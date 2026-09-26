@@ -3,65 +3,69 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Super Mini | المنصة المالية المشفرة</title>
+  <title>Super Mini | المنصة المالية المشفرة الفاخرة</title>
   <style>
     :root {
-      --bg-main: #050811;
-      --card-bg: rgba(15, 23, 42, 0.94);
-      --card-border: rgba(245, 158, 11, 0.35);
-      --text-main: #f9fafb;
-      --text-muted: #9ca3af;
+      --bg-main: #030712;
+      --card-bg: rgba(11, 17, 32, 0.95);
+      --card-border: rgba(245, 158, 11, 0.25);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
       --accent-gold: #f59e0b;
-      --accent-gold-glow: rgba(245, 158, 11, 0.5);
+      --accent-gold-glow: rgba(245, 158, 11, 0.4);
       --accent-green: #10b981;
-      --accent-green-glow: rgba(16, 185, 129, 0.5);
-      --accent-blue: #3b82f6;
+      --accent-green-glow: rgba(16, 185, 129, 0.4);
       --accent-red: #ef4444;
       --accent-red-glow: rgba(239, 68, 68, 0.4);
       --qi-color: #fbbc04;
-      --glass-bg: rgba(11, 17, 32, 0.95);
-      --shadow-lux: 0 12px 35px -5px rgba(0, 0, 0, 0.8), 0 0 20px rgba(245, 158, 11, 0.2);
+      --shadow-lux: 0 20px 50px -10px rgba(0, 0, 0, 0.9), 0 0 30px rgba(245, 158, 11, 0.1);
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; transition: all 0.22s ease-in-out; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; transition: all 0.25s ease; }
     body { background-color: var(--bg-main); color: var(--text-main); display: flex; justify-content: center; min-height: 100vh; overflow-x: hidden; }
     
     .app-container { width: 100%; max-width: 440px; background: var(--bg-main); position: relative; padding-bottom: 95px; min-height: 100vh; border-left: 1px solid var(--card-border); border-right: 1px solid var(--card-border); display: none; }
     .app-container.logged-in { display: block; }
 
-    .live-ticker { background: linear-gradient(90deg, #090d16, #1e1b4b, #090d16); border-bottom: 1px solid var(--card-border); padding: 8px 0; font-size: 11px; color: var(--accent-gold); overflow: hidden; white-space: nowrap; font-weight: 800; display: flex; }
-    .ticker-content { display: inline-block; padding-right: 100%; animation: ticker 22s linear infinite; }
+    .live-ticker { background: linear-gradient(90deg, #050b14, #1e1b4b, #050b14); border-bottom: 1px solid var(--card-border); padding: 9px 0; font-size: 11px; color: var(--accent-gold); overflow: hidden; white-space: nowrap; font-weight: 800; display: flex; }
+    .ticker-content { display: inline-block; padding-right: 100%; animation: ticker 25s linear infinite; }
     @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
 
-    .login-overlay { position: fixed; inset: 0; background: radial-gradient(120% 120% at 50% 10%, #0d1527 0%, #03060c 60%, #010204 100%); backdrop-filter: blur(40px); display: flex; justify-content: center; align-items: center; padding: 18px; z-index: 5000; }
-    .vault-card { width: 100%; max-width: 410px; background: linear-gradient(180deg, rgba(17, 24, 39, 0.94) 0%, rgba(7, 10, 19, 0.98) 100%); border: 1px solid rgba(245, 158, 11, 0.35); border-radius: 36px; padding: 34px 26px; box-shadow: 0 30px 90px -15px rgba(0, 0, 0, 0.95); position: relative; overflow: hidden; }
+    /* واجهة الدخول الفاخرة */
+    .login-overlay { position: fixed; inset: 0; background: radial-gradient(circle at 50% 20%, #0f172a 0%, #030712 70%, #010204 100%); backdrop-filter: blur(50px); display: flex; justify-content: center; align-items: center; padding: 20px; z-index: 5000; }
+    .vault-card { width: 100%; max-width: 410px; background: linear-gradient(180deg, rgba(15, 23, 42, 0.95) 0%, rgba(3, 7, 18, 0.99) 100%); border: 1px solid rgba(245, 158, 11, 0.4); border-radius: 38px; padding: 36px 28px; box-shadow: var(--shadow-lux); position: relative; overflow: hidden; }
+    .vault-card::before { content: ''; position: absolute; top: -90px; left: 50%; transform: translateX(-50%); width: 260px; height: 150px; background: radial-gradient(ellipse, rgba(245, 158, 11, 0.25) 0%, transparent 70%); pointer-events: none; }
     
-    .vault-status-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; position: relative; z-index: 2; }
-    .security-node { background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.3); padding: 5px 12px; border-radius: 100px; display: inline-flex; align-items: center; gap: 7px; font-size: 10.5px; font-weight: 800; color: #34d399; }
+    .vault-status-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 26px; position: relative; z-index: 2; }
+    .security-node { background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.3); padding: 6px 14px; border-radius: 100px; display: inline-flex; align-items: center; gap: 8px; font-size: 10.5px; font-weight: 800; color: #34d399; }
     .node-pulse { width: 6px; height: 6px; background: #10b981; border-radius: 50%; box-shadow: 0 0 10px #10b981; animation: radarPulse 2s infinite ease-in-out; }
     @keyframes radarPulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.4); opacity: 0.4; } }
 
-    .support-terminal-link { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); color: #94a3b8; padding: 6px 14px; border-radius: 100px; font-size: 11px; font-weight: 700; text-decoration: none; }
-    .vault-header { text-align: center; margin-bottom: 24px; position: relative; z-index: 2; }
-    .vault-emblem-ring { width: 82px; height: 82px; margin: 0 auto 14px auto; border-radius: 26px; padding: 3px; background: linear-gradient(135deg, rgba(245, 158, 11, 0.9), rgba(255, 255, 255, 0.05)); }
-    .vault-emblem-ring img { width: 100%; height: 100%; border-radius: 23px; object-fit: cover; background: #040711; }
-    .vault-main-title { font-size: 25px; font-weight: 900; color: #f8fafc; margin-bottom: 4px; }
+    .support-terminal-link { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); color: #94a3b8; padding: 6px 14px; border-radius: 100px; font-size: 11px; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 5px; }
+    .support-terminal-link:hover { background: rgba(245, 158, 11, 0.15); border-color: var(--accent-gold); color: #fff; }
+
+    .vault-header { text-align: center; margin-bottom: 26px; position: relative; z-index: 2; }
+    .vault-emblem-ring { width: 84px; height: 84px; margin: 0 auto 14px auto; border-radius: 28px; padding: 3px; background: linear-gradient(135deg, rgba(245, 158, 11, 0.9), rgba(255, 255, 255, 0.05), rgba(245, 158, 11, 0.3)); box-shadow: 0 10px 30px rgba(0,0,0,0.8); }
+    .vault-emblem-ring img { width: 100%; height: 100%; border-radius: 25px; object-fit: cover; background: #030712; }
+    .vault-main-title { font-size: 26px; font-weight: 900; letter-spacing: -0.5px; color: #f8fafc; margin-bottom: 4px; }
     .vault-main-title span { background: linear-gradient(135deg, #fef08a 0%, #f59e0b 50%, #b45309 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     .vault-subtitle { font-size: 11.5px; color: #64748b; font-weight: 700; }
 
-    .vault-input-group { margin-bottom: 16px; text-align: right; position: relative; z-index: 2; }
-    .vault-input-label { display: block; font-size: 11px; font-weight: 800; color: #cbd5e1; margin-bottom: 7px; }
+    .vault-input-group { margin-bottom: 18px; text-align: right; position: relative; z-index: 2; }
+    .vault-input-label { display: block; font-size: 11px; font-weight: 800; color: #cbd5e1; margin-bottom: 8px; }
     .vault-input-shell { position: relative; display: flex; align-items: center; }
-    .vault-input-shell input { width: 100%; padding: 15px 46px 15px 44px; background: rgba(3, 7, 18, 0.75); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; color: #ffffff; font-size: 13.5px; outline: none; }
-    .vault-input-shell input:focus { border-color: rgba(245, 158, 11, 0.8); box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15); }
+    .vault-input-shell input { width: 100%; padding: 15px 46px 15px 44px; background: rgba(2, 6, 23, 0.85); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 18px; color: #ffffff; font-size: 14px; font-weight: 600; outline: none; }
+    .vault-input-shell input:focus { background: rgba(3, 7, 18, 0.98); border-color: rgba(245, 158, 11, 0.8); box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15), 0 0 20px rgba(245, 158, 11, 0.2); }
     .input-lead-icon { position: absolute; right: 15px; width: 19px; height: 19px; fill: #64748b; pointer-events: none; }
 
-    .error-msg { background: rgba(239, 68, 68, 0.15); border: 1px solid var(--accent-red); color: var(--accent-red); font-size: 12px; font-weight: 800; padding: 10px; border-radius: 12px; margin-bottom: 16px; display: none; text-align: center; }
+    .btn-sovereign-gold { width: 100%; padding: 16px; border-radius: 18px; border: none; font-size: 14.5px; font-weight: 900; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 9px; background: linear-gradient(135deg, #fbbf24 0%, #d97706 60%, #92400e 100%); color: #ffffff; box-shadow: 0 12px 30px -5px rgba(245, 158, 11, 0.45); margin-top: 14px; position: relative; z-index: 2; }
+    .btn-sovereign-gold:active { transform: scale(0.98); }
 
-    .btn-sovereign-gold { width: 100%; padding: 16px; border-radius: 16px; border: none; font-size: 14px; font-weight: 900; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 9px; background: linear-gradient(135deg, #fbbf24 0%, #d97706 60%, #92400e 100%); color: #ffffff; box-shadow: 0 12px 30px -5px rgba(245, 158, 11, 0.45); margin-top: 14px; z-index: 10; position: relative; }
-    .btn-institutional-ghost { width: 100%; padding: 14px; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.08); background: rgba(255, 255, 255, 0.025); color: #94a3b8; font-size: 12.5px; font-weight: 800; cursor: pointer; margin-top: 10px; z-index: 10; position: relative; }
+    .btn-institutional-ghost { width: 100%; padding: 14px; border-radius: 18px; border: 1px solid rgba(255, 255, 255, 0.08); background: rgba(255, 255, 255, 0.025); color: #94a3b8; font-size: 13px; font-weight: 800; cursor: pointer; margin-top: 10px; position: relative; z-index: 2; }
+    .btn-institutional-ghost:hover { background: rgba(255, 255, 255, 0.06); color: #fff; border-color: rgba(245, 158, 11, 0.4); }
 
-    .btn-ultra { position: relative; width: 100%; padding: 14px 20px; border-radius: 14px; font-weight: 800; font-size: 14px; cursor: pointer; border: none; outline: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; }
+    /* أزرار وعناصر عامة */
+    .btn-ultra { position: relative; width: 100%; padding: 14px 20px; border-radius: 16px; font-weight: 800; font-size: 14px; cursor: pointer; border: none; outline: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; box-shadow: 0 4px 15px rgba(0,0,0,0.4); }
     .btn-gold { background: linear-gradient(135deg, #f59e0b, #b45309); color: #fff; box-shadow: 0 4px 20px var(--accent-gold-glow); }
     .btn-green { background: linear-gradient(135deg, #10b981, #047857); color: #fff; box-shadow: 0 4px 20px var(--accent-green-glow); }
     .btn-red { background: linear-gradient(135deg, #ef4444, #991b1b); color: #fff; box-shadow: 0 4px 20px var(--accent-red-glow); }
@@ -69,111 +73,118 @@
 
     .input-group { margin-bottom: 16px; text-align: right; }
     .input-group label { display: block; font-size: 11px; font-weight: 700; margin-bottom: 6px; color: var(--text-muted); }
-    .input-group input, .select-css { width: 100%; padding: 14px; border: 1px solid var(--card-border); border-radius: 12px; font-size: 13px; background: rgba(0,0,0,0.6); color: var(--text-main); outline: none; }
+    .input-group input, .select-css { width: 100%; padding: 14px; border: 1px solid var(--card-border); border-radius: 14px; font-size: 13px; background: rgba(2, 6, 23, 0.7); color: var(--text-main); outline: none; }
+    .input-group input:focus, .select-css:focus { border-color: var(--accent-gold); box-shadow: 0 0 12px var(--accent-gold-glow); }
 
-    .header { display: flex; justify-content: space-between; align-items: center; padding: 14px 18px; background: var(--card-bg); border-bottom: 1px solid var(--card-border); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(12px); }
+    .header { display: flex; justify-content: space-between; align-items: center; padding: 14px 18px; background: var(--card-bg); border-bottom: 1px solid var(--card-border); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(15px); }
     .brand-title { font-size: 18px; font-weight: 900; color: var(--text-main); }
     .brand-title span { color: var(--accent-gold); }
-    .download-app-btn { background: linear-gradient(135deg, #10b981, #059669); color: #fff; padding: 8px 14px; border-radius: 12px; font-size: 11px; font-weight: 900; text-decoration: none; border: 1px solid rgba(255,255,255,0.2); }
+    .download-app-btn { background: linear-gradient(135deg, #10b981, #059669); color: #fff; padding: 8px 14px; border-radius: 14px; font-size: 11px; font-weight: 900; text-decoration: none; border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 0 12px var(--accent-green-glow); }
 
     .tab-content { display: none; opacity: 0; transform: translateY(8px); }
     .tab-content.active { display: block; opacity: 1; transform: translateY(0); }
 
-    .slider-wrapper { position: relative; width: calc(100% - 32px); height: 190px; margin: 16px auto; border-radius: 22px; overflow: hidden; border: 1px solid var(--card-border); }
+    .slider-wrapper { position: relative; width: calc(100% - 32px); height: 190px; margin: 16px auto; border-radius: 24px; overflow: hidden; border: 1px solid var(--card-border); box-shadow: var(--shadow-lux); }
     .slides-container { display: flex; width: 100%; height: 100%; transition: transform 0.5s ease-in-out; }
     .slide-item { min-width: 100%; height: 100%; position: relative; }
     .slide-item img { width: 100%; height: 100%; object-fit: cover; }
-    .slide-caption { position: absolute; inset: 0; background: linear-gradient(to top, rgba(5, 8, 17, 0.95), rgba(5, 8, 17, 0.1)); display: flex; flex-direction: column; justify-content: flex-end; padding: 16px; }
+    .slide-caption { position: absolute; inset: 0; background: linear-gradient(to top, rgba(3, 7, 18, 0.96), rgba(3, 7, 18, 0.1)); display: flex; flex-direction: column; justify-content: flex-end; padding: 18px; }
     .slide-caption h3 { font-size: 16px; font-weight: 900; color: var(--accent-gold); }
     .slide-caption p { font-size: 11px; color: #d1d5db; margin-top: 2px; }
 
-    .account-card { background: var(--card-bg); margin: 0 16px 16px 16px; padding: 18px; border-radius: 22px; border: 1px solid var(--card-border); }
+    .account-card { background: var(--card-bg); margin: 0 16px 16px 16px; padding: 20px; border-radius: 24px; border: 1px solid var(--card-border); box-shadow: var(--shadow-lux); }
     .acc-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
     .acc-id { font-size: 13px; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 6px; }
     .verified-mark { width: 18px; height: 18px; background: var(--accent-blue); border-radius: 50%; color: #fff; display: inline-flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; }
-    .status-badge { background: rgba(16, 185, 129, 0.15); color: var(--accent-green); padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 800; }
+    .status-badge { background: rgba(16, 185, 129, 0.15); color: var(--accent-green); padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 800; border: 1px solid rgba(16, 185, 129, 0.3); }
 
-    .balance-box { margin-top: 12px; padding: 14px; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 14px; display: flex; justify-content: space-between; align-items: center; }
+    .balance-box { margin-top: 12px; padding: 16px; background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: 16px; display: flex; justify-content: space-between; align-items: center; }
     .balance-title { font-size: 12px; color: var(--text-muted); font-weight: 700; }
-    .balance-value { font-size: 18px; color: var(--accent-green); font-weight: 900; }
+    .balance-value { font-size: 20px; color: var(--accent-green); font-weight: 900; }
 
-    .referral-box { background: rgba(0,0,0,0.4); border: 1px dashed var(--card-border); padding: 10px 12px; border-radius: 14px; margin-top: 10px; display: flex; justify-content: space-between; align-items: center; }
+    .referral-box { background: rgba(0,0,0,0.4); border: 1px dashed var(--card-border); padding: 10px 14px; border-radius: 16px; margin-top: 10px; display: flex; justify-content: space-between; align-items: center; }
     .ref-text { font-size: 11px; color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 200px; }
 
-    .admin-card { background: rgba(15, 23, 42, 0.98); border: 2px solid var(--accent-gold); border-radius: 22px; margin: 16px; padding: 18px; display: none; }
-    .admin-head { font-size: 15px; font-weight: 900; color: var(--accent-gold); margin-bottom: 12px; text-align: center; border-bottom: 1px solid var(--card-border); padding-bottom: 8px; }
-    .admin-user-item { background: rgba(0,0,0,0.5); border: 1px solid var(--card-border); padding: 12px; border-radius: 14px; margin-bottom: 10px; }
-    .admin-user-info { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 12px; font-weight: 800; }
-    .admin-actions { display: flex; gap: 8px; margin-top: 6px; }
-    .admin-actions input { width: 100%; padding: 8px; font-size: 12px; border-radius: 8px; background: #000; color: #fff; border: 1px solid var(--card-border); }
+    /* لوحة الأدمن الخارقة */
+    .admin-card { background: rgba(11, 17, 32, 0.99); border: 2px solid var(--accent-gold); border-radius: 26px; margin: 16px; padding: 20px; box-shadow: 0 0 30px rgba(245, 158, 11, 0.2); display: none; }
+    .admin-head { font-size: 16px; font-weight: 900; color: var(--accent-gold); margin-bottom: 14px; text-align: center; border-bottom: 1px solid var(--card-border); padding-bottom: 10px; }
+    .admin-user-item { background: rgba(2, 6, 23, 0.7); border: 1px solid var(--card-border); padding: 14px; border-radius: 16px; margin-bottom: 12px; }
+    .admin-user-info { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 12.5px; font-weight: 800; }
+    .admin-actions { display: flex; gap: 8px; margin-top: 8px; }
+    .admin-actions input { width: 100%; padding: 8px 10px; font-size: 12px; border-radius: 10px; background: #000; color: #fff; border: 1px solid var(--card-border); outline: none; }
 
-    .section-head { font-size: 16px; font-weight: 900; margin: 24px 16px 14px 16px; color: var(--accent-gold); }
+    .section-head { font-size: 16px; font-weight: 900; margin: 24px 16px 14px 16px; display: flex; justify-content: space-between; align-items: center; color: var(--accent-gold); text-shadow: 0 0 10px var(--accent-gold-glow); }
+    
     .packages-list { display: flex; flex-direction: column; gap: 20px; padding: 0 16px; }
-    .package-item { background: linear-gradient(145deg, rgba(26, 31, 46, 0.95), rgba(15, 23, 42, 0.98)); border: 2px solid var(--accent-gold); border-radius: 24px; padding: 22px; position: relative; }
-    .package-item::before { content: '🔥 باقة استثمارية VIP'; position: absolute; top: 0; left: 0; right: 0; background: linear-gradient(90deg, #f59e0b, #b45309); color: #fff; font-size: 11px; font-weight: 900; text-align: center; padding: 4px 0; }
+    .package-item { background: linear-gradient(145deg, rgba(15, 23, 42, 0.95), rgba(3, 7, 18, 0.99)); border: 2px solid var(--accent-gold); border-radius: 26px; padding: 22px; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.6), 0 0 20px rgba(245, 158, 11, 0.2); overflow: hidden; }
+    .package-item::before { content: '🔥 باقة استثمارية VIP'; position: absolute; top: 0; left: 0; right: 0; background: linear-gradient(90deg, #f59e0b, #b45309); color: #fff; font-size: 11px; font-weight: 900; text-align: center; padding: 5px 0; letter-spacing: 1px; }
     .pkg-top { display: flex; justify-content: space-between; align-items: center; margin-top: 14px; margin-bottom: 16px; }
     .pkg-title { font-size: 24px; font-weight: 900; color: #ffffff; }
-    .pkg-tag { background: rgba(16, 185, 129, 0.2); color: var(--accent-green); padding: 6px 12px; border-radius: 12px; font-size: 12px; font-weight: 900; border: 1px solid var(--accent-green); }
-    .pkg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; background: rgba(0, 0, 0, 0.5); padding: 14px; border-radius: 16px; margin-bottom: 18px; }
+    .pkg-tag { background: rgba(16, 185, 129, 0.2); color: var(--accent-green); padding: 6px 12px; border-radius: 14px; font-size: 12px; font-weight: 900; border: 1px solid var(--accent-green); }
+    .pkg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; background: rgba(0, 0, 0, 0.5); padding: 14px; border-radius: 16px; margin-bottom: 18px; border: 1px solid rgba(255, 255, 255, 0.05); }
     .grid-cell { text-align: center; }
     .grid-cell .label { font-size: 11px; color: var(--text-muted); font-weight: 700; margin-bottom: 4px; }
     .grid-cell .value { font-size: 17px; font-weight: 900; color: var(--accent-green); }
 
-    .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.9); backdrop-filter: blur(14px); display: none; justify-content: center; align-items: center; padding: 20px; z-index: 6000; }
-    .modal-card { width: 100%; max-width: 360px; background: var(--card-bg); border: 1px solid var(--card-border); padding: 26px; border-radius: 24px; text-align: center; }
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.88); backdrop-filter: blur(16px); display: none; justify-content: center; align-items: center; padding: 20px; z-index: 6000; }
+    .modal-card { width: 100%; max-width: 370px; background: var(--card-bg); border: 1px solid var(--card-border); padding: 28px; border-radius: 26px; text-align: center; box-shadow: var(--shadow-lux); }
     .modal-card h3 { color: var(--accent-gold); margin-bottom: 12px; font-size: 18px; font-weight: 900; }
     .modal-card p { font-size: 13px; line-height: 1.6; color: var(--text-main); margin-bottom: 22px; }
 
-    .payment-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; padding: 18px; margin: 16px; }
-    .pay-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
-    .pay-logo-box { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 13px; color: #fff; }
+    .payment-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 22px; padding: 20px; margin: 16px; box-shadow: var(--shadow-lux); }
+    .pay-header { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+    .pay-logo-box { width: 46px; height: 46px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 14px; color: #fff; }
     .qi-style { background: #1e293b; border: 2px solid var(--qi-color); color: var(--qi-color); }
     .zain-style { background: linear-gradient(135deg, #d946ef, #8b5cf6); color: #fff; }
-    .pay-details { background: rgba(0,0,0,0.4); padding: 12px 14px; border-radius: 12px; margin-bottom: 12px; font-size: 12px; }
+    .pay-details { background: rgba(0,0,0,0.4); padding: 12px 14px; border-radius: 14px; margin-bottom: 12px; font-size: 12px; }
     .pay-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
     .pay-val { font-weight: 800; color: var(--accent-gold); font-size: 14px; }
 
-    .file-css { width: 100%; padding: 12px; background: rgba(0,0,0,0.3); border: 1px dashed var(--card-border); color: var(--text-muted); border-radius: 12px; margin-bottom: 12px; font-size: 12px; cursor: pointer; }
-    .image-preview-container { margin-bottom: 16px; display: none; text-align: center; border: 1px solid var(--accent-gold); padding: 8px; border-radius: 14px; background: rgba(0,0,0,0.4); }
-    .image-preview-container img { max-width: 100%; max-height: 200px; border-radius: 10px; object-fit: contain; }
+    .file-css { width: 100%; padding: 12px; background: rgba(0,0,0,0.3); border: 1px dashed var(--card-border); color: var(--text-muted); border-radius: 14px; margin-bottom: 12px; font-size: 12px; cursor: pointer; }
+    .image-preview-container { margin-bottom: 16px; display: none; text-align: center; border: 1px solid var(--accent-gold); padding: 8px; border-radius: 16px; background: rgba(0,0,0,0.4); }
+    .image-preview-container img { max-width: 100%; max-height: 200px; border-radius: 12px; object-fit: contain; }
 
-    .history-item { background: rgba(0,0,0,0.4); border: 1px solid var(--card-border); border-radius: 14px; padding: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; font-size: 12px; }
-    .status-pending { color: var(--accent-gold); background: rgba(245, 158, 11, 0.15); padding: 3px 8px; border-radius: 8px; font-weight: bold; }
+    .history-item { background: rgba(0,0,0,0.4); border: 1px solid var(--card-border); border-radius: 16px; padding: 14px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; font-size: 12.5px; }
+    
+    /* حالات السحب الملونة حسب طلبك */
+    .status-transferred { color: #34d399; background: rgba(16, 185, 129, 0.15); padding: 4px 10px; border-radius: 10px; font-weight: bold; border: 1px solid rgba(16, 185, 129, 0.3); }
+    .status-pending { color: #f87171; background: rgba(239, 68, 68, 0.15); padding: 4px 10px; border-radius: 10px; font-weight: bold; border: 1px solid rgba(239, 68, 68, 0.3); }
 
-    .profile-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 24px; padding: 24px; margin: 16px; text-align: center; }
-    .avatar-ring { width: 75px; height: 75px; background: linear-gradient(135deg, var(--accent-gold), #b45309); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; color: #fff; font-weight: 900; margin: 0 auto 14px auto; }
-    .info-list { margin-top: 22px; text-align: right; }
-    .info-item { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--card-border); font-size: 13px; }
+    .profile-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 26px; padding: 26px; margin: 16px; text-align: center; box-shadow: var(--shadow-lux); }
+    .avatar-ring { width: 80px; height: 80px; background: linear-gradient(135deg, var(--accent-gold), #b45309); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; color: #fff; font-weight: 900; margin: 0 auto 16px auto; box-shadow: 0 0 25px var(--accent-gold-glow); }
+    .info-list { margin-top: 24px; text-align: right; }
+    .info-item { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--card-border); font-size: 13.5px; }
 
-    .nav-bar { position: fixed; bottom: 0; width: 100%; max-width: 440px; background: var(--card-bg); display: flex; justify-content: space-around; align-items: center; height: 72px; border-top: 1px solid var(--card-border); z-index: 100; backdrop-filter: blur(16px); }
-    .nav-btn { display: flex; flex-direction: column; align-items: center; font-size: 10px; color: var(--text-muted); gap: 4px; text-decoration: none; font-weight: 800; cursor: pointer; border: none; background: transparent; flex: 1; }
+    .nav-bar { position: fixed; bottom: 0; width: 100%; max-width: 440px; background: var(--card-bg); display: flex; justify-content: space-around; align-items: center; height: 74px; border-top: 1px solid var(--card-border); z-index: 100; backdrop-filter: blur(20px); }
+    .nav-btn { display: flex; flex-direction: column; align-items: center; font-size: 10.5px; color: var(--text-muted); gap: 5px; text-decoration: none; font-weight: 800; cursor: pointer; border: none; background: transparent; flex: 1; }
     .nav-btn.active { color: var(--accent-gold); }
-    .nav-btn.active svg { fill: var(--accent-gold); }
-    .nav-svg { width: 20px; height: 20px; fill: var(--text-muted); }
+    .nav-btn.active svg { fill: var(--accent-gold); filter: drop-shadow(0 0 8px var(--accent-gold-glow)); }
+    .nav-svg { width: 21px; height: 21px; fill: var(--text-muted); }
   </style>
 </head>
 <body>
 
-  <!-- واجهة الدخول -->
+  <!-- واجهة الدخول الفاخرة -->
   <div class="login-overlay" id="loginModal">
     <div class="vault-card">
+      
       <div class="vault-status-bar">
         <span class="security-node">
           <span class="node-pulse"></span>
-          خوادم مشفرة TLS 1.3
+          تشفير سيادي TLS 1.3
         </span>
-        <a href="https://t.me/oosbsu" target="_blank" class="support-terminal-link">الدعم المباشر</a>
+        <a href="https://t.me/oosbsu" target="_blank" class="support-terminal-link">
+          الدعم المباشر
+        </a>
       </div>
 
       <div class="vault-header">
         <div class="vault-emblem-ring">
-          <img src="8001.png" alt="Super Mini" onerror="this.src='https://via.placeholder.com/82/050811/f59e0b?text=SM'">
+          <img src="8001.png" alt="Super Mini" onerror="this.src='https://via.placeholder.com/84/030712/f59e0b?text=SM'">
         </div>
         <div class="vault-main-title">Super <span>Mini</span></div>
-        <div class="vault-subtitle">بوابة إدارة الأصول المشفرة والحسابات الموثقة</div>
+        <div class="vault-subtitle">منصة تداول الأصول الرقمية والإدارة المالية الموثقة</div>
       </div>
-
-      <div class="error-msg" id="loginError">⚠️ خطأ</div>
 
       <div class="vault-input-group">
         <label class="vault-input-label">معرّف الحساب المالي أو الهاتف</label>
@@ -191,9 +202,9 @@
         </div>
       </div>
 
-      <!-- تم تعديل الزر هنا ليعمل بضغط مباشر ودون حجب -->
       <button class="btn-sovereign-gold" id="loginSubmitBtn" onclick="handleSecureLogin()">
-        تسجيل الدخول الآمن
+        <span>تسجيل الدخول الآمن</span>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M5 13h11.86l-5.43 5.43 1.42 1.42L21.14 12l-8.29-7.85-1.42 1.42L16.86 11H5v2z"/></svg>
       </button>
 
       <button class="btn-institutional-ghost" onclick="openRegisterModal()">
@@ -205,9 +216,8 @@
   <!-- نافذة إنشاء حساب جديد -->
   <div class="modal-overlay" id="registerModal">
     <div class="modal-card">
-      <div style="font-size: 22px; font-weight:900; color:var(--accent-gold); margin-bottom:6px;">حساب جديد</div>
-      <p style="margin-bottom: 16px;">أنشئ حسابك واستخدم المنصة فوراً</p>
-      <div class="error-msg" id="regError"></div>
+      <div style="font-size: 22px; font-weight:900; color:var(--accent-gold); margin-bottom:8px;">حساب جديد</div>
+      <p style="margin-bottom: 16px;">أنشئ حسابك وانضم لنخبة المستثمرين</p>
       
       <div class="input-group">
         <label>رقم الهاتف الخاص بك</label>
@@ -222,26 +232,26 @@
         <input type="password" id="regPassConfirm" placeholder="أعِد كتابة كلمة السر">
       </div>
 
-      <button class="btn-ultra btn-green" onclick="handleRegister()">تأكيد وإنشاء الحساب</button>
+      <button class="btn-ultra btn-green" id="regSubmitBtn" onclick="handleRegister()">تأكيد وإنشاء الحساب</button>
       <button class="btn-ultra btn-outline" style="margin-top:10px;" onclick="closeModal('registerModal')">إلغاء والعودة</button>
     </div>
   </div>
 
-  <!-- نافذة شاشة الحظر الكاملة -->
-  <div class="login-overlay" id="banModal" style="display:none; z-index:9999; background: rgba(5, 0, 0, 0.98);">
-    <div class="vault-card" style="border-color: var(--accent-red);">
-      <div style="font-size: 50px; margin-bottom: 10px;">🚫</div>
+  <!-- شاشة الحظر الكاملة مع ذكر السبب -->
+  <div class="login-overlay" id="banModal" style="display:none; z-index:9999; background: rgba(3, 7, 18, 0.99);">
+    <div class="vault-card" style="border-color: var(--accent-red); text-align: center;">
+      <div style="font-size: 55px; margin-bottom: 12px;">🚫</div>
       <h2 style="color: var(--accent-red); margin-bottom: 12px; font-weight: 900;">تم حظر حسابك من المنصة</h2>
-      <div id="banReasonText" style="color: #fff; font-size: 13px; font-weight: bold; background: rgba(239, 68, 68, 0.15); border: 1px solid var(--accent-red); padding: 14px; border-radius: 14px; margin-bottom: 18px;"></div>
+      <div id="banReasonText" style="color: #fff; font-size: 13.5px; font-weight: bold; background: rgba(239, 68, 68, 0.15); border: 1px solid var(--accent-red); padding: 14px; border-radius: 14px; margin-bottom: 20px; line-height: 1.6;"></div>
       <button class="btn-ultra btn-red" onclick="logout(true)">إغلاق وتغيير الحساب</button>
     </div>
   </div>
 
   <div class="modal-overlay" id="withdrawNoticeModal">
     <div class="modal-card">
-      <div style="font-size: 40px; margin-bottom: 10px;">✅</div>
+      <div style="font-size: 45px; margin-bottom: 12px;">✅</div>
       <h3 style="color: var(--accent-green);">تم إرسال طلب السحب بنجاح</h3>
-      <p style="font-size: 14px; font-weight: bold; color: #fff; margin-top: 10px;">سوف تصلك الأموال إلى حسابك المرفق خلال <strong>24 ساعة إلى 48 ساعة</strong> كحد أقصى.</p>
+      <p style="font-size: 13.5px; font-weight: bold; color: #fff; margin-top: 10px;">سوف تصلك الأموال إلى حسابك المرفق خلال <strong>24 ساعة إلى 48 ساعة</strong> كحد أقصى.</p>
       <button class="btn-ultra btn-gold" style="margin-top: 15px;" onclick="closeModal('withdrawNoticeModal')">موافق</button>
     </div>
   </div>
@@ -263,7 +273,7 @@
     </div>
   </div>
 
-  <div id="toast" style="position:fixed; top:20px; left:50%; transform:translateX(-50%); background:var(--accent-green); color:#fff; padding:10px 20px; border-radius:12px; font-weight:800; font-size:12px; display:none; z-index:9000;">
+  <div id="toast" style="position:fixed; top:20px; left:50%; transform:translateX(-50%); background:var(--accent-green); color:#fff; padding:12px 24px; border-radius:14px; font-weight:800; font-size:12.5px; display:none; z-index:9000; box-shadow:0 5px 20px rgba(0,0,0,0.5);">
     تمت العملية بنجاح!
   </div>
 
@@ -271,18 +281,19 @@
   <div class="app-container" id="appContent">
     <div class="live-ticker">
       <div class="ticker-content">
-        🔥 تم سحب 380,000 IQD عبر زين كاش للحساب 0781*** • تم سحب 122,000 IQD عبر كي كارد للحساب 0770*** • تم شحن 250,000 IQD بنجاح • توزيع الأرباح اليومية لجميع المشتركين مستمر 100% • 
+        🔥 توزيع الأرباح اليومية لجميع المشتركين يتم تلقائياً الساعة 12:00 ليلاً • سحوبات فورية وموثقة عبر زين كاش وكي كارد • استثمار آمن ومضمون 100% • 
       </div>
     </div>
 
     <div class="header">
-      <div style="display: flex; align-items: center; gap: 8px;">
-        <img src="8001.png" onerror="this.src='https://via.placeholder.com/32/050811/f59e0b?text=SM'" alt="Logo" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 1px solid var(--accent-gold);">
+      <div style="display: flex; align-items: center; gap: 9px;">
+        <img src="8001.png" onerror="this.src='https://via.placeholder.com/32/030712/f59e0b?text=SM'" alt="Logo" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 1px solid var(--accent-gold);">
         <div class="brand-title">Super <span>Mini</span></div>
       </div>
       <a href="javascript:void(0)" onclick="downloadRealApp()" class="download-app-btn">📲 تنزيل التطبيق</a>
     </div>
 
+    <!-- قسم الرئيسية -->
     <div id="tabHome" class="tab-content active">
       <div class="slider-wrapper">
         <div class="slides-container" id="slidesTrack">
@@ -319,9 +330,13 @@
         </div>
       </div>
 
+      <!-- لوحة التحكم الخارقة للإدارة (الـ 10 مميزات للأدمن) -->
       <div class="admin-card" id="adminPanel">
-        <div class="admin-head">👑 لوحة أدمن التحكم الخارقة (الإدارة الكاملة)</div>
-        <button class="btn-ultra btn-green" style="margin-bottom:14px;" onclick="adminAddProfitToAll()">⚡ ضخ إشعار أرباح يومية لجميع المشتركين</button>
+        <div class="admin-head">👑 لوحة تحكم الأدمن الخارقة (إدارة الزبائن)</div>
+        <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid var(--accent-green); padding: 10px; border-radius: 12px; margin-bottom: 12px; font-size: 11px; text-align: center; color: var(--accent-green); font-weight: bold;">
+          ⏰ التوزيع التلقائي نشط: يتم إرسال أرباح كل مشترك حسب باقته تلقائياً الساعة 12:00 ليلاً.
+        </div>
+        <button class="btn-ultra btn-green" style="margin-bottom:14px;" onclick="distributeDailyProfitsToAll(); showToast('تم تنفيذ التوزيع التلقائي الآن بنجاح!');">⚡ توزيع أرباح اليوم يدوياً الآن (احتياطي)</button>
         <div id="adminUserList"></div>
       </div>
 
@@ -357,7 +372,7 @@
         <button class="btn-ultra btn-gold" onclick="processWithdrawalRequest()">تأكيد وإرسال طلب السحب</button>
       </div>
 
-      <div class="section-head">سجل طلبات السحب الخاصة بك</div>
+      <div class="section-head">سجل طلبات السحب الخاصة بك وحالتها</div>
       <div style="padding: 0 16px;" id="withdrawHistoryContainer"></div>
     </div>
 
@@ -470,11 +485,97 @@
     let selectedImageFile = null;
     let activeUserListener = null;
 
+    const PACKAGE_PROFITS = {
+      30000: 10000,
+      50000: 35000,
+      75000: 55000,
+      150000: 80000,
+      250000: 122000,
+      750000: 189000,
+      1000000: 380000
+    };
+
+    function getTodayDateKey() {
+      try {
+        return new Intl.DateTimeFormat('en-CA', {
+          timeZone: 'Asia/Baghdad',
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit'
+        }).format(new Date());
+      } catch (e) {
+        const d = new Date();
+        return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+      }
+    }
+
+    // توزيع الأرباح التلقائي الساعة 12:00 ليلاً للمشتركين حصراً
+    function distributeDailyProfitsToAll() {
+      const today = getTodayDateKey();
+
+      db.ref('users').once('value', snapshot => {
+        const users = snapshot.val() || {};
+        Object.keys(users).forEach(phone => {
+          if (phone === ADMIN_CREDENTIAL) return;
+
+          const usr = users[phone];
+          if (!usr) return;
+
+          const subAmount = Number(usr.sub || 0);
+          const dailyProfit = PACKAGE_PROFITS[subAmount] || 0;
+
+          if (usr.status !== 'banned' && subAmount > 0 && dailyProfit > 0 && usr.lastProfitDate !== today) {
+            db.ref('users/' + phone).transaction(curr => {
+              if (!curr) return curr;
+              const currentSub = Number(curr.sub || 0);
+              const currentProfit = PACKAGE_PROFITS[currentSub] || 0;
+              if (curr.status !== 'banned' && currentSub > 0 && currentProfit > 0 && curr.lastProfitDate !== today) {
+                curr.balance = (curr.balance || 0) + currentProfit;
+                curr.lastProfitDate = today;
+              }
+              return curr;
+            });
+          }
+        });
+      });
+    }
+
+    function startMidnightCron() {
+      const now = new Date();
+      const midnight = new Date(now);
+      midnight.setHours(24, 0, 0, 0);
+      const msUntilMidnight = midnight.getTime() - now.getTime();
+
+      setTimeout(() => {
+        distributeDailyProfitsToAll();
+        setInterval(distributeDailyProfitsToAll, 24 * 60 * 60 * 1000);
+      }, msUntilMidnight);
+    }
+
+    startMidnightCron();
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.innerText = msg;
+      t.style.display = 'block';
+      setTimeout(() => { t.style.display = 'none'; }, 3000);
+    }
+
+    function openRegisterModal() {
+      document.getElementById('regUser').value = '';
+      document.getElementById('regPass').value = '';
+      document.getElementById('regPassConfirm').value = '';
+      document.getElementById('registerModal').style.display = 'flex';
+    }
+
+    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+
+    // تسجيل الدخول الآمن والفوري
     function handleSecureLogin() {
       const userField = document.getElementById('userInput').value.trim();
       const passField = document.getElementById('passInput').value.trim();
 
-      if (!userField || !passField) { showLoginError("⚠️ يرجى كتابة الرقم وكلمة السر!"); return; }
+      if (!userField || !passField) { alert("⚠️ يرجى كتابة الرقم وكلمة السر!"); return; }
 
       if (userField === ADMIN_CREDENTIAL && passField === ADMIN_CREDENTIAL) {
         activeUser = ADMIN_CREDENTIAL;
@@ -484,10 +585,10 @@
 
       db.ref('users/' + userField).once('value', snapshot => {
         const userData = snapshot.val();
-        if (!userData) { showLoginError("⚠️ هذا الحساب غير موجود!"); return; }
-        if (userData.pass !== passField) { showLoginError("⚠️ كلمة السر غير صحيحة!"); return; }
+        if (!userData) { alert("⚠️ هذا الحساب غير موجود! سجل حساباً أولاً."); return; }
+        if (userData.pass !== passField) { alert("⚠️ كلمة السر غير صحيحة!"); return; }
         if (userData.status === 'banned') {
-          showBanScreen(userData.banReason || "تم حظر حسابك لمخالفة الشروط.");
+          showBanScreen(userData.banReason || "تم حظر حسابك لمخالفة الشروط والأحكام.");
           return;
         }
 
@@ -501,12 +602,12 @@
       const p1 = document.getElementById('regPass').value.trim();
       const p2 = document.getElementById('regPassConfirm').value.trim();
 
-      if (!u || !p1 || !p2) { showRegError("⚠️ يرجى ملء كافة الحقول!"); return; }
-      if (p1 !== p2) { showRegError("⚠️ كلمات السر غير متطابقة!"); return; }
+      if (!u || !p1 || !p2) { alert("⚠️ يرجى ملء كافة الحقول!"); return; }
+      if (p1 !== p2) { alert("⚠️ كلمات السر غير متطابقة!"); return; }
 
       db.ref('users/' + u).once('value', snapshot => {
         if (snapshot.exists()) {
-          showRegError("⚠️ الرقم مسجل بالفعل!");
+          alert("⚠️ الرقم مسجل بالفعل! سجل الدخول مباشرة.");
           return;
         }
 
@@ -532,7 +633,11 @@
     }
 
     function completeLogin() {
-      document.getElementById('loginError').style.display = 'none';
+      // حفظ الجلسة لمدة ساعة كاملة حسب طلبك
+      const oneHour = 60 * 60 * 1000;
+      localStorage.setItem('superMiniUser', activeUser);
+      localStorage.setItem('superMiniExpiry', new Date().getTime() + oneHour);
+
       document.getElementById('loginModal').style.display = 'none';
       document.getElementById('appContent').classList.add('logged-in');
 
@@ -586,6 +691,7 @@
       renderWithdrawHistory(data.withdraws || []);
     }
 
+    // لوحة الأدمن الشاملة (10 مميزات تحكم)
     function setupAdminDashboard() {
       document.getElementById('adminPanel').style.display = 'block';
       document.getElementById('vipBadge').innerText = '👑 حساب الإدارة';
@@ -599,32 +705,47 @@
         const userKeys = Object.keys(users).filter(k => k !== ADMIN_CREDENTIAL);
         const totalUsers = userKeys.length;
 
-        container.innerHTML = `<div style="color:var(--accent-gold); font-weight:900; margin-bottom:12px; text-align:center;">📊 عدد المستخدمين: ${totalUsers}</div>`;
+        container.innerHTML = `<div style="color:var(--accent-gold); font-weight:900; margin-bottom:12px; text-align:center;">📊 إجمالي المشتركين بالمنصة: ${totalUsers} مستخدم</div>`;
 
         userKeys.forEach(u => {
           const usr = users[u];
           const isBanned = usr.status === 'banned';
           const subText = usr.sub ? `باقة ${Number(usr.sub).toLocaleString()} IQD` : 'لا يوجد';
+          
           container.innerHTML += `
             <div class="admin-user-item">
               <div class="admin-user-info">
                 <span>📱 <strong style="color:var(--accent-gold);">${u}</strong></span>
                 <span>💰 <strong style="color:var(--accent-green);">${Number(usr.balance || 0).toLocaleString()} IQD</strong></span>
               </div>
-              <div style="font-size:11px; margin-bottom:8px; color:#ccc;">الاشتراك: ${subText} | الحالة: <strong style="color:${isBanned ? 'var(--accent-red)' : 'var(--accent-green)'};">${isBanned ? 'محظور' : 'نشط'}</strong></div>
+              <div style="font-size:11px; margin-bottom:8px; color:#ccc;">الاشتراك: <strong style="color:var(--accent-gold);">${subText}</strong> | الحالة: <strong style="color:${isBanned ? 'var(--accent-red)' : 'var(--accent-green)'};">${isBanned ? 'محظور 🚫' : 'نشط ✓'}</strong></div>
               <div class="admin-actions" style="flex-direction:column; gap:6px;">
                 <div style="display:flex; gap:6px;">
-                  <input type="number" id="amt_${u}" placeholder="المبلغ" />
-                  <button class="btn-ultra btn-green" style="padding:6px 12px; font-size:11px;" onclick="modifyBalance('${u}', 'add')">شحن</button>
-                  <button class="btn-ultra btn-red" style="padding:6px 12px; font-size:11px;" onclick="modifyBalance('${u}', 'sub')">خصم</button>
+                  <input type="number" id="amt_${u}" placeholder="المبلغ (IQD)" />
+                  <button class="btn-ultra btn-green" style="padding:6px 12px; font-size:11px;" onclick="adminModifyBalance('${u}', 'add')">شحن (+)</button>
+                  <button class="btn-ultra btn-red" style="padding:6px 12px; font-size:11px;" onclick="adminModifyBalance('${u}', 'sub')">خصم (-)</button>
                 </div>
+                <div style="display:flex; gap:6px; margin-top:4px;">
+                  <input type="text" id="reason_${u}" placeholder="سبب الحظر (مطلوب عند الحظر)" value="${usr.banReason || ''}" />
+                  <button class="btn-ultra ${isBanned ? 'btn-green' : 'btn-red'}" style="padding:6px 10px; font-size:11px;" onclick="adminToggleBan('${u}', '${usr.status}')">
+                    ${isBanned ? 'فك الحظر' : 'حظر الزبون'}
+                  </button>
+                  <button class="btn-ultra btn-outline" style="padding:6px 10px; font-size:11px; border-color:var(--accent-red); color:var(--accent-red);" onclick="adminDeleteUser('${u}')">حذف</button>
+                </div>
+                ${(usr.withdraws && usr.withdraws.length > 0) ? `
+                  <div style="background:rgba(0,0,0,0.5); padding:6px; border-radius:8px; margin-top:4px; font-size:10px; color:#fbbf24;">
+                    طلب سحب أخير: ${usr.withdraws[0].amount.toLocaleString()} IQD (${usr.withdraws[0].method}) - الحالة: <strong>${usr.withdraws[0].status}</strong>
+                    <button onclick="adminToggleWithdrawStatus('${u}')" style="background:#3b82f6; color:#fff; border:none; padding:2px 6px; border-radius:4px; margin-right:6px; cursor:pointer;">تبديل حالة التحويل</button>
+                  </div>
+                ` : ''}
               </div>
             </div>`;
         });
       });
     }
 
-    function modifyBalance(u, action) {
+    // دوال تحكم الأدمن (شحن، خصم، حظر مع سبب، حذف، إدارة السحب)
+    function adminModifyBalance(u, action) {
       const amtInput = document.getElementById(`amt_${u}`);
       const amt = parseFloat(amtInput.value);
       if (isNaN(amt) || amt <= 0) { alert("⚠️ أدخل مبلغاً صحيحاً!"); return; }
@@ -634,192 +755,55 @@
         return action === 'add' ? curr + amt : Math.max(0, curr - amt);
       }).then(() => {
         amtInput.value = '';
-        showToast(`تم تحديث رصيد ${u} بنجاح!`);
+        showToast(`تم ${action === 'add' ? 'شحن' : 'خصم'} رصيد الحساب ${u} بنجاح!`);
       });
     }
 
-    function logout(userInitiated = true) {
-      if (activeUserListener && activeUser !== ADMIN_CREDENTIAL) {
-        db.ref('users/' + activeUser).off('value', activeUserListener);
+    function adminToggleBan(u, currentStatus) {
+      const reasonInput = document.getElementById(`reason_${u}`);
+      const reason = reasonInput ? reasonInput.value.trim() : '';
+
+      if (currentStatus !== 'banned' && !reason) {
+        alert("⚠️ يرجى كتابة سبب الحظر في الحقل المخصص قبل حظر الزبون!");
+        return;
       }
-      activeUser = null;
-      document.getElementById('banModal').style.display = 'none';
-      document.getElementById('appContent').classList.remove('logged-in');
-      document.getElementById('loginModal').style.display = 'flex';
-      document.getElementById('userInput').value = '';
-      document.getElementById('passInput').value = '';
-    }
 
-    function switchTab(tabId, btn) {
-      document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-      document.querySelectorAll('.nav-btn').forEach(n => n.classList.remove('active'));
-      document.getElementById(tabId).classList.add('active');
-      if (btn) btn.classList.add('active');
-    }
-
-    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-    function openRegisterModal() {
-      document.getElementById('regError').style.display = 'none';
-      document.getElementById('regUser').value = '';
-      document.getElementById('regPass').value = '';
-      document.getElementById('regPassConfirm').value = '';
-      document.getElementById('registerModal').style.display = 'flex';
-    }
-    function downloadRealApp() {
-      showToast("📲 جاري بدء تنزيل تطبيق Super Mini...");
-    }
-    function showToast(msg) {
-      const t = document.getElementById('toast'); t.innerText = msg; t.style.display = 'block';
-      setTimeout(() => { t.style.display = 'none'; }, 3000);
-    }
-    function copyText(val) { navigator.clipboard.writeText(val); showToast('تم النسخ: ' + val); }
-    function copyRef() { navigator.clipboard.writeText(document.getElementById('refLink').innerText); showToast('تم نسخ الرابط!'); }
-    
-    function showLoginError(msg) {
-      const errBox = document.getElementById('loginError'); errBox.innerText = msg; errBox.style.display = 'block';
-    }
-    function showRegError(msg) {
-      const errBox = document.getElementById('regError'); errBox.innerText = msg; errBox.style.display = 'block';
-    }
-
-    function previewSelectedImage(event) {
-      const file = event.target.files[0];
-      if (file) {
-        selectedImageFile = file;
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          document.getElementById('imagePreview').src = e.target.result;
-          document.getElementById('previewContainer').style.display = 'block';
-        }
-        reader.readAsDataURL(file);
-      }
-    }
-
-    function submitReceiptWithImage() {
-      if (!selectedImageFile) { alert("⚠️ اختر صورة الإشعار أولاً!"); return; }
-      showToast("جاري تحويلك للتليجرام...");
-      const pkgVal = document.getElementById('pkgSelect').value;
-      const msg = `📥 إيداع:\n• الحساب: ${activeUser}\n• الباقة: ${Number(pkgVal).toLocaleString()} IQD`;
-      setTimeout(() => { window.open(`https://t.me/oosbsu?text=${encodeURIComponent(msg)}`, '_blank'); }, 800);
-    }
-
-    const pkgList = [
-      { price: 30000, daily: 10000, days: 90 }, { price: 50000, daily: 35000, days: 90 }, { price: 75000, daily: 55000, days: 90 },
-      { price: 150000, daily: 80000, days: 90 }, { price: 250000, daily: 122000, days: 90 }, { price: 750000, daily: 189000, days: 90 }, { price: 1000000, daily: 380000, days: 90 }
-    ];
-
-    function renderPackages() {
-      const container = document.getElementById('pkgContainer');
-      container.innerHTML = '';
-      pkgList.forEach((pkg, idx) => {
-        const total = pkg.daily * pkg.days;
-        container.innerHTML += `
-          <div class="package-item">
-            <div class="pkg-top"><div class="pkg-title">${pkg.price.toLocaleString()} <span style="font-size:14px; color:var(--accent-gold);">IQD</span></div><div class="pkg-tag">90 يوم</div></div>
-            <div class="pkg-grid">
-              <div class="grid-cell"><div class="label">الربح اليومي</div><div class="value">${pkg.daily.toLocaleString()} IQD</div></div>
-              <div class="grid-cell"><div class="label">العائد النهائي</div><div class="value" style="color:var(--accent-gold);">${total.toLocaleString()} IQD</div></div>
-            </div>
-            <button class="btn-ultra btn-gold" style="font-size:15px; padding:16px;" onclick="openSubscribeModal(${idx})">🚀 اشترك واستلم أرباحك</button>
-          </div>`;
+      const newStatus = currentStatus === 'banned' ? 'active' : 'banned';
+      db.ref('users/' + u).update({
+        status: newStatus,
+        banReason: newStatus === 'banned' ? reason : ''
+      }).then(() => {
+        showToast(newStatus === 'banned' ? `تم حظر الزبون ${u}` : `تم فك الحظر عن الزبون ${u}`);
       });
     }
 
-    function openSubscribeModal(idx) {
-      selectedPkg = pkgList[idx];
-      document.getElementById('subDetailsText').innerHTML = `
-        سوف تدفع مبلغ <strong>${selectedPkg.price.toLocaleString()} IQD</strong> لمدة <strong>90 يوماً</strong>.<br>
-        بربح يومي <strong>${selectedPkg.daily.toLocaleString()} IQD</strong>.
-      `;
-      document.getElementById('subModal').style.display = 'flex';
+    function adminDeleteUser(u) {
+      if (confirm(`هل أنت متأكد من حذف الحساب ${u} نهائياً؟`)) {
+        db.ref('users/' + u).remove().then(() => {
+          showToast(`تم حذف الحساب ${u} بنجاح`);
+        });
+      }
     }
 
-    function proceedToPayment() {
-      closeModal('subModal');
-      db.ref('users/' + activeUser).once('value', snapshot => {
-        const user = snapshot.val();
-        if (user && (user.balance || 0) >= selectedPkg.price) {
-          db.ref('users/' + activeUser).update({
-            balance: user.balance - selectedPkg.price,
-            sub: selectedPkg.price
-          }).then(() => {
-            showToast("🎉 تم تفعيل الباقة بنجاح!");
+    function adminToggleWithdrawStatus(u) {
+      db.ref('users/' + u + '/withdraws').once('value', snapshot => {
+        let ws = snapshot.val();
+        if (ws && ws.length > 0) {
+          ws[0].status = (ws[0].status === 'تم التحويل بنجاح 🟢' ? 'قيد التدقيق 🔴' : 'تم التحويل بنجاح 🟢');
+          db.ref('users/' + u).update({ withdraws: ws }).then(() => {
+            showToast('تم تحديث حالة السحب للزبون!');
           });
-        } else {
-          document.getElementById('errModal').style.display = 'flex';
         }
       });
     }
 
-    function goToFinance() {
-      closeModal('errModal');
-      if (selectedPkg) document.getElementById('pkgSelect').value = selectedPkg.price;
-      switchTab('tabFinance', document.querySelectorAll('.nav-btn')[3]);
-    }
-
+    // دوال السحب الخاصة بالزبون
     function processWithdrawalRequest() {
       const method = document.getElementById('withdrawMethodSelect').value;
       const accountNum = document.getElementById('withdrawAccountNum').value.trim();
       const amount = parseFloat(document.getElementById('withdrawAmount').value);
 
-      if (!accountNum) { alert("⚠️ يرجى إدخال الحساب!"); return; }
-      if (isNaN(amount) || amount < 10000) { alert("⚠️ الحد الأدنى للسحب 10,000 IQD!"); return; }
+      if (!accountNum) { alert("⚠️ يرجى إدخال رقم المحفظة أو البطاقة للاستلام!"); return; }
+      if (isNaN(amount) || amount < 10000) { alert("⚠️ الحد الأدنى للسحب هو 10,000 IQD!"); return; }
 
-      db.ref('users/' + activeUser).once('value', snapshot => {
-        const user = snapshot.val();
-        if (!user || (user.balance || 0) < amount) {
-          alert("⚠️ رصيدك غير كافٍ لإتمام السحب!");
-          return;
-        }
-
-        const newBal = (user.balance || 0) - amount;
-        const newWithdraw = {
-          id: Math.floor(1000 + Math.random() * 9000),
-          method,
-          account: accountNum,
-          amount,
-          date: new Date().toLocaleDateString('ar-IQ'),
-          status: 'قيد المعالجة'
-        };
-
-        const withdraws = user.withdraws || [];
-        withdraws.unshift(newWithdraw);
-
-        db.ref('users/' + activeUser).update({
-          balance: newBal,
-          withdraws: withdraws
-        }).then(() => {
-          document.getElementById('withdrawAccountNum').value = '';
-          document.getElementById('withdrawAmount').value = '';
-          document.getElementById('withdrawNoticeModal').style.display = 'flex';
-        });
-      });
-    }
-
-    function renderWithdrawHistory(userHistory) {
-      const container = document.getElementById('withdrawHistoryContainer');
-      if (!userHistory || userHistory.length === 0) {
-        container.innerHTML = `<p style="font-size:12px; color:var(--text-muted); text-align:center;">لا توجد عمليات سحب حالياً</p>`;
-        return;
-      }
-      container.innerHTML = '';
-      userHistory.forEach(item => {
-        container.innerHTML += `
-          <div class="history-item">
-            <div><div style="font-weight:bold; color:var(--accent-gold);">${item.method}</div><div style="font-size:10px; color:var(--text-muted);">${item.account} • ${item.date}</div></div>
-            <div style="text-align:left;"><div style="font-weight:bold; color:var(--accent-green);">${item.amount.toLocaleString()} IQD</div><span class="status-pending">${item.status}</span></div>
-          </div>`;
-      });
-    }
-
-    renderPackages();
-
-    let currSlide = 0;
-    setInterval(() => {
-      currSlide = (currSlide + 1) % 3;
-      const track = document.getElementById('slidesTrack');
-      if(track) track.style.transform = `translateX(${currSlide * 100}%)`;
-    }, 4000);
-  </script>
-</body>
-</html>
+      db.ref(
