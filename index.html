@@ -93,6 +93,10 @@
     .balance-title { font-size: 12px; color: var(--text-muted); font-weight: 700; }
     .balance-value { font-size: 20px; color: var(--accent-green); font-weight: 900; }
 
+    .referral-luxury-card { background: linear-gradient(135deg, rgba(245,158,11,0.15), rgba(15,23,42,0.9)); border: 1.5px solid var(--card-border); border-radius: 20px; padding: 16px; margin: 12px 16px; text-align: center; }
+    .ref-title-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(245,158,11,0.2); color: var(--accent-gold); font-size: 11.5px; font-weight: 900; padding: 4px 12px; border-radius: 50px; margin-bottom: 8px; border: 1px solid rgba(245,158,11,0.4); }
+    .ref-link-display { background: rgba(0,0,0,0.5); border: 1px dashed var(--card-border); border-radius: 12px; padding: 10px; font-size: 11.5px; color: #cbd5e1; margin: 8px 0; word-break: break-all; }
+
     .admin-card { background: rgba(15, 23, 42, 0.98); border: 2px solid var(--accent-gold); border-radius: 22px; margin: 16px; padding: 18px; box-shadow: 0 0 25px rgba(245, 158, 11, 0.3); display: none; }
     .admin-head { font-size: 15px; font-weight: 900; color: var(--accent-gold); margin-bottom: 12px; text-align: center; border-bottom: 1px solid var(--card-border); padding-bottom: 8px; }
 
@@ -105,13 +109,11 @@
     .pkg-tag { background: rgba(16, 185, 129, 0.2); color: var(--accent-green); padding: 5px 10px; border-radius: 12px; font-size: 11.5px; font-weight: 900; }
     .pkg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; background: rgba(0, 0, 0, 0.5); padding: 14px; border-radius: 16px; margin-bottom: 16px; }
 
-    /* ==============================================================
-       قسم المالية المطور والمنظم بسلاسة فائقة
-       ============================================================== */
+    /* قسم المالية */
     .finance-card { background: linear-gradient(180deg, rgba(20,29,51,0.96), rgba(9,14,26,0.99)); border: 1px solid var(--card-border); border-radius: 22px; padding: 18px; margin: 16px; box-shadow: var(--shadow-lux); }
     .finance-head { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
     .finance-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 13px; color: #fff; }
-    .qi-bg { background: #1e293b; border: 2px solid var(--qi-color); color: var(--qi-color); }
+    .qi-bg { background: #1e293b; border: 2px solid var(--accent-gold); color: var(--accent-gold); }
     .zain-bg { background: linear-gradient(135deg, #d946ef, #8b5cf6); }
 
     .card-display-box { background: #000; border: 2px solid var(--accent-gold); border-radius: 16px; padding: 14px; text-align: center; margin: 10px 0; }
@@ -122,9 +124,11 @@
     .step-list { background: rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.06); border-radius: 14px; padding: 12px 14px; font-size: 12px; line-height: 1.8; text-align: right; color: #cbd5e1; }
     .step-list strong { color: var(--accent-gold); }
 
-    /* ==============================================================
-       قسم الحساب (حسابي) المطور والمصمم بتفاصيل مصرفية حقيقية
-       ============================================================== */
+    /* بطاقة رقم الهاتف التلقائي في قسم المالية */
+    .user-phone-badge-box { background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.35); border-radius: 16px; padding: 12px; margin-top: 10px; text-align: center; }
+    .user-phone-badge-val { font-size: 18px; font-weight: 900; color: var(--accent-gold); letter-spacing: 1px; margin-top: 4px; }
+
+    /* قسم الحساب */
     .profile-hero { text-align: center; padding: 10px 0 16px; }
     .profile-avatar { width: 80px; height: 80px; margin: 0 auto 10px; border-radius: 50%; background: linear-gradient(135deg, var(--accent-gold), #78350f); display: flex; align-items: center; justify-content: center; font-size: 32px; border: 2px solid rgba(255,255,255,0.2); }
     .real-stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
@@ -132,7 +136,6 @@
     .stat-label { font-size: 11px; color: var(--text-muted); font-weight: bold; }
     .stat-number { font-size: 13.5px; font-weight: 900; color: #fff; margin-top: 4px; }
 
-    /* سجل السحب */
     .history-item { background: rgba(0,0,0,0.4); border: 1px solid var(--card-border); border-radius: 14px; padding: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; font-size: 12px; }
     .status-transferred { color: #34d399; background: rgba(16, 185, 129, 0.15); padding: 4px 10px; border-radius: 8px; font-weight: bold; }
     .status-pending { color: #f87171; background: rgba(239, 68, 68, 0.15); padding: 4px 10px; border-radius: 8px; font-weight: bold; }
@@ -194,9 +197,11 @@
     <div class="modal-card">
       <div style="font-size: 22px; font-weight: 900; color: var(--accent-gold); margin-bottom: 8px;">حساب جديد</div>
       <p style="margin-bottom: 16px; font-size: 12px; color: var(--text-muted);">أنشئ حسابك واستخدم المنصة فوراً</p>
+      
       <div class="input-group"><label>رقم الهاتف الخاص بك</label><input type="text" id="regUser" placeholder="مثال: 07700000000"></div>
       <div class="input-group"><label>اختر كلمة السر</label><input type="password" id="regPass" placeholder="كلمة السر"></div>
       <div class="input-group"><label>تأكيد كلمة السر</label><input type="password" id="regPassConfirm" placeholder="أعِد كتابة كلمة السر"></div>
+      
       <button class="btn-ultra btn-green" onclick="handleRegister()">تأكيد وإنشاء الحساب</button>
       <button class="btn-ultra btn-outline" style="margin-top:10px;" onclick="closeModal('registerModal')">إلغاء والعودة</button>
     </div>
@@ -226,7 +231,7 @@
   <div class="app-container" id="appContent">
     <div class="live-ticker">
       <div class="ticker-content">
-        🔥 توزيع الأرباح اليومية لجميع المشتركين يتم تلقائياً الساعة 12:00 ليلاً • سحوبات فورية وموثقة عبر زين كاش وكي كارد • استثمار آمن ومضمون 100% • 
+        🔥 توزيع الأرباح اليومية لجميع المشتركين يتم تلقائياً الساعة 12:00 ليلاً • سحوبات فورية وموثقة عبر زين كاش وكي كارد • مكافأة إحالة 50% كاش فوري عند دعوة الأصدقاء • 
       </div>
     </div>
 
@@ -257,6 +262,14 @@
           <span class="balance-title">رصيد المحفظة الحالي:</span>
           <span class="balance-value" id="homeUserBalance">0 IQD</span>
         </div>
+      </div>
+
+      <!-- بطاقة رابط الإحالة الفوري بنسبة 50% -->
+      <div class="referral-luxury-card">
+        <div class="ref-title-badge">🎁 نظام الإحالة الفوري (عمولة 50% كاش)</div>
+        <p style="font-size:11px; color:#cbd5e1; line-height:1.5;">شارك رابطك المباشر مع أصدقائك، وعند اشتراك صديقك بأي باقة ستحصل فوراً على <strong>نصف قيمة باقته (50%)</strong> في رصيدك مباشرة!</p>
+        <div class="ref-link-display" id="myRefLinkText">جاري توليد الرابط...</div>
+        <button class="btn-ultra btn-gold" style="padding:10px; font-size:12px;" onclick="copyReferralLink()">📋 نسخ رابط الإحالة الخاص بي</button>
       </div>
 
       <!-- لوحة الأدمن الخارقة (10 مميزات كاملة) -->
@@ -299,17 +312,21 @@
     </div>
 
     <!-- ==============================================================
-         قسم المالية المنظم جداً والمبسط بدقة وسلاسة
+         قسم المالية المنظم جداً: إظهار رقم الهاتف تلقائياً
          ============================================================== -->
     <div id="tabFinance" class="tab-content">
-      
-      <!-- ملخص الرصيد المالي -->
       <div class="account-card" style="border-color: var(--accent-gold); margin-top: 16px; text-align: center;">
         <div style="font-size: 12px; color: var(--text-muted); font-weight: bold;">الرصيد المتاح للاشتراك في الباقات:</div>
         <div style="font-size: 26px; font-weight: 900; color: var(--accent-green); margin-top: 4px;" id="financeBalance">0 IQD</div>
+        
+        <!-- إظهار رقم الهاتف الذي تم إنشاء الحساب فيه تلقائياً -->
+        <div class="user-phone-badge-box">
+          <span style="font-size: 11px; color: #cbd5e1; font-weight: bold;">📱 رقم هاتفك المسجل في المنصة (حسابك المستفيد):</span>
+          <div class="user-phone-badge-val" id="financeUserPhone">--</div>
+        </div>
       </div>
 
-      <!-- 1. طريقة سوبر كي (شرح صريح ومباشر) -->
+      <!-- 1. طريقة سوبر كي -->
       <div class="finance-card">
         <div class="finance-head">
           <div class="finance-icon qi-bg">Qi</div>
@@ -335,12 +352,12 @@
         <div class="step-list">
           <div>1. ادخل إلى تطبيق <strong>سوبر كي</strong> أو <strong>خدمات كي</strong> من هاتفك.</div>
           <div>2. اختر <strong>(تحويل أموال)</strong> ثم اختر <strong>(من بطاقة إلى بطاقة)</strong>.</div>
-          <div>3. الصق <strong>رقم هذه البطاقة</strong> وحدد مبلغ الباقة وحوّل.</div>
-          <div>4. التقط لقطة شاشة (Screenshot) للوصل واضغط الزر الأخضر بالأسفل لإرساله.</div>
+          <div>3. الصق <strong>رقم هذه البطاقة (5143617453)</strong> وحدد مبلغ الباقة وحوّل.</div>
+          <div>4. التقط لقطة شاشة للوصل واضغط الزر الأخضر بالأسفل لإرسالها مع رقمك تلقائياً.</div>
         </div>
       </div>
 
-      <!-- 2. طريقة زين كاش المباشرة -->
+      <!-- 2. طريقة زين كاش -->
       <div class="finance-card">
         <div class="finance-head">
           <div class="finance-icon zain-bg">Zain</div>
@@ -359,28 +376,29 @@
         <div class="step-list">
           <div>1. افتح تطبيق <strong>زين كاش</strong> واضغط على <strong>(مسح الرمز / QR)</strong>.</div>
           <div>2. وجّه الكاميرا نحو الباركود أعلاه واكتب مبلغ الباقة وحوّل.</div>
-          <div>3. التقط لقطة شاشة للوصل واضغط الزر الأخضر بالأسفل لتفعيل حسابك.</div>
+          <div>3. التقط لقطة شاشة للوصل واضغط الزر الأخضر بالأسفل لإرسالها مع رقمك تلقائياً.</div>
         </div>
       </div>
 
-      <!-- زر إرسال الوصل الموحد -->
+      <!-- زر إرسال الوصل مع رقم الهاتف تلقائياً عبر التليجرام -->
       <div style="padding: 0 16px; margin-bottom: 20px;">
-        <button class="btn-ultra btn-green" style="padding: 16px;" onclick="window.open('https://t.me/oosbsu', '_blank')">
-          📲 إرسال لقطة الشاشة للدعم لتفعيل الباقة فوراً
+        <button class="btn-ultra btn-green" style="padding: 16px;" onclick="sendReceiptToTelegram()">
+          📲 إرسال لقطة الشاشة وتأكيد التفعيل بحسابي المسجل
         </button>
       </div>
-
     </div>
 
     <!-- ==============================================================
-         قسم الحساب (حسابي) بتفاصيل مصرفية حقيقية وقوية
+         قسم الحساب (حسابي): إظهار رقم الهاتف المسجل بتفاصيل مصرفية
          ============================================================== -->
     <div id="tabProfile" class="tab-content">
       <div class="account-card" style="margin-top: 16px;">
         <div class="profile-hero">
           <div class="profile-avatar">👤</div>
-          <h3 id="profName" style="font-size: 19px; font-weight: 900;">--</h3>
-          <p style="color: var(--accent-green); font-size: 11.5px; font-weight: bold; margin-top: 4px;">عضوية استثمارية موثقة ومعتمدة ✓</p>
+          <!-- إظهار رقم الهاتف المسجل كرأس الحساب -->
+          <h3 id="profName" style="font-size: 20px; font-weight: 900; color: var(--accent-gold); letter-spacing: 1px;">--</h3>
+          <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">رقم الهاتف المسجل: <strong id="profPhoneBadge" style="color: #fff;">--</strong></div>
+          <p style="color: var(--accent-green); font-size: 11.5px; font-weight: bold; margin-top: 6px;">عضوية استثمارية موثقة ومعتمدة ✓</p>
         </div>
 
         <!-- صندوق الرصيد الحقيقي المتاح -->
@@ -392,6 +410,10 @@
 
         <!-- شبكة الإحصائيات المصرفية الحقيقية -->
         <div class="real-stat-grid">
+          <div class="real-stat-card">
+            <div class="stat-label">رقم الهاتف الأساسي</div>
+            <div class="stat-number" id="pPhoneStat" style="color: #38bdf8; font-size: 12.5px;">--</div>
+          </div>
           <div class="real-stat-card">
             <div class="stat-label">الباقة الاستثمارية</div>
             <div class="stat-number" id="pSubVal" style="color: var(--accent-gold);">لا يوجد اشتراك</div>
@@ -412,14 +434,10 @@
             <div class="stat-label">حالة التوثيق والأمان</div>
             <div class="stat-number" style="color: #38bdf8;">مشفر TLS 1.3</div>
           </div>
-          <div class="real-stat-card">
-            <div class="stat-label">مستوى الحساب</div>
-            <div class="stat-number" style="color: var(--accent-gold);">VIP Sovereign</div>
-          </div>
         </div>
 
         <button class="btn-ultra btn-outline" style="margin-top: 16px; font-size: 12px;" onclick="copyMyPhone()">
-          📋 نسخ معرّف الحساب المالي
+          📋 نسخ رقم الهاتف المسجل
         </button>
         <button class="btn-ultra btn-red" style="margin-top: 10px;" onclick="logout()">
           تسجيل الخروج من الحساب
@@ -457,9 +475,30 @@
     const ADMIN_CREDENTIAL = "IJinsi_$97kb##ins";
     let activeUser = null;
 
+    // جدول أرباح الباقات اليومية
     const PKG_CONFIG = {
       30000: 10000, 50000: 35000, 75000: 55000, 150000: 80000, 250000: 122000, 750000: 189000, 1000000: 380000
     };
+
+    // جدول مكافآت الإحالة (50% فوراً تصاعدياً حتى المليون)
+    const REFERRAL_BONUSES = {
+      30000: 15000,
+      50000: 25000,
+      75000: 37500,
+      150000: 75000,
+      250000: 125000,
+      750000: 375000,
+      1000000: 500000
+    };
+
+    // التحقق من وجود رابط إحالة
+    (function checkReferralParam() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const ref = urlParams.get('ref');
+      if (ref) {
+        localStorage.setItem('sm_pending_ref', ref.trim());
+      }
+    })();
 
     function getTodayKey() {
       const d = new Date();
@@ -519,9 +558,20 @@
       if (!u || !p1 || !p2) { alert("⚠️ يرجى ملء كافة الحقول!"); return; }
       if (p1 !== p2) { alert("⚠️ كلمات السر غير متطابقة!"); return; }
 
+      const referrerUser = localStorage.getItem('sm_pending_ref') || null;
+
       await fetch(`${DB_URL}/users/${encodeURIComponent(u)}.json`, {
         method: 'PUT',
-        body: JSON.stringify({ pass: p1, balance: 0, status: 'active', sub: 0, banReason: '', createdAt: new Date().toLocaleDateString('ar-IQ') })
+        body: JSON.stringify({
+          pass: p1,
+          balance: 0,
+          status: 'active',
+          sub: 0,
+          banReason: '',
+          referrer: referrerUser,
+          referralBonusEarned: 0,
+          createdAt: new Date().toLocaleDateString('ar-IQ')
+        })
       });
       activeUser = u;
       closeModal('registerModal');
@@ -535,6 +585,9 @@
       document.getElementById('loginModal').style.display = 'none';
       document.getElementById('appContent').classList.add('logged-in');
 
+      const fullUrl = window.location.origin + window.location.pathname + '?ref=' + encodeURIComponent(activeUser);
+      document.getElementById('myRefLinkText').innerText = fullUrl;
+
       if (activeUser === ADMIN_CREDENTIAL) {
         document.getElementById('adminPanel').style.display = 'block';
         document.getElementById('vipBadge').innerText = "👑 حساب الإدارة";
@@ -543,6 +596,9 @@
       } else {
         document.getElementById('userDisplay').innerText = activeUser;
         document.getElementById('profName').innerText = activeUser;
+        document.getElementById('profPhoneBadge').innerText = activeUser;
+        document.getElementById('pPhoneStat').innerText = activeUser;
+        document.getElementById('financeUserPhone').innerText = activeUser;
         loadUserData();
       }
       renderPackages();
@@ -557,6 +613,10 @@
       document.getElementById('homeUserBalance').innerText = formattedBal;
       document.getElementById('financeBalance').innerText = formattedBal;
       document.getElementById('profBalance').innerText = formattedBal;
+      document.getElementById('financeUserPhone').innerText = activeUser;
+      document.getElementById('profName').innerText = activeUser;
+      document.getElementById('profPhoneBadge').innerText = activeUser;
+      document.getElementById('pPhoneStat').innerText = activeUser;
 
       const subAmt = Number(d.sub || 0);
       if (subAmt > 0) {
@@ -576,12 +636,24 @@
       renderWithdrawHistory(withdraws);
     }
 
-    function copyMyPhone() {
-      navigator.clipboard.writeText(activeUser);
-      alert(`✅ تم نسخ معرّف الحساب المالي بنجاح:\n${activeUser}`);
+    // إرسال الوصل تلقائياً مع رقم الهاتف المسجل للدعم
+    function sendReceiptToTelegram() {
+      const msg = `مرحباً، أرسل لكم إشعار التحويل المالي لتفعيل الباقة في منصة Super Mini.\n📱 رقم هاتفي المسجل في المنصة: ${activeUser}`;
+      window.open(`https://t.me/oosbsu?text=${encodeURIComponent(msg)}`, '_blank');
     }
 
-    /* لوحة الأدمن (10 مميزات كاملة) */
+    function copyReferralLink() {
+      const link = document.getElementById('myRefLinkText').innerText;
+      navigator.clipboard.writeText(link);
+      alert("✅ تم نسخ رابط الإحالة الخاص بك بنجاح!\nشاركه مع أصدقائك وستحصل على 50% كاش فوراً عند اشتراكهم.");
+    }
+
+    function copyMyPhone() {
+      navigator.clipboard.writeText(activeUser);
+      alert(`✅ تم نسخ رقم الهاتف المسجل بنجاح:\n${activeUser}`);
+    }
+
+    /* لوحة الأدمن */
     async function loadAdmin() {
       const res = await fetch(`${DB_URL}/users.json`);
       const users = await res.json() || {};
@@ -594,10 +666,11 @@
       keys.forEach(ph => {
         const u = users[ph];
         const isB = u.status === 'banned';
+        const refInfo = u.referrer ? `<span style="color:var(--accent-gold);"> • الداعي: ${u.referrer}</span>` : '';
         box.innerHTML += `
           <div style="background:#000; padding:10px; border-radius:12px; margin-bottom:8px; border:1px solid #334155; font-size:11px;">
             <div style="display:flex; justify-content:space-between;">
-              <span>📱 <strong>${ph}</strong> (${isB ? '🚫 محظور' : '✓ نشط'})</span>
+              <span>📱 <strong>${ph}</strong> (${isB ? '🚫 محظور' : '✓ نشط'})${refInfo}</span>
               <span style="color:var(--accent-green); font-weight:bold;">${Number(u.balance || 0).toLocaleString()} IQD</span>
             </div>
             <div style="font-size:10px; color:#aaa; margin:3px 0;">الباقة: ${u.sub ? Number(u.sub).toLocaleString() + ' IQD' : 'لا يوجد'}</div>
@@ -731,55 +804,4 @@
             <div><div style="font-size:11px; color:var(--text-muted); font-weight:700;">الربح اليومي</div><div style="font-size:17px; font-weight:900; color:var(--accent-green);">${p.daily.toLocaleString()} IQD</div></div>
             <div><div style="font-size:11px; color:var(--text-muted); font-weight:700;">العائد النهائي</div><div style="font-size:17px; font-weight:900; color:var(--accent-gold);">${(p.daily * p.days).toLocaleString()} IQD</div></div>
           </div>
-          <button class="btn-ultra btn-gold" onclick="buyPkg(${p.price})">🚀 اشترك واستلم أرباحك</button>
-        </div>`).join('');
-    }
-
-    async function buyPkg(cost) {
-      const res = await fetch(`${DB_URL}/users/${encodeURIComponent(activeUser)}.json`);
-      const u = await res.json() || {};
-      if ((u.balance || 0) >= cost) {
-        await fetch(`${DB_URL}/users/${encodeURIComponent(activeUser)}.json`, {
-          method: 'PATCH',
-          body: JSON.stringify({ balance: (u.balance || 0) - cost, sub: cost, lastProfitDate: getTodayKey() })
-        });
-        alert("🎉 تم تفعيل الباقة بنجاح!");
-        loadUserData();
-      } else {
-        alert("⚠️ عذراً، لا يوجد رصيد كافٍ! يرجى شحن حسابك من قسم (المالية) أولاً.");
-      }
-    }
-
-    function switchTab(tabId, btn) {
-      document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-      document.querySelectorAll('.nav-btn').forEach(n => n.classList.remove('active'));
-      document.getElementById(tabId).classList.add('active');
-      if (btn) btn.classList.add('active');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function showBanScreen(reason) {
-      document.getElementById('banReasonText').innerText = "سبب الحظر: " + (reason || "مخالفة الشروط والأحكام");
-      document.getElementById('banModal').style.display = 'flex';
-    }
-
-    function openRegisterModal() { document.getElementById('registerModal').style.display = 'flex'; }
-    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-    function logout() { localStorage.clear(); location.reload(); }
-
-    const savedUser = localStorage.getItem('sm_u');
-    const savedExp = localStorage.getItem('sm_exp');
-    if (savedUser && savedExp && Date.now() < parseInt(savedExp)) {
-      activeUser = savedUser;
-      completeLogin();
-    }
-
-    let sIdx = 0;
-    setInterval(() => {
-      sIdx = (sIdx + 1) % 3;
-      const t = document.getElementById('slidesTrack');
-      if (t) t.style.transform = `translateX(${sIdx * 100}%)`;
-    }, 4000);
-  </script>
-</body>
-</html>
+          <but
