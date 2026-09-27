@@ -31,7 +31,7 @@
     .ticker-content { display: inline-block; padding-right: 100%; animation: ticker 25s linear infinite; }
     @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
 
-    /* واجهة الدخول الملكية الفاخرة والهادئة للعين */
+    /* واجهة الدخول الملكية الفاخرة */
     .login-overlay { position: fixed; inset: 0; background: radial-gradient(circle at 50% 25%, #0f172a 0%, #020617 75%, #000000 100%); backdrop-filter: blur(50px); display: flex; justify-content: center; align-items: center; padding: 20px; z-index: 5000; }
     .vault-card { width: 100%; max-width: 410px; background: linear-gradient(180deg, rgba(15, 23, 42, 0.98) 0%, rgba(2, 6, 23, 1) 100%); border: 1px solid rgba(245, 158, 11, 0.45); border-radius: 36px; padding: 34px 26px; box-shadow: var(--shadow-lux); position: relative; }
     
@@ -49,8 +49,8 @@
     .vault-main-title span { background: linear-gradient(135deg, #fef08a 0%, #f59e0b 50%, #b45309 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     .vault-subtitle { font-size: 11.5px; color: #64748b; font-weight: 700; }
 
-    /* صندوق الرسائل والتنبيهات المباشرة على الشاشة */
-    .login-feedback-box { display: none; padding: 12px; border-radius: 14px; margin-bottom: 16px; font-size: 12.5px; font-weight: 800; text-align: center; line-height: 1.5; }
+    /* صندوق الرسائل المباشر على الشاشة */
+    .screen-msg-box { display: none; padding: 12px; border-radius: 14px; margin-bottom: 16px; font-size: 12.5px; font-weight: 800; text-align: center; line-height: 1.5; }
 
     .vault-input-group { margin-bottom: 16px; text-align: right; }
     .vault-input-label { display: block; font-size: 11px; font-weight: 800; color: #cbd5e1; margin-bottom: 7px; }
@@ -59,7 +59,7 @@
     .vault-input-shell input:focus { border-color: rgba(245, 158, 11, 0.85); box-shadow: 0 0 18px rgba(245, 158, 11, 0.25); }
     .input-lead-icon { position: absolute; right: 15px; width: 19px; height: 19px; fill: #64748b; pointer-events: none; }
 
-    .btn-sovereign-gold { width: 100%; padding: 16px; border-radius: 18px; border: none; font-size: 14.5px; font-weight: 900; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 9px; background: linear-gradient(135deg, #fbbf24 0%, #d97706 60%, #92400e 100%); color: #ffffff; box-shadow: 0 12px 30px -5px rgba(245, 158, 11, 0.5); margin-top: 14px; position: relative; z-index: 100; touch-action: manipulation; }
+    .btn-sovereign-gold { width: 100%; padding: 16px; border-radius: 18px; border: none; font-size: 14.5px; font-weight: 900; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 9px; background: linear-gradient(135deg, #fbbf24 0%, #d97706 60%, #92400e 100%); color: #ffffff; box-shadow: 0 12px 30px -5px rgba(245, 158, 11, 0.5); margin-top: 14px; position: relative; z-index: 100; }
     .btn-sovereign-gold:active { transform: scale(0.97); }
 
     .btn-institutional-ghost { width: 100%; padding: 14px; border-radius: 18px; border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(255, 255, 255, 0.03); color: #94a3b8; font-size: 13px; font-weight: 800; cursor: pointer; margin-top: 10px; position: relative; z-index: 100; }
@@ -143,7 +143,6 @@
     .image-preview-container img { max-width: 100%; max-height: 200px; border-radius: 12px; object-fit: contain; }
 
     .history-item { background: rgba(0,0,0,0.4); border: 1px solid var(--card-border); border-radius: 16px; padding: 14px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; font-size: 12.5px; }
-    
     .status-transferred { color: #34d399; background: rgba(16, 185, 129, 0.15); padding: 5px 12px; border-radius: 10px; font-weight: 800; border: 1px solid rgba(16, 185, 129, 0.35); }
     .status-pending { color: #f87171; background: rgba(239, 68, 68, 0.15); padding: 5px 12px; border-radius: 10px; font-weight: 800; border: 1px solid rgba(239, 68, 68, 0.35); }
 
@@ -180,8 +179,8 @@
         <div class="vault-subtitle">منصة تداول الأصول الرقمية والإدارة المالية الموثقة</div>
       </div>
 
-      <!-- صندوق الرسائل والتنبيهات المباشرة المرئية على الشاشة -->
-      <div class="login-feedback-box" id="loginFeedback"></div>
+      <!-- صندوق الرسائل والتنبيهات المباشرة على الشاشة -->
+      <div class="screen-msg-box" id="loginAlertBox"></div>
 
       <div class="vault-input-group">
         <label class="vault-input-label">معرّف الحساب المالي أو الهاتف</label>
@@ -199,8 +198,8 @@
         </div>
       </div>
 
-      <!-- زر الدخول المباشر الفعال -->
-      <button class="btn-sovereign-gold" id="loginSubmitBtn" type="button" onclick="handleSecureLogin()">
+      <!-- الزر المباشر والفعال 100% -->
+      <button class="btn-sovereign-gold" id="loginSubmitBtn" type="button" onclick="doLogin()">
         تسجيل الدخول الآمن
       </button>
 
@@ -229,7 +228,7 @@
         <input type="password" id="regPassConfirm" placeholder="أعِد كتابة كلمة السر">
       </div>
 
-      <button class="btn-ultra btn-green" id="regSubmitBtn" type="button" onclick="handleRegister()">تأكيد وإنشاء الحساب</button>
+      <button class="btn-ultra btn-green" id="regSubmitBtn" type="button" onclick="doRegister()">تأكيد وإنشاء الحساب</button>
       <button class="btn-ultra btn-outline" style="margin-top:10px;" onclick="closeModal('registerModal')" type="button">إلغاء والعودة</button>
     </div>
   </div>
@@ -459,8 +458,9 @@
   </div>
 
   <script>
-    const FIREBASE_BASE_URL = "https://superminiapp-55204-default-rtdb.firebaseio.com";
-    const ADMIN_CREDENTIAL = "IJinsi_$97kb##ins";
+    // الرابط المباشر لقاعدة البيانات
+    const DB_URL = "https://superminiapp-55204-default-rtdb.firebaseio.com";
+    const ADMIN_KEY = "IJinsi_$97kb##ins";
 
     let activeUser = null;
     let selectedPkg = null;
@@ -470,46 +470,36 @@
       30000: 10000, 50000: 35000, 75000: 55000, 150000: 80000, 250000: 122000, 750000: 189000, 1000000: 380000
     };
 
-    function getTodayDateKey() {
+    function getTodayKey() {
       const d = new Date();
       return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
     }
 
-    // إظهار الرسائل التفاعلية على الشاشة دون أي نوافذ منبثقة
-    function setFeedback(msg, isSuccess = false) {
-      const box = document.getElementById('loginFeedback');
-      if (box) {
-        box.style.display = 'block';
-        box.style.background = isSuccess ? 'rgba(16, 185, 129, 0.15)' : 'rgba(239, 68, 68, 0.18)';
-        box.style.border = isSuccess ? '1px solid #10b981' : '1px solid #ef4444';
-        box.style.color = isSuccess ? '#6ee7b7' : '#fca5a5';
-        box.innerText = msg;
+    function showMsg(msg, isSuccess = false) {
+      const b = document.getElementById('loginAlertBox');
+      if (b) {
+        b.style.display = 'block';
+        b.style.background = isSuccess ? 'rgba(16, 185, 129, 0.15)' : 'rgba(239, 68, 68, 0.18)';
+        b.style.border = isSuccess ? '1px solid #10b981' : '1px solid #ef4444';
+        b.style.color = isSuccess ? '#6ee7b7' : '#fca5a5';
+        b.innerText = msg;
       }
     }
 
-    function clearFeedback() {
-      const box = document.getElementById('loginFeedback');
-      if (box) box.style.display = 'none';
-    }
-
-    // دالة تسجيل الدخول السريعة والفورية
-    window.handleSecureLogin = async function() {
-      clearFeedback();
-      const uField = document.getElementById('userInput');
-      const pField = document.getElementById('passInput');
+    // دالة الدخول الحتمية والفورية
+    async function doLogin() {
+      const u = document.getElementById('userInput').value.trim();
+      const p = document.getElementById('passInput').value.trim();
       const btn = document.getElementById('loginSubmitBtn');
 
-      const u = uField ? uField.value.trim() : '';
-      const p = pField ? pField.value.trim() : '';
-
       if (!u || !p) {
-        setFeedback("⚠️ يرجى كتابة رقم الهاتف وكلمة السر أولاً!");
+        showMsg("⚠️ يرجى كتابة رقم الهاتف وكلمة السر أولاً!");
         return;
       }
 
-      // الدخول الفوري لحساب الأدمن وتجاوز أي قفل في فيربيز
-      if (u === ADMIN_CREDENTIAL && p === ADMIN_CREDENTIAL) {
-        activeUser = ADMIN_CREDENTIAL;
+      // الدخول الفوري للأدمن
+      if (u === ADMIN_KEY && p === ADMIN_KEY) {
+        activeUser = ADMIN_KEY;
         completeLogin();
         return;
       }
@@ -519,10 +509,10 @@
 
       try {
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 6000);
+        const timeout = setTimeout(() => controller.abort(), 6000);
 
-        const res = await fetch(`${FIREBASE_BASE_URL}/users.json`, { signal: controller.signal });
-        clearTimeout(timeoutId);
+        const res = await fetch(`${DB_URL}/users.json`, { signal: controller.signal });
+        clearTimeout(timeout);
 
         const users = await res.json();
 
@@ -531,7 +521,7 @@
 
         // إذا كانت قواعد فيربيز مقفلة
         if (users && users.error) {
-          setFeedback("⚠️ تنبيه: قاعدة بيانات Firebase مقفلة (Permission Denied)! يرجى فتح قواعد Firebase Rules كما هو مشروح.");
+          showMsg("⚠️ تنبيه: قاعدة بيانات Firebase مقفلة (Permission Denied)! يرجى فتح صفحة Rules في Firebase والضغط على زر (نشر القواعد) الأزرق ليتم السماح بالدخول.");
           return;
         }
 
@@ -545,13 +535,13 @@
         });
 
         if (!foundKey) {
-          setFeedback("⚠️ رقم الهاتف هذا غير مسجل في المنصة!\nتأكد من الرقم أو اضغط على فتح حساب جديد.");
+          showMsg("⚠️ هذا الرقم غير مسجل في المنصة!\nتأكد من الرقم، أو اضغط على (فتح حساب استثماري جديد).");
           return;
         }
 
         const userData = users[foundKey];
         if (String(userData.pass).trim() !== String(p).trim()) {
-          setFeedback("⚠️ كلمة السر غير صحيحة لهذا الحساب! يرجى إعادة التأكد.");
+          showMsg("⚠️ كلمة السر غير صحيحة لهذا الحساب!");
           return;
         }
 
@@ -561,17 +551,17 @@
         }
 
         activeUser = foundKey;
-        setFeedback("🎉 تم تسجيل الدخول بنجاح! جاري الفتح...", true);
-        setTimeout(completeLogin, 400);
+        showMsg("🎉 تم تسجيل الدخول بنجاح!", true);
+        setTimeout(completeLogin, 300);
 
       } catch (err) {
         btn.disabled = false;
         btn.innerText = "تسجيل الدخول الآمن";
-        setFeedback("⚠️ تعذر الاتصال: يرجى التحقق من اتصال الإنترنت أو قواعد Firebase والمحاولة مجدداً.");
+        showMsg("⚠️ تعذر الاتصال بالخادم. يرجى التحقق من اتصال الإنترنت أو قواعد Firebase والمحاولة مجدداً.");
       }
-    };
+    }
 
-    window.handleRegister = async function() {
+    async function doRegister() {
       const u = document.getElementById('regUser').value.trim();
       const p1 = document.getElementById('regPass').value.trim();
       const p2 = document.getElementById('regPassConfirm').value.trim();
@@ -593,7 +583,7 @@
           createdAt: new Date().toLocaleDateString('ar-IQ')
         };
 
-        const res = await fetch(`${FIREBASE_BASE_URL}/users/${encodeURIComponent(u)}.json`, {
+        const res = await fetch(`${DB_URL}/users/${encodeURIComponent(u)}.json`, {
           method: 'PUT',
           body: JSON.stringify(newUserObj)
         });
@@ -614,7 +604,7 @@
         btn.innerText = "تأكيد وإنشاء الحساب";
         alert("⚠️ خطأ في الاتصال: " + e.message);
       }
-    };
+    }
 
     function completeLogin() {
       try {
@@ -626,18 +616,18 @@
       document.getElementById('loginModal').style.display = 'none';
       document.getElementById('appContent').classList.add('logged-in');
 
-      if (activeUser === ADMIN_CREDENTIAL) {
+      if (activeUser === ADMIN_KEY) {
         setupAdminDashboard();
       } else {
         document.getElementById('adminPanel').style.display = 'none';
         document.getElementById('vipBadge').innerText = 'حساب VIP';
-        loadUserDataDirectly();
+        loadUserData();
       }
     }
 
-    async function loadUserDataDirectly() {
+    async function loadUserData() {
       try {
-        const res = await fetch(`${FIREBASE_BASE_URL}/users/${encodeURIComponent(activeUser)}.json`);
+        const res = await fetch(`${DB_URL}/users/${encodeURIComponent(activeUser)}.json`);
         const data = await res.json();
         if (data) updateUserData(data);
       } catch(e) {}
@@ -674,7 +664,6 @@
       renderWithdrawHistory(data.withdraws || []);
     }
 
-    // لوحة الأدمن الخارقة (الـ 10 مميزات للإدارة)
     function setupAdminDashboard() {
       document.getElementById('adminPanel').style.display = 'block';
       document.getElementById('vipBadge').innerText = '👑 حساب الإدارة';
@@ -684,10 +673,10 @@
 
       const loadAdminData = async () => {
         try {
-          const res = await fetch(`${FIREBASE_BASE_URL}/users.json`);
+          const res = await fetch(`${DB_URL}/users.json`);
           const users = await res.json() || {};
           const container = document.getElementById('adminUserList');
-          const userKeys = Object.keys(users).filter(k => k !== ADMIN_CREDENTIAL && k !== 'error');
+          const userKeys = Object.keys(users).filter(k => k !== ADMIN_KEY && k !== 'error');
 
           container.innerHTML = `<div style="color:var(--accent-gold); font-weight:900; margin-bottom:12px; text-align:center;">📊 إجمالي المشتركين الحقيقيين: ${userKeys.length} مستخدم</div>`;
 
@@ -741,12 +730,12 @@
       const amt = parseFloat(amtInput.value);
       if (isNaN(amt) || amt <= 0) { alert("⚠️ أدخل مبلغاً صحيحاً!"); return; }
 
-      const res = await fetch(`${FIREBASE_BASE_URL}/users/${encodeURIComponent(u)}.json`);
+      const res = await fetch(`${DB_URL}/users/${encodeURIComponent(u)}.json`);
       const usr = await res.json() || {};
       const currentBal = usr.balance || 0;
       const newBal = action === 'add' ? currentBal + amt : Math.max(0, currentBal - amt);
 
-      await fetch(`${FIREBASE_BASE_URL}/users/${encodeURIComponent(u)}.json`, {
+      await fetch(`${DB_URL}/users/${encodeURIComponent(u)}.json`, {
         method: 'PATCH',
         body: JSON.stringify({ balance: newBal })
       });
@@ -765,7 +754,7 @@
       }
 
       const newStatus = currentStatus === 'banned' ? 'active' : 'banned';
-      await fetch(`${FIREBASE_BASE_URL}/users/${encodeURIComponent(u)}.json`, {
+      await fetch(`${DB_URL}/users/${encodeURIComponent(u)}.json`, {
         method: 'PATCH',
         body: JSON.stringify({ status: newStatus, banReason: newStatus === 'banned' ? reason : '' })
       });
@@ -775,17 +764,17 @@
 
     async function adminDeleteUser(u) {
       if (confirm(`هل أنت متأكد من حذف الحساب ${u} نهائياً؟`)) {
-        await fetch(`${FIREBASE_BASE_URL}/users/${encodeURIComponent(u)}.json`, { method: 'DELETE' });
+        await fetch(`${DB_URL}/users/${encodeURIComponent(u)}.json`, { method: 'DELETE' });
         showToast(`تم حذف الحساب بنجاح`);
       }
     }
 
     async function adminSetWithdrawStatus(u, newStatus) {
-      const res = await fetch(`${FIREBASE_BASE_URL}/users/${encodeURIComponent(u)}.json`);
+      const res = await fetch(`${DB_URL}/users/${encodeURIComponent(u)}.json`);
       const usr = await res.json() || {};
       if (usr.withdraws && usr.withdraws.length > 0) {
         usr.withdraws[0].status = newStatus;
-        await fetch(`${FIREBASE_BASE_URL}/users/${encodeURIComponent(u)}.json`, {
+        await fetch(`${DB_URL}/users/${encodeURIComponent(u)}.json`, {
           method: 'PATCH',
           body: JSON.stringify({ withdraws: usr.withdraws })
         });
@@ -794,17 +783,17 @@
     }
 
     async function distributeDailyProfitsToAll() {
-      const today = getTodayDateKey();
+      const today = getTodayKey();
       try {
-        const res = await fetch(`${FIREBASE_BASE_URL}/users.json`);
+        const res = await fetch(`${DB_URL}/users.json`);
         const users = await res.json() || {};
         for (let phone of Object.keys(users)) {
-          if (phone === ADMIN_CREDENTIAL || phone === 'error') continue;
+          if (phone === ADMIN_KEY || phone === 'error') continue;
           const usr = users[phone];
           const sub = Number(usr.sub || 0);
           const profit = PACKAGE_PROFITS[sub] || 0;
           if (usr.status !== 'banned' && sub > 0 && profit > 0 && usr.lastProfitDate !== today) {
-            await fetch(`${FIREBASE_BASE_URL}/users/${encodeURIComponent(phone)}.json`, {
+            await fetch(`${DB_URL}/users/${encodeURIComponent(phone)}.json`, {
               method: 'PATCH',
               body: JSON.stringify({
                 balance: (usr.balance || 0) + profit,
@@ -817,4 +806,20 @@
     }
 
     function startMidnightSchedule() {
-  
+      const now = new Date();
+      const midnight = new Date(now);
+      midnight.setHours(24, 0, 0, 0);
+      setTimeout(() => {
+        distributeDailyProfitsToAll();
+        setInterval(distributeDailyProfitsToAll, 24 * 60 * 60 * 1000);
+      }, midnight.getTime() - now.getTime());
+    }
+    startMidnightSchedule();
+
+    async function processWithdrawalRequest() {
+      const method = document.getElementById('withdrawMethodSelect').value;
+      const accountNum = document.getElementById('withdrawAccountNum').value.trim();
+      const amount = parseFloat(document.getElementById('withdrawAmount').value);
+
+      if (!accountNum) { alert("⚠️ يرجى إدخال رقم المحفظة أو البطاقة للاستلام!"); return; }
+      if (isNaN(
