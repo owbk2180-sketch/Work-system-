@@ -105,9 +105,7 @@
     .pkg-tag { background: rgba(16, 185, 129, 0.2); color: var(--accent-green); padding: 5px 10px; border-radius: 12px; font-size: 11.5px; font-weight: 900; }
     .pkg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; background: rgba(0, 0, 0, 0.5); padding: 14px; border-radius: 16px; margin-bottom: 16px; }
 
-    /* ==============================================================
-       قسم المالية المطور والمنظم بسلاسة فائقة
-       ============================================================== */
+    /* قسم المالية */
     .finance-card { background: linear-gradient(180deg, rgba(20,29,51,0.96), rgba(9,14,26,0.99)); border: 1px solid var(--card-border); border-radius: 22px; padding: 18px; margin: 16px; box-shadow: var(--shadow-lux); }
     .finance-head { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
     .finance-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 13px; color: #fff; }
@@ -122,9 +120,7 @@
     .step-list { background: rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.06); border-radius: 14px; padding: 12px 14px; font-size: 12px; line-height: 1.8; text-align: right; color: #cbd5e1; }
     .step-list strong { color: var(--accent-gold); }
 
-    /* ==============================================================
-       قسم الحساب (حسابي) المطور والمصمم بتفاصيل مصرفية حقيقية
-       ============================================================== */
+    /* قسم الحساب */
     .profile-hero { text-align: center; padding: 10px 0 16px; }
     .profile-avatar { width: 80px; height: 80px; margin: 0 auto 10px; border-radius: 50%; background: linear-gradient(135deg, var(--accent-gold), #78350f); display: flex; align-items: center; justify-content: center; font-size: 32px; border: 2px solid rgba(255,255,255,0.2); }
     .real-stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
@@ -189,14 +185,25 @@
     </div>
   </div>
 
-  <!-- إنشاء حساب جديد -->
+  <!-- إنشاء حساب جديد (تم تطبيق شرط 11 رقماً إنجليزياً + كلمة السر لا تقل عن 5 خانات) -->
   <div class="modal-overlay" id="registerModal">
     <div class="modal-card">
       <div style="font-size: 22px; font-weight: 900; color: var(--accent-gold); margin-bottom: 8px;">حساب جديد</div>
-      <p style="margin-bottom: 16px; font-size: 12px; color: var(--text-muted);">أنشئ حسابك واستخدم المنصة فوراً</p>
-      <div class="input-group"><label>رقم الهاتف الخاص بك</label><input type="text" id="regUser" placeholder="مثال: 07700000000"></div>
-      <div class="input-group"><label>اختر كلمة السر</label><input type="password" id="regPass" placeholder="كلمة السر"></div>
-      <div class="input-group"><label>تأكيد كلمة السر</label><input type="password" id="regPassConfirm" placeholder="أعِد كتابة كلمة السر"></div>
+      <p style="margin-bottom: 16px; font-size: 12px; color: var(--text-muted);">أدخل رقم هاتفك وكلمة السر لإنشاء الحساب</p>
+      
+      <div class="input-group">
+        <label>رقم الهاتف (11 رقماً إنجليزياً إجباري)</label>
+        <input type="tel" id="regUser" placeholder="07XXXXXXXXX" maxlength="11" autocomplete="off">
+      </div>
+      <div class="input-group">
+        <label>كلمة السر (5 خانات أو أكثر إجباري)</label>
+        <input type="password" id="regPass" placeholder="كلمة السر لا تقل عن 5 أرقام" autocomplete="off">
+      </div>
+      <div class="input-group">
+        <label>تأكيد كلمة السر</label>
+        <input type="password" id="regPassConfirm" placeholder="أعِد كتابة كلمة السر" autocomplete="off">
+      </div>
+
       <button class="btn-ultra btn-green" onclick="handleRegister()">تأكيد وإنشاء الحساب</button>
       <button class="btn-ultra btn-outline" style="margin-top:10px;" onclick="closeModal('registerModal')">إلغاء والعودة</button>
     </div>
@@ -298,18 +305,14 @@
       <div style="padding: 0 16px;" id="withdrawHistoryContainer"></div>
     </div>
 
-    <!-- ==============================================================
-         قسم المالية المنظم جداً والمبسط بدقة وسلاسة
-         ============================================================== -->
+    <!-- قسم المالية -->
     <div id="tabFinance" class="tab-content">
-      
-      <!-- ملخص الرصيد المالي -->
       <div class="account-card" style="border-color: var(--accent-gold); margin-top: 16px; text-align: center;">
         <div style="font-size: 12px; color: var(--text-muted); font-weight: bold;">الرصيد المتاح للاشتراك في الباقات:</div>
         <div style="font-size: 26px; font-weight: 900; color: var(--accent-green); margin-top: 4px;" id="financeBalance">0 IQD</div>
       </div>
 
-      <!-- 1. طريقة سوبر كي (شرح صريح ومباشر) -->
+      <!-- 1. طريقة سوبر كي -->
       <div class="finance-card">
         <div class="finance-head">
           <div class="finance-icon qi-bg">Qi</div>
@@ -369,12 +372,9 @@
           📲 إرسال لقطة الشاشة للدعم لتفعيل الباقة فوراً
         </button>
       </div>
-
     </div>
 
-    <!-- ==============================================================
-         قسم الحساب (حسابي) بتفاصيل مصرفية حقيقية وقوية
-         ============================================================== -->
+    <!-- قسم الحساب بتفاصيل مصرفية حقيقية -->
     <div id="tabProfile" class="tab-content">
       <div class="account-card" style="margin-top: 16px;">
         <div class="profile-hero">
@@ -472,6 +472,7 @@
       box.style.display = 'block';
     }
 
+    // تسجيل الدخول يتسامح مع جميع الحسابات القديمة المسجلة مسبقاً
     async function handleSecureLogin() {
       const u = document.getElementById('userInput').value.trim();
       const p = document.getElementById('passInput').value.trim();
@@ -511,21 +512,49 @@
       }
     }
 
+    // إنشاء الحساب الجديد: تطبيق الشروط الإجبارية الصارمة
     async function handleRegister() {
       const u = document.getElementById('regUser').value.trim();
       const p1 = document.getElementById('regPass').value.trim();
       const p2 = document.getElementById('regPassConfirm').value.trim();
 
       if (!u || !p1 || !p2) { alert("⚠️ يرجى ملء كافة الحقول!"); return; }
+
+      // 1. فحص رقم الهاتف: 11 رقماً وباللغة الإنجليزية حصراً
+      const englishPhoneRegex = /^[0-9]{11}$/;
+      if (!englishPhoneRegex.test(u)) {
+        alert("⚠️ خطأ في رقم الهاتف!\nيجب أن يتكون الرقم من 11 رقماً وبالأرقام الإنجليزية حصراً (مثال: 07700000000) دون فراغات أو رموز.");
+        return;
+      }
+
+      // 2. فحص كلمة السر: ألا تقل عن 5 خانات
+      if (p1.length < 5) {
+        alert("⚠️ خطأ في كلمة السر!\nيجب ألا تقل كلمة السر عن 5 أرقام أو خانات.");
+        return;
+      }
+
       if (p1 !== p2) { alert("⚠️ كلمات السر غير متطابقة!"); return; }
 
+      // فحص هل الرقم مسجل مسبقاً في قاعدة البيانات
+      try {
+        const checkRes = await fetch(`${DB_URL}/users/${encodeURIComponent(u)}.json`);
+        const existingUser = await checkRes.json();
+        if (existingUser) {
+          alert("⚠️ هذا الرقم مسجل مسبقاً في المنصة! يرجى تسجيل الدخول مباشرة.");
+          return;
+        }
+      } catch(e) {}
+
+      // حفظ الحساب الجديد المستوفي للشروط
       await fetch(`${DB_URL}/users/${encodeURIComponent(u)}.json`, {
         method: 'PUT',
         body: JSON.stringify({ pass: p1, balance: 0, status: 'active', sub: 0, banReason: '', createdAt: new Date().toLocaleDateString('ar-IQ') })
       });
+
       activeUser = u;
       closeModal('registerModal');
       completeLogin();
+      alert("🎉 تم إنشاء الحساب بنجاح وتم تسجيل دخولك!");
     }
 
     function completeLogin() {
