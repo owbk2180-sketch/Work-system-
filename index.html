@@ -97,13 +97,106 @@
     .admin-head { font-size: 15px; font-weight: 900; color: var(--accent-gold); margin-bottom: 12px; text-align: center; border-bottom: 1px solid var(--card-border); padding-bottom: 8px; }
 
     .section-head { font-size: 16px; font-weight: 900; margin: 24px 16px 14px 16px; display: flex; justify-content: space-between; align-items: center; color: var(--accent-gold); }
-    .packages-list { display: flex; flex-direction: column; gap: 18px; padding: 0 16px; }
-    .package-item { background: linear-gradient(145deg, rgba(26, 31, 46, 0.95), rgba(15, 23, 42, 0.98)); border: 2px solid var(--accent-gold); border-radius: 24px; padding: 20px; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.7); }
-    .package-item::before { content: '🔥 باقة استثمارية VIP'; position: absolute; top: 0; left: 0; right: 0; background: linear-gradient(90deg, #f59e0b, #b45309); color: #fff; font-size: 11px; font-weight: 900; text-align: center; padding: 4px 0; }
-    .pkg-top { display: flex; justify-content: space-between; align-items: center; margin-top: 14px; margin-bottom: 14px; }
-    .pkg-title { font-size: 24px; font-weight: 900; color: #ffffff; }
-    .pkg-tag { background: rgba(16, 185, 129, 0.2); color: var(--accent-green); padding: 5px 10px; border-radius: 12px; font-size: 11.5px; font-weight: 900; }
-    .pkg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; background: rgba(0, 0, 0, 0.5); padding: 14px; border-radius: 16px; margin-bottom: 16px; }
+    .packages-list { display: flex; flex-direction: column; gap: 20px; padding: 0 16px; }
+
+    /* ==============================================================
+       التصميم السيادي الملكي الفاخر للباقات الاستثمارية
+       ============================================================== */
+    .vip-package-card {
+      background: radial-gradient(circle at 85% 0%, rgba(245, 158, 11, 0.1) 0%, rgba(15, 23, 42, 0.96) 50%, rgba(4, 7, 16, 0.99) 100%);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      border-radius: 28px;
+      padding: 22px 18px 18px 18px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 22px 50px -10px rgba(0,0,0,0.9), 0 0 25px rgba(245, 158, 11, 0.12), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+    }
+    .vip-package-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, #f59e0b, #fef08a, #f59e0b, transparent);
+    }
+
+    .vip-pkg-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+    .vip-tier-badge {
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      color: #fbbf24;
+      font-size: 11px;
+      font-weight: 900;
+      padding: 5px 12px;
+      border-radius: 100px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 0 12px rgba(245, 158, 11, 0.2);
+    }
+    .vip-days-pill {
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: #34d399;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 5px 12px;
+      border-radius: 100px;
+      letter-spacing: 0.3px;
+    }
+
+    .vip-price-display {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    }
+    .vip-price-label { font-size: 11.5px; color: var(--text-muted); font-weight: 700; }
+    .vip-price-num { font-size: 30px; font-weight: 900; color: #ffffff; letter-spacing: -0.5px; text-shadow: 0 2px 12px rgba(0,0,0,0.8); }
+    .vip-price-currency { font-size: 14px; color: var(--accent-gold); font-weight: 800; margin-right: 4px; }
+
+    .vip-stats-split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .vip-stat-box {
+      background: rgba(0, 0, 0, 0.45);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
+      padding: 12px 14px;
+      text-align: right;
+    }
+    .vip-stat-lbl { font-size: 10.5px; color: var(--text-muted); font-weight: 700; margin-bottom: 4px; }
+    .vip-stat-val-green { font-size: 17px; font-weight: 900; color: var(--accent-green); text-shadow: 0 0 10px var(--accent-green-glow); }
+    .vip-stat-val-gold { font-size: 17px; font-weight: 900; color: var(--accent-gold); text-shadow: 0 0 10px var(--accent-gold-glow); }
+
+    .vip-btn-subscribe {
+      width: 100%;
+      padding: 15px;
+      border-radius: 16px;
+      border: none;
+      font-size: 14px;
+      font-weight: 900;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #fbbf24 0%, #d97706 60%, #92400e 100%);
+      color: #ffffff;
+      box-shadow: 0 10px 25px rgba(245, 158, 11, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.35);
+      touch-action: manipulation;
+      transition: transform 0.15s, box-shadow 0.2s;
+    }
+    .vip-btn-subscribe:active { transform: scale(0.97); }
 
     /* قسم المالية */
     .finance-card { background: linear-gradient(180deg, rgba(20,29,51,0.96), rgba(9,14,26,0.99)); border: 1px solid var(--card-border); border-radius: 22px; padding: 18px; margin: 16px; box-shadow: var(--shadow-lux); }
@@ -185,7 +278,7 @@
     </div>
   </div>
 
-  <!-- إنشاء حساب جديد (تم تطبيق شرط 11 رقماً إنجليزياً + كلمة السر لا تقل عن 5 خانات) -->
+  <!-- إنشاء حساب جديد -->
   <div class="modal-overlay" id="registerModal">
     <div class="modal-card">
       <div style="font-size: 22px; font-weight: 900; color: var(--accent-gold); margin-bottom: 8px;">حساب جديد</div>
@@ -273,7 +366,7 @@
         <div id="adminUserList"></div>
       </div>
 
-      <div class="section-head">🔥 أقوى باقات الاستثمار المتاحة (90 يوم)</div>
+      <div class="section-head">🔥 أقوى باقات الاستثمار المتاحة (عائد 90 يوماً)</div>
       <div class="packages-list" id="pkgContainer"></div>
     </div>
 
@@ -472,7 +565,6 @@
       box.style.display = 'block';
     }
 
-    // تسجيل الدخول يتسامح مع جميع الحسابات القديمة المسجلة مسبقاً
     async function handleSecureLogin() {
       const u = document.getElementById('userInput').value.trim();
       const p = document.getElementById('passInput').value.trim();
@@ -512,7 +604,6 @@
       }
     }
 
-    // إنشاء الحساب الجديد: تطبيق الشروط الإجبارية الصارمة
     async function handleRegister() {
       const u = document.getElementById('regUser').value.trim();
       const p1 = document.getElementById('regPass').value.trim();
@@ -520,14 +611,12 @@
 
       if (!u || !p1 || !p2) { alert("⚠️ يرجى ملء كافة الحقول!"); return; }
 
-      // 1. فحص رقم الهاتف: 11 رقماً وباللغة الإنجليزية حصراً
       const englishPhoneRegex = /^[0-9]{11}$/;
       if (!englishPhoneRegex.test(u)) {
         alert("⚠️ خطأ في رقم الهاتف!\nيجب أن يتكون الرقم من 11 رقماً وبالأرقام الإنجليزية حصراً (مثال: 07700000000) دون فراغات أو رموز.");
         return;
       }
 
-      // 2. فحص كلمة السر: ألا تقل عن 5 خانات
       if (p1.length < 5) {
         alert("⚠️ خطأ في كلمة السر!\nيجب ألا تقل كلمة السر عن 5 أرقام أو خانات.");
         return;
@@ -535,7 +624,6 @@
 
       if (p1 !== p2) { alert("⚠️ كلمات السر غير متطابقة!"); return; }
 
-      // فحص هل الرقم مسجل مسبقاً في قاعدة البيانات
       try {
         const checkRes = await fetch(`${DB_URL}/users/${encodeURIComponent(u)}.json`);
         const existingUser = await checkRes.json();
@@ -545,7 +633,6 @@
         }
       } catch(e) {}
 
-      // حفظ الحساب الجديد المستوفي للشروط
       await fetch(`${DB_URL}/users/${encodeURIComponent(u)}.json`, {
         method: 'PUT',
         body: JSON.stringify({ pass: p1, balance: 0, status: 'active', sub: 0, banReason: '', createdAt: new Date().toLocaleDateString('ar-IQ') })
@@ -610,7 +697,6 @@
       alert(`✅ تم نسخ معرّف الحساب المالي بنجاح:\n${activeUser}`);
     }
 
-    /* لوحة الأدمن (10 مميزات كاملة) */
     async function loadAdmin() {
       const res = await fetch(`${DB_URL}/users.json`);
       const users = await res.json() || {};
@@ -751,16 +837,38 @@
       { price: 150000, daily: 80000, days: 90 }, { price: 250000, daily: 122000, days: 90 }, { price: 750000, daily: 189000, days: 90 }, { price: 1000000, daily: 380000, days: 90 }
     ];
 
+    /* توليد الباقات بالتصميم السيادي الملكي الفاخر */
     function renderPackages() {
       const container = document.getElementById('pkgContainer');
       container.innerHTML = pkgList.map(p => `
-        <div class="package-item">
-          <div class="pkg-top"><div class="pkg-title">${p.price.toLocaleString()} <span style="font-size:14px; color:var(--accent-gold);">IQD</span></div><div class="pkg-tag">90 يوم</div></div>
-          <div class="pkg-grid">
-            <div><div style="font-size:11px; color:var(--text-muted); font-weight:700;">الربح اليومي</div><div style="font-size:17px; font-weight:900; color:var(--accent-green);">${p.daily.toLocaleString()} IQD</div></div>
-            <div><div style="font-size:11px; color:var(--text-muted); font-weight:700;">العائد النهائي</div><div style="font-size:17px; font-weight:900; color:var(--accent-gold);">${(p.daily * p.days).toLocaleString()} IQD</div></div>
+        <div class="vip-package-card">
+          <div class="vip-pkg-header">
+            <span class="vip-tier-badge">👑 باقة VIP السيادية</span>
+            <span class="vip-days-pill">90 يوماً أرباح مستمرة</span>
           </div>
-          <button class="btn-ultra btn-gold" onclick="buyPkg(${p.price})">🚀 اشترك واستلم أرباحك</button>
+
+          <div class="vip-price-display">
+            <span class="vip-price-label">مبلغ الاستثمار المطلوب:</span>
+            <div>
+              <span class="vip-price-num">${p.price.toLocaleString()}</span>
+              <span class="vip-price-currency">IQD</span>
+            </div>
+          </div>
+
+          <div class="vip-stats-split">
+            <div class="vip-stat-box">
+              <div class="vip-stat-lbl">الربح اليومي المباشر</div>
+              <div class="vip-stat-val-green">+${p.daily.toLocaleString()} IQD</div>
+            </div>
+            <div class="vip-stat-box">
+              <div class="vip-stat-lbl">إجمالي العائد الصافي</div>
+              <div class="vip-stat-val-gold">${(p.daily * p.days).toLocaleString()} IQD</div>
+            </div>
+          </div>
+
+          <button class="vip-btn-subscribe" onclick="buyPkg(${p.price})">
+            <span>🚀 تفعيل الباقة واستلام الأرباح</span>
+          </button>
         </div>`).join('');
     }
 
@@ -782,33 +890,4 @@
     function switchTab(tabId, btn) {
       document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
       document.querySelectorAll('.nav-btn').forEach(n => n.classList.remove('active'));
-      document.getElementById(tabId).classList.add('active');
-      if (btn) btn.classList.add('active');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function showBanScreen(reason) {
-      document.getElementById('banReasonText').innerText = "سبب الحظر: " + (reason || "مخالفة الشروط والأحكام");
-      document.getElementById('banModal').style.display = 'flex';
-    }
-
-    function openRegisterModal() { document.getElementById('registerModal').style.display = 'flex'; }
-    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-    function logout() { localStorage.clear(); location.reload(); }
-
-    const savedUser = localStorage.getItem('sm_u');
-    const savedExp = localStorage.getItem('sm_exp');
-    if (savedUser && savedExp && Date.now() < parseInt(savedExp)) {
-      activeUser = savedUser;
-      completeLogin();
-    }
-
-    let sIdx = 0;
-    setInterval(() => {
-      sIdx = (sIdx + 1) % 3;
-      const t = document.getElementById('slidesTrack');
-      if (t) t.style.transform = `translateX(${sIdx * 100}%)`;
-    }, 4000);
-  </script>
-</body>
-</html>
+      document.getElementById
