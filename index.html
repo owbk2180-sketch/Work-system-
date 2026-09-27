@@ -7,7 +7,7 @@
   <style>
     :root {
       --bg: #030712;
-      --card-bg: rgba(15, 23, 42, 0.94);
+      --card-bg: rgba(15, 23, 42, 0.95);
       --card-border: rgba(245, 158, 11, 0.35);
       --gold: #f59e0b;
       --gold-light: #fef08a;
@@ -83,31 +83,28 @@
     .finance-overview { background: linear-gradient(135deg, rgba(30,41,59,0.9), rgba(15,23,42,0.98)); border: 1px solid var(--card-border); border-radius: 24px; margin: 16px; padding: 20px; box-shadow: var(--shadow-lux); }
     .finance-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.3); color: var(--gold); padding: 4px 12px; border-radius: 100px; font-size: 11px; font-weight: 800; margin-bottom: 12px; }
     
-    .pay-card { background: linear-gradient(180deg, rgba(20,29,51,0.96), rgba(9,14,26,0.99)); border: 1px solid var(--card-border); border-radius: 24px; padding: 22px 18px; margin: 16px; box-shadow: var(--shadow-lux); position: relative; }
+    .pay-card { background: linear-gradient(180deg, rgba(20,29,51,0.96), rgba(9,14,26,0.99)); border: 1px solid var(--card-border); border-radius: 24px; padding: 20px 18px; margin: 16px; box-shadow: var(--shadow-lux); }
     .pay-head { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.08); }
     .pay-icon { width: 46px; height: 46px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 14px; color: #fff; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
     .icon-qi { background: linear-gradient(135deg, #1e293b, #0f172a); border: 2px solid #fbbc04; color: #fbbc04; }
     .icon-zain { background: linear-gradient(135deg, #d946ef, #8b5cf6); }
 
-    /* بطاقة فيزا/كي كارد الرقمية السيادية الفاخرة */
-    .digital-credit-card { background: radial-gradient(circle at 100% 0%, #334155 0%, #0f172a 60%, #020617 100%); border: 1.5px solid rgba(245,158,11,0.4); border-radius: 20px; padding: 18px; margin-bottom: 16px; position: relative; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.7), inset 0 1px 1px rgba(255,255,255,0.2); }
+    /* البطاقة المصرفية الرقمية لسوبر كي */
+    .digital-credit-card { background: radial-gradient(circle at 100% 0%, #334155 0%, #0f172a 60%, #020617 100%); border: 1.5px solid rgba(245,158,11,0.4); border-radius: 20px; padding: 18px; margin-bottom: 14px; position: relative; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.7), inset 0 1px 1px rgba(255,255,255,0.2); }
     .card-chip { width: 36px; height: 26px; background: linear-gradient(135deg, #fbbf24, #d97706); border-radius: 6px; margin-bottom: 14px; box-shadow: inset 0 0 5px rgba(0,0,0,0.4); }
-    .card-number-box { font-size: 19px; font-weight: 900; letter-spacing: 2px; color: #fff; margin-bottom: 12px; text-shadow: 0 2px 8px rgba(0,0,0,0.8); }
+    .card-number-box { font-size: 21px; font-weight: 900; letter-spacing: 2px; color: #fff; margin-bottom: 10px; text-shadow: 0 2px 8px rgba(0,0,0,0.8); }
     .card-footer-flex { display: flex; justify-content: space-between; align-items: center; font-size: 10px; color: var(--muted); font-weight: 700; }
-    
-    .copy-button-row { display: flex; gap: 8px; margin-bottom: 16px; }
 
-    /* خطوات التحويل الرسمية */
-    .steps-container { margin-bottom: 16px; }
-    .step-card { background: rgba(0, 0, 0, 0.45); border: 1px solid rgba(255,255,255,0.06); padding: 12px 14px; border-radius: 14px; margin-bottom: 8px; display: flex; align-items: flex-start; gap: 12px; text-align: right; }
-    .step-num { width: 24px; height: 24px; border-radius: 50%; background: linear-gradient(135deg, #fbbf24, #d97706); color: #000; font-weight: 900; display: inline-flex; align-items: center; justify-content: center; font-size: 11px; flex-shrink: 0; margin-top: 1px; box-shadow: 0 2px 8px rgba(245,158,11,0.4); }
-    .step-content-title { font-size: 12.5px; font-weight: 800; color: #fff; margin-bottom: 2px; }
-    .step-content-desc { font-size: 11px; color: var(--muted); line-height: 1.5; }
+    /* خطوات التحويل الرسمية الميسرة */
+    .steps-container { margin: 12px 0 16px; }
+    .step-card { background: rgba(0, 0, 0, 0.45); border: 1px solid rgba(255,255,255,0.06); padding: 10px 12px; border-radius: 12px; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; text-align: right; }
+    .step-num { width: 22px; height: 22px; border-radius: 50%; background: linear-gradient(135deg, #fbbf24, #d97706); color: #000; font-weight: 900; display: inline-flex; align-items: center; justify-content: center; font-size: 11px; flex-shrink: 0; box-shadow: 0 2px 6px rgba(245,158,11,0.4); }
+    .step-text { font-size: 12px; color: #cbd5e1; line-height: 1.4; font-weight: 600; }
 
-    .barcode-frame { background: #000; padding: 14px; border-radius: 22px; border: 2px dashed var(--gold); display: inline-block; margin: 10px auto; box-shadow: 0 10px 25px rgba(0,0,0,0.8); }
-    .barcode-img { width: 175px; height: auto; border-radius: 14px; display: block; }
+    .barcode-frame { background: #000; padding: 12px; border-radius: 20px; border: 2px dashed var(--gold); display: inline-block; margin: 6px auto 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.8); }
+    .barcode-img { width: 165px; height: auto; border-radius: 12px; display: block; }
 
-    /* واجهة حسابي الفاخرة */
+    /* واجهة حسابي */
     .profile-hero { text-align: center; padding: 10px 0 20px; }
     .profile-avatar { width: 86px; height: 86px; margin: 0 auto 12px; border-radius: 50%; background: linear-gradient(135deg, var(--gold), #78350f); display: flex; align-items: center; justify-content: center; font-size: 36px; box-shadow: 0 0 25px rgba(245,158,11,0.3); border: 2px solid rgba(255,255,255,0.2); }
     .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
@@ -115,12 +112,12 @@
     .stat-lbl { font-size: 10.5px; color: var(--muted); font-weight: bold; }
     .stat-val { font-size: 13.5px; font-weight: 900; color: #fff; margin-top: 4px; }
 
-    /* سجل السحب والحالات */
+    /* سجل السحب */
     .history-row { background: rgba(0,0,0,0.4); border: 1px solid var(--card-border); border-radius: 14px; padding: 12px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; font-size: 12px; }
     .badge-green { color: #34d399; background: rgba(16,185,129,0.15); padding: 5px 10px; border-radius: 8px; font-weight: 800; border: 1px solid rgba(16,185,129,0.3); }
     .badge-red { color: #f87171; background: rgba(239,68,68,0.15); padding: 5px 10px; border-radius: 8px; font-weight: 800; border: 1px solid rgba(239,68,68,0.3); }
 
-    /* شريط التنقل السفلي الفاخر المصمم بأعلى المعايير */
+    /* شريط التنقل السفلي */
     .nav-bar { position: fixed; bottom: 0; width: 100%; max-width: 440px; background: rgba(11, 17, 32, 0.96); display: flex; justify-content: space-around; height: 74px; border-top: 1px solid var(--card-border); z-index: 100; align-items: center; backdrop-filter: blur(25px); box-shadow: 0 -10px 30px rgba(0,0,0,0.8); }
     .nav-btn { background: none; border: none; color: #64748b; font-size: 10px; font-weight: 800; cursor: pointer; flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; transition: all 0.2s ease; }
     .nav-btn svg { width: 20px; height: 20px; fill: currentColor; transition: transform 0.2s; }
@@ -179,7 +176,7 @@
     </div>
   </div>
 
-  <!-- شاشة الحظر الكاملة -->
+  <!-- شاشة الحظر الكاملة مع ذكر السبب -->
   <div class="login-overlay" id="banModal" style="display:none; z-index:9999; background:#000;">
     <div class="vault-box" style="border-color:var(--red);">
       <div style="font-size:50px;">🚫</div>
@@ -261,143 +258,112 @@
     </div>
 
     <!-- ==============================================================
-         تبويب المالية والشحن المطور كلياً بهوية مصرفية فاخرة ومنظمة
+         تبويب المالية والشحن المطور: توضيح مصرفي رسمي وسلس
          ============================================================== -->
     <div id="tabFinance" style="display:none;">
       
-      <!-- بطاقة رأسية لملخص الحساب المالي -->
+      <!-- ملخص رصيد الإيداع -->
       <div class="finance-overview">
-        <div class="finance-badge">🏦 بوابة الإيداع والشحن المركزي</div>
-        <div style="font-size: 13px; color: var(--muted); font-weight: 700;">الرصيد الجاهز للاستثمار:</div>
+        <div class="finance-badge">🏦 بوابة الإيداع والشحن المركزي المعتمدة</div>
+        <div style="font-size: 13px; color: var(--muted); font-weight: 700;">الرصيد المالي المتاح للتفعيل:</div>
         <div class="bal-gold" id="fBal" style="font-size: 26px; margin: 4px 0 10px;">0 IQD</div>
-        <p style="font-size: 11px; color: #cbd5e1; line-height: 1.5;">اختر إحدى بوابات الدفع الرسمية المعتمدة أدناه لشحن محفظتك وتفعيل باقتك الاستثمارية في دقائق معدودة.</p>
+        <p style="font-size: 11.5px; color: #cbd5e1; line-height: 1.5;">قم بالتحويل عبر إحدى الطرق الرسمية أدناه، ثم أرسل إشعار التحويل للدعم الفوري لتفعيل باقتك خلال دقائق.</p>
       </div>
 
-      <!-- 1. قسم بطاقة سوبر كي (التحويل المباشر من بطاقة إلى بطاقة) -->
+      <!-- 1. قسم سوبر كي: التحويل المباشر من بطاقتك إلى بطاقة المنصة -->
       <div class="pay-card">
         <div class="pay-head">
           <div class="pay-icon icon-qi">Qi</div>
           <div>
-            <div style="font-weight:900; font-size:15px; color:#fff;">بوابة سوبر كي (Qi Services / Super Qi)</div>
-            <div style="font-size:11px; color:var(--gold);">تحويل مصرفي مباشر (من بطاقتك إلى بطاقة المنصة)</div>
+            <div style="font-weight:900; font-size:15px; color:#fff;">بوابة سوبر كي (Super Qi / Qi Services)</div>
+            <div style="font-size:11px; color:var(--gold);">تحويل مصرفي مباشر (من بطاقتك الشخصية إلى بطاقة المنصة)</div>
           </div>
         </div>
 
-        <!-- المعاينة الرقمية للبطاقة المصرفية السيادية -->
+        <!-- شكل البطاقة الرقمية الفاخرة -->
         <div class="digital-credit-card">
           <div style="display:flex; justify-content:space-between; align-items:center;">
             <div class="card-chip"></div>
-            <span style="font-weight:900; font-size:13px; color:#fbbc04; letter-spacing:1px;">SUPER QI PLATINUM</span>
+            <span style="font-weight:900; font-size:12px; color:#fbbc04; letter-spacing:1px;">QI CARD PLATINUM</span>
           </div>
-          <div style="font-size:10px; color:var(--muted); margin-bottom:4px; font-weight:bold;">رقم بطاقة الاستلام المعتمد للمنصة:</div>
+          <div style="font-size:10.5px; color:var(--muted); margin-bottom:4px; font-weight:bold;">رقم بطاقة سوبر كي المعتمدة للاستلام:</div>
           <div class="card-number-box">5143 6174 53</div>
           <div class="card-footer-flex">
-            <span>RECEIVER: SUPER MINI OFFICIAL</span>
+            <span>OFFICIAL RECEIVER: SUPER MINI</span>
             <span style="color:#10b981;">STATUS: VERIFIED ✓</span>
           </div>
         </div>
 
-        <!-- زر نسخ الرقم السريع -->
-        <div class="copy-button-row">
-          <button class="btn-action btn-gold" style="padding:11px; font-size:12.5px;" onclick="navigator.clipboard.writeText('5143617453'); alert('✅ تم نسخ رقم بطاقة كي كارد بنجاح:\n5143617453');">
-            📋 نسخ رقم بطاقة المنصة (5143617453)
-          </button>
-        </div>
+        <button class="btn-action btn-gold" style="padding:12px; font-size:13px; margin-bottom:14px;" onclick="navigator.clipboard.writeText('5143617453'); alert('✅ تم نسخ رقم بطاقة المنصة بنجاح:\n5143617453');">
+          📋 نسخ رقم بطاقة المنصة (5143617453)
+        </button>
 
-        <!-- خطوات التحويل الرسمية السهلة والمفصلة -->
-        <div style="font-weight:800; font-size:12.5px; color:var(--gold); margin-bottom:10px;">📖 خطوات التحويل الرسمية عبر تطبيق سوبر كي:</div>
+        <div style="font-weight:800; font-size:12px; color:var(--gold); margin-bottom:8px;">📌 خطوات التحويل من بطاقتك الشخصية عبر تطبيق كي:</div>
         <div class="steps-container">
           <div class="step-card">
             <span class="step-num">1</span>
-            <div>
-              <div class="step-content-title">الدخول إلى التطبيق المصرفي</div>
-              <div class="step-content-desc">افتح تطبيق <strong>خدمات كي (Qi Services)</strong> أو <strong>سوبر كي</strong> من هاتفك وسجل دخولك لبطاقتك الخاصة.</div>
-            </div>
+            <span class="step-text">افتح تطبيق <strong>خدمات كي (Qi Services)</strong> أو <strong>Super Qi</strong> وسجل دخولك لبطاقتك.</span>
           </div>
-
           <div class="step-card">
             <span class="step-num">2</span>
-            <div>
-              <div class="step-content-title">اختيار التحويل بين البطاقات</div>
-              <div class="step-content-desc">من الواجهة الرئيسية، اضغط على <strong>(تحويل الأموال)</strong> ثم اختر <strong>(من بطاقة إلى بطاقة أخرى)</strong>.</div>
-            </div>
+            <span class="step-text">اضغط على <strong>(تحويل أموال)</strong> من الواجهة ثم اختر <strong>(من بطاقة إلى بطاقة أخرى)</strong>.</span>
           </div>
-
           <div class="step-card">
             <span class="step-num">3</span>
-            <div>
-              <div class="step-content-title">إدخال رقم المنصة وتحديد المبلغ</div>
-              <div class="step-content-desc">الصق رقم بطاقة المنصة المنسوخ أعلاه <strong>(5143617453)</strong> وحدد مبلغ الباقة التي ترغب بالاشتراك بها.</div>
-            </div>
+            <span class="step-text">الصق رقم بطاقة المنصة <strong>(5143617453)</strong> وحدد مبلغ الباقة المطلوبة.</span>
           </div>
-
           <div class="step-card">
             <span class="step-num">4</span>
-            <div>
-              <div class="step-content-title">تأكيد الإشعار وإرسال الوصل</div>
-              <div class="step-content-desc">أكّد عملية التحويل، والتقط <strong>لقطة شاشة (Screenshot)</strong> واضحة لرسالة نجاح العملية، ثم اضغط الزر أدناه لإرسالها للدعم وتفعيل باقتك فوراً.</div>
-            </div>
+            <span class="step-text">أكّد التحويل برمزك السري، ثم احفظ لقطة الشاشة (Screenshot) لرسالة نجاح التحويل.</span>
           </div>
         </div>
 
         <button class="btn-action btn-green" onclick="window.open('https://t.me/oosbsu', '_blank')">
-          📲 إرسال إشعار تحويل كي كارد للدعم وتفعيل الباقة
+          📲 إرسال إشعار تحويل سوبر كي للدعم الفوري
         </button>
       </div>
 
-      <!-- 2. قسم محفظة زين كاش مع الباركود المرتب والشرح المفصل -->
+      <!-- 2. قسم محفظة زين كاش الرسمي بالباركود والخطوات -->
       <div class="pay-card">
         <div class="pay-head">
           <div class="pay-icon icon-zain">Zain</div>
           <div>
             <div style="font-weight:900; font-size:15px; color:#fff;">بوابة زين كاش (ZainCash Iraq)</div>
-            <div style="font-size:11px; color:#d946ef;">تحويل فوري فائق السرعة عبر رمز QR المعتمد</div>
+            <div style="font-size:11px; color:#d946ef;">تحويل محفظة فوري عبر مسح رمز الاستجابة السريع (QR)</div>
           </div>
         </div>
 
-        <div style="text-align:center; margin-bottom:16px;">
+        <div style="text-align:center; margin-bottom:12px;">
           <div class="barcode-frame">
-            <img src="8000.png" onerror="this.src='https://via.placeholder.com/175/000/f59e0b?text=ZainCash+QR'" class="barcode-img" alt="ZainCash Barcode">
+            <img src="8000.png" onerror="this.src='https://via.placeholder.com/165/000/f59e0b?text=ZainCash+QR'" class="barcode-img" alt="ZainCash Barcode">
           </div>
-          <div style="font-size:11.5px; color:var(--gold); font-weight:800; margin-top:6px;">📲 باركود الإيداع المباشر لزين كاش</div>
-          <div style="font-size:10px; color:var(--muted); margin-top:2px;">امسح هذا الرمز بكاميرا تطبيق زين كاش للتحويل في ثوانٍ</div>
+          <div style="font-size:11.5px; color:var(--gold); font-weight:800; margin-top:2px;">📲 باركود التحويل الرسمي لزين كاش</div>
         </div>
 
-        <div style="font-weight:800; font-size:12.5px; color:var(--gold); margin-bottom:10px;">📖 خطوات الدفع عبر زين كاش:</div>
+        <div style="font-weight:800; font-size:12px; color:var(--gold); margin-bottom:8px;">📌 خطوات الدفع السريع عبر تطبيق زين كاش:</div>
         <div class="steps-container">
           <div class="step-card">
             <span class="step-num">1</span>
-            <div>
-              <div class="step-content-title">مسح الباركود</div>
-              <div class="step-content-desc">افتح تطبيق <strong>زين كاش (ZainCash)</strong> في هاتفك واضغط على أيقونة <strong>(مسح الرمز / QR)</strong>.</div>
-            </div>
+            <span class="step-text">افتح تطبيق <strong>زين كاش</strong> واضغط على أيقونة <strong>(مسح الرمز / Scan QR)</strong>.</span>
           </div>
-
           <div class="step-card">
             <span class="step-num">2</span>
-            <div>
-              <div class="step-content-title">تحديد المبلغ وتأكيد التحويل</div>
-              <div class="step-content-desc">وجّه الكاميرا للرمز أعلاه، ثم أدخل قيمة الباقة وأدخل رمزك السري لإتمام التحويل.</div>
-            </div>
+            <span class="step-text">وجّه الكاميرا للباركود أعلاه، ثم أدخل قيمة الباقة والرمز السري لتأكيد الإرسال.</span>
           </div>
-
           <div class="step-card">
             <span class="step-num">3</span>
-            <div>
-              <div class="step-content-title">حفظ الوصل وإرساله</div>
-              <div class="step-content-desc">التقط لقطة شاشة لرسالة الإشعار أو إيصال المعاملة، واضغط على الزر أدناه لإرسالها وتفعيل رصيدك مباشرة.</div>
-            </div>
+            <span class="step-text">احفظ إشعار الدفع أو لقطة الشاشة لرسالة التأكيد، وأرسلها للدعم لتفعيل حسابك فوراً.</span>
           </div>
         </div>
 
         <button class="btn-action btn-green" onclick="window.open('https://t.me/oosbsu', '_blank')">
-          📲 إرسال إشعار تحويل زين كاش للدعم وتفعيل الباقة
+          📲 إرسال إشعار تحويل زين كاش للدعم الفوري
         </button>
       </div>
 
     </div>
 
-    <!-- تبويب حسابي المطور بالكامل -->
+    <!-- تبويب حسابي المطور -->
     <div id="tabProfile" style="display:none;">
       <div class="card-box">
         <div class="profile-hero">
@@ -436,7 +402,7 @@
       </div>
     </div>
 
-    <!-- شريط التنقل السفلي الفاخر المصمم بأعلى المعايير مع زر الدعم المباشر -->
+    <!-- شريط التنقل السفلي الفاخر مع زر الدعم المباشر -->
     <div class="nav-bar">
       <button class="nav-btn active" onclick="switchNav('tabHome', this)">
         <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
@@ -453,7 +419,6 @@
         <span>المالية</span>
       </button>
 
-      <!-- زر الدعم المباشر عبر التليجرام مباشرة في شريط التنقل -->
       <button class="nav-btn support-highlight" onclick="window.open('https://t.me/oosbsu', '_blank')">
         <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/></svg>
         <span>الدعم</span>
@@ -511,11 +476,6 @@
         const data = await res.json();
         btn.disabled = false;
         btn.innerText = "تسجيل الدخول الآمن";
-
-        if (data && data.error) {
-          setMsg("⚠️ قاعدة البيانات مقفلة! اضغط زر نشر القواعد الأزرق في Firebase.", false);
-          return;
-        }
 
         const clean = u.replace(/\s+/g, '');
         const noZero = clean.replace(/^0+/, '');
