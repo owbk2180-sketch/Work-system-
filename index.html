@@ -6,190 +6,283 @@
   <title>Super Mini | المنصة المالية المشفرة السيادية</title>
   <style>
     :root {
-      --bg: #020617; --card: rgba(15,23,42,0.96); --gold: #f59e0b;
-      --green: #10b981; --red: #ef4444; --border: rgba(245,158,11,0.3);
+      --bg: #020617;
+      --card-bg: rgba(15, 23, 42, 0.96);
+      --card-border: rgba(245, 158, 11, 0.35);
+      --gold: #f59e0b;
+      --gold-glow: rgba(245, 158, 11, 0.45);
+      --green: #10b981;
+      --red: #ef4444;
+      --text: #f8fafc;
+      --muted: #94a3b8;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; -webkit-tap-highlight-color: transparent; }
-    body { background: var(--bg); color: #f8fafc; min-height: 100vh; display: flex; justify-content: center; }
-    .app { width: 100%; max-width: 440px; display: none; padding-bottom: 90px; }
+    body { background-color: var(--bg); color: var(--text); display: flex; justify-content: center; min-height: 100vh; overflow-x: hidden; }
+    
+    .app { width: 100%; max-width: 440px; display: none; padding-bottom: 95px; min-height: 100vh; border-left: 1px solid var(--card-border); border-right: 1px solid var(--card-border); position: relative; }
     .logged-in { display: block !important; }
-    .login-overlay { position: fixed; inset: 0; background: radial-gradient(circle at 50% 20%, #0f172a, #020617); display: flex; justify-content: center; align-items: center; padding: 20px; z-index: 9999; }
-    .card { width: 100%; max-width: 400px; background: rgba(15,23,42,0.98); border: 1px solid var(--border); border-radius: 32px; padding: 30px 24px; text-align: center; box-shadow: 0 25px 60px rgba(0,0,0,0.9); }
-    .gold-title { font-size: 26px; font-weight: 900; background: linear-gradient(135deg, #fef08a, #f59e0b); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .input-box { margin-bottom: 14px; text-align: right; }
-    .input-box label { font-size: 11px; font-weight: bold; color: #94a3b8; display: block; margin-bottom: 6px; }
-    .input-box input, .select-box { width: 100%; padding: 14px; background: #000; border: 1px solid var(--border); border-radius: 14px; color: #fff; font-size: 14px; outline: none; }
-    .btn { width: 100%; padding: 15px; border-radius: 16px; border: none; font-weight: 900; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 10px; }
-    .btn-gold { background: linear-gradient(135deg, #fbbf24, #d97706); color: #fff; box-shadow: 0 10px 25px rgba(245,158,11,0.4); }
-    .btn-ghost { background: rgba(255,255,255,0.03); color: #94a3b8; border: 1px solid rgba(255,255,255,0.1); }
+
+    .live-ticker { background: linear-gradient(90deg, #050b14, #1e1b4b, #050b14); border-bottom: 1px solid var(--card-border); padding: 8px 0; font-size: 11px; color: var(--gold); overflow: hidden; white-space: nowrap; font-weight: 800; }
+    .ticker-track { display: inline-block; padding-right: 100%; animation: ticker 25s linear infinite; }
+    @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+
+    /* واجهة الدخول السيادية الفاخرة */
+    .login-overlay { position: fixed; inset: 0; background: radial-gradient(circle at 50% 25%, #0f172a 0%, #020617 75%, #000 100%); backdrop-filter: blur(40px); display: flex; justify-content: center; align-items: center; padding: 20px; z-index: 5000; }
+    .vault-card { width: 100%; max-width: 400px; background: linear-gradient(180deg, rgba(15,23,42,0.98), rgba(2,6,23,1)); border: 1px solid var(--card-border); border-radius: 36px; padding: 32px 24px; text-align: center; box-shadow: 0 25px 60px rgba(0,0,0,0.95); position: relative; }
+    .status-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; font-size: 10.5px; }
+    .node { background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.3); padding: 5px 12px; border-radius: 50px; color: #34d399; font-weight: 800; display: inline-flex; align-items: center; gap: 6px; }
+    .pulse { width: 6px; height: 6px; background: #10b981; border-radius: 50%; box-shadow: 0 0 10px #10b981; animation: blink 2s infinite; }
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+    .support-link { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); color: var(--muted); padding: 5px 12px; border-radius: 50px; text-decoration: none; font-weight: bold; }
+
+    .emblem-ring { width: 80px; height: 80px; margin: 0 auto 12px; border-radius: 26px; padding: 3px; background: linear-gradient(135deg, var(--gold), rgba(255,255,255,0.1), rgba(245,158,11,0.3)); }
+    .emblem-ring img { width: 100%; height: 100%; border-radius: 23px; object-fit: cover; background: #020617; }
+    .main-title { font-size: 25px; font-weight: 900; color: #fff; margin-bottom: 2px; }
+    .main-title span { background: linear-gradient(135deg, #fef08a, #f59e0b, #b45309); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .sub-title { font-size: 11px; color: #64748b; font-weight: 700; margin-bottom: 16px; }
+
+    .msg-feedback { display: none; padding: 12px; border-radius: 14px; margin-bottom: 14px; font-size: 12px; font-weight: 800; line-height: 1.5; }
+
+    .input-grp { margin-bottom: 14px; text-align: right; }
+    .input-grp label { display: block; font-size: 11px; font-weight: 800; color: #cbd5e1; margin-bottom: 6px; }
+    .input-grp input, .select-css { width: 100%; padding: 14px; background: rgba(2,6,23,0.9); border: 1px solid rgba(255,255,255,0.12); border-radius: 16px; color: #fff; font-size: 13.5px; outline: none; }
+    .input-grp input:focus, .select-css:focus { border-color: var(--gold); box-shadow: 0 0 15px rgba(245,158,11,0.25); }
+
+    .btn-lux { width: 100%; padding: 15px; border-radius: 16px; border: none; font-size: 14px; font-weight: 900; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; touch-action: manipulation; }
+    .btn-gold { background: linear-gradient(135deg, #fbbf24, #d97706, #92400e); color: #fff; box-shadow: 0 10px 25px rgba(245,158,11,0.4); margin-top: 10px; }
+    .btn-ghost { background: rgba(255,255,255,0.03); color: var(--muted); border: 1px solid rgba(255,255,255,0.08); margin-top: 8px; font-size: 12.5px; }
     .btn-green { background: linear-gradient(135deg, #10b981, #047857); color: #fff; }
     .btn-red { background: linear-gradient(135deg, #ef4444, #991b1b); color: #fff; }
-    .msg-box { display: none; padding: 12px; border-radius: 12px; margin-bottom: 14px; font-size: 12px; font-weight: bold; line-height: 1.5; }
-    .header { padding: 14px 18px; background: var(--card); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
-    .acc-card { background: var(--card); margin: 16px; padding: 18px; border-radius: 20px; border: 1px solid var(--border); }
-    .balance-tag { font-size: 20px; font-weight: 900; color: var(--green); margin-top: 8px; }
-    .pkg { background: var(--card); border: 2px solid var(--gold); border-radius: 20px; padding: 18px; margin: 14px 16px; text-align: center; }
-    .nav { position: fixed; bottom: 0; width: 100%; max-width: 440px; background: var(--card); display: flex; justify-content: space-around; height: 70px; border-top: 1px solid var(--border); z-index: 100; align-items: center; }
-    .nav button { background: none; border: none; color: #94a3b8; font-size: 11px; font-weight: bold; cursor: pointer; flex: 1; }
-    .nav button.active { color: var(--gold); }
-    .history-item { background: rgba(0,0,0,0.5); padding: 12px; border-radius: 14px; margin-bottom: 10px; border: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; font-size: 12px; }
-    .status-green { color: #34d399; background: rgba(16,185,129,0.15); padding: 4px 10px; border-radius: 8px; font-weight: bold; }
-    .status-red { color: #f87171; background: rgba(239,68,68,0.15); padding: 4px 10px; border-radius: 8px; font-weight: bold; }
+    .btn-lux:active { transform: scale(0.97); }
+
+    /* أقسام المنصة */
+    .header { display: flex; justify-content: space-between; align-items: center; padding: 14px 18px; background: var(--card-bg); border-bottom: 1px solid var(--card-border); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(15px); }
+    .brand { font-size: 18px; font-weight: 900; color: #fff; }
+    .brand span { color: var(--gold); }
+    .app-dl { background: linear-gradient(135deg, #10b981, #059669); color: #fff; padding: 7px 12px; border-radius: 12px; font-size: 10.5px; font-weight: 900; text-decoration: none; }
+
+    .slider { width: calc(100% - 32px); height: 180px; margin: 16px auto; border-radius: 22px; overflow: hidden; border: 1px solid var(--card-border); position: relative; }
+    .slides { display: flex; width: 100%; height: 100%; transition: transform 0.5s ease; }
+    .slide { min-width: 100%; height: 100%; position: relative; }
+    .slide img { width: 100%; height: 100%; object-fit: cover; }
+    .slide-txt { position: absolute; inset: 0; background: linear-gradient(to top, rgba(2,6,23,0.95), transparent); display: flex; flex-direction: column; justify-content: flex-end; padding: 16px; }
+
+    .card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 22px; margin: 14px 16px; padding: 18px; }
+    .bal-val { font-size: 21px; font-weight: 900; color: var(--green); margin-top: 6px; }
+
+    .pkg-item { background: linear-gradient(145deg, rgba(15,23,42,0.95), rgba(2,6,23,1)); border: 2px solid var(--gold); border-radius: 24px; padding: 18px; margin: 14px 16px; position: relative; }
+    .pkg-tag { background: rgba(16,185,129,0.2); color: var(--green); padding: 4px 10px; border-radius: 10px; font-size: 11px; font-weight: 900; }
+    .pkg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; background: rgba(0,0,0,0.5); padding: 12px; border-radius: 14px; margin: 12px 0; text-align: center; }
+
+    /* سجل السحب والحالات */
+    .w-row { background: rgba(0,0,0,0.4); border: 1px solid var(--card-border); border-radius: 14px; padding: 12px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; font-size: 12px; }
+    .st-green { color: #34d399; background: rgba(16,185,129,0.15); padding: 4px 10px; border-radius: 8px; font-weight: 800; border: 1px solid rgba(16,185,129,0.3); }
+    .st-red { color: #f87171; background: rgba(239,68,68,0.15); padding: 4px 10px; border-radius: 8px; font-weight: 800; border: 1px solid rgba(239,68,68,0.3); }
+
+    /* النافبار السفلي */
+    .nav { position: fixed; bottom: 0; width: 100%; max-width: 440px; background: var(--card-bg); display: flex; justify-content: space-around; height: 72px; border-top: 1px solid var(--card-border); z-index: 100; align-items: center; }
+    .nav-btn { background: none; border: none; color: var(--muted); font-size: 11px; font-weight: 800; cursor: pointer; flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+    .nav-btn.active { color: var(--gold); }
+
+    /* النوافذ العائمة */
+    .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); backdrop-filter: blur(14px); display: none; justify-content: center; align-items: center; padding: 20px; z-index: 6000; }
+    .modal-box { width: 100%; max-width: 360px; background: var(--card-bg); border: 1px solid var(--card-border); padding: 24px; border-radius: 24px; text-align: center; }
   </style>
 </head>
 <body>
 
-  <!-- واجهة الدخول -->
+  <!-- واجهة الدخول الملكية -->
   <div class="login-overlay" id="loginModal">
-    <div class="card">
-      <div style="font-size:11px; color:#34d399; font-weight:bold; margin-bottom:12px;">🛡️ نظام مصرفي مشفر TLS 1.3</div>
-      <div class="gold-title">Super Mini</div>
-      <p style="font-size:11px; color:#64748b; margin-bottom:18px;">بوابة إدارة الحسابات المالية السيادية</p>
-      
-      <div class="msg-box" id="loginAlert"></div>
-
-      <div class="input-box">
-        <label>رقم الحساب أو الهاتف</label>
-        <input type="text" id="userInput" placeholder="07XXXXXXXXX">
-      </div>
-      <div class="input-box">
-        <label>كلمة السر</label>
-        <input type="password" id="passInput" placeholder="••••••••">
+    <div class="vault-card">
+      <div class="status-bar">
+        <span class="node"><span class="pulse"></span>تشفير سيادي TLS 1.3</span>
+        <a href="https://t.me/oosbsu" target="_blank" class="support-link">الدعم المباشر</a>
       </div>
 
-      <button class="btn btn-gold" id="loginBtn" onclick="executeLogin(this)">تسجيل الدخول الآمن</button>
-      <button class="btn btn-ghost" onclick="toggleRegister(true)">فتح حساب استثماري جديد</button>
-      <a href="https://t.me/oosbsu" target="_blank" style="color:#94a3b8; font-size:11px; text-decoration:none; display:block; margin-top:14px;">الدعم المباشر</a>
+      <div class="emblem-ring">
+        <img src="8001.png" alt="Logo" onerror="this.src='https://via.placeholder.com/80/020617/f59e0b?text=SM'">
+      </div>
+      <div class="main-title">Super <span>Mini</span></div>
+      <div class="sub-title">منصة تداول الأصول المشفرة والإدارة المالية الموثقة</div>
+
+      <div class="msg-feedback" id="loginMsg"></div>
+
+      <div class="input-grp">
+        <label>رقم الحساب المالي أو الهاتف</label>
+        <input type="text" id="userInput" placeholder="07XXXXXXXXX" autocomplete="off">
+      </div>
+      <div class="input-grp">
+        <label>رمز الدخول المشفر (Password)</label>
+        <input type="password" id="passInput" placeholder="••••••••••••" autocomplete="off">
+      </div>
+
+      <button class="btn-lux btn-gold" id="loginBtn" onclick="doLogin()">تسجيل الدخول الآمن</button>
+      <button class="btn-lux btn-ghost" onclick="toggleRegister(true)">فتح حساب استثماري جديد</button>
     </div>
   </div>
 
-  <!-- إنشاء حساب -->
-  <div class="login-overlay" id="regModal" style="display:none;">
-    <div class="card">
-      <div class="gold-title" style="font-size:20px;">حساب استثماري جديد</div>
-      <div class="input-box" style="margin-top:14px;"><label>رقم الهاتف</label><input type="text" id="rUser"></div>
-      <div class="input-box"><label>كلمة السر</label><input type="password" id="rPass"></div>
-      <button class="btn btn-green" onclick="executeRegister()">تأكيد الحساب</button>
-      <button class="btn btn-ghost" onclick="toggleRegister(false)">إلغاء والعودة</button>
+  <!-- نافذة إنشاء حساب جديد -->
+  <div class="modal" id="regModal">
+    <div class="modal-box">
+      <div class="main-title" style="font-size: 20px;">حساب استثماري جديد</div>
+      <p style="font-size:11.5px; color:var(--muted); margin: 6px 0 16px;">انضم الآن إلى نخبة المستثمرين</p>
+      <div class="input-grp"><label>رقم الهاتف</label><input type="text" id="rUser" placeholder="07XXXXXXXXX"></div>
+      <div class="input-grp"><label>كلمة السر</label><input type="password" id="rPass" placeholder="كلمة السر"></div>
+      <div class="input-grp"><label>تأكيد كلمة السر</label><input type="password" id="rPassC" placeholder="تأكيد كلمة السر"></div>
+      <button class="btn-lux btn-green" onclick="doRegister()">تأكيد وإنشاء الحساب</button>
+      <button class="btn-lux btn-ghost" onclick="toggleRegister(false)">إلغاء والعودة</button>
     </div>
   </div>
 
-  <!-- شاشة الحظر -->
-  <div class="login-overlay" id="banModal" style="display:none; z-index:10000; background:#000;">
-    <div class="card" style="border-color:var(--red);">
-      <div style="font-size:45px;">🚫</div>
-      <h3 style="color:var(--red); margin:10px 0;">تم حظر حسابك</h3>
-      <p id="banReasonText" style="background:rgba(239,68,68,0.15); padding:12px; border-radius:12px; font-size:12px;"></p>
-      <button class="btn btn-red" onclick="location.reload()">إغلاق</button>
+  <!-- شاشة الحظر التام مع السبب -->
+  <div class="login-overlay" id="banModal" style="display:none; z-index:9999; background:#000;">
+    <div class="vault-card" style="border-color:var(--red);">
+      <div style="font-size:50px;">🚫</div>
+      <h3 style="color:var(--red); margin:12px 0 6px;">تم حظر حسابك من المنصة</h3>
+      <p id="banReasonText" style="background:rgba(239,68,68,0.15); border:1px solid var(--red); color:#fca5a5; padding:12px; border-radius:14px; font-size:12px; margin-bottom:16px;"></p>
+      <button class="btn-lux btn-red" onclick="location.reload()">إغلاق وتغيير الحساب</button>
     </div>
   </div>
 
-  <!-- المنصة الرئيسية -->
+  <!-- نافذة نجاح طلب السحب -->
+  <div class="modal" id="withdrawNoticeModal">
+    <div class="modal-box">
+      <div style="font-size:45px;">✅</div>
+      <h3 style="color:var(--green); margin:10px 0;">تم إرسال طلب السحب بنجاح</h3>
+      <p style="font-size:12px; color:#fff; line-height:1.6;">طلبك الآن في حالة <strong style="color:var(--red);">قيد التدقيق 🔴</strong> وسيتم تحويله لحسابك البنكي خلال مدة وجيزة.</p>
+      <button class="btn-lux btn-gold" style="margin-top:14px;" onclick="closeModal('withdrawNoticeModal')">موافق</button>
+    </div>
+  </div>
+
+  <!-- التطبيق الرئيسي -->
   <div class="app" id="app">
+    <div class="live-ticker">
+      <div class="ticker-track">
+        🔥 توزيع الأرباح اليومية لجميع المشتركين يتم تلقائياً الساعة 12:00 ليلاً • سحوبات فورية وموثقة عبر زين كاش وكي كارد • استثمار آمن ومضمون 100% • 
+      </div>
+    </div>
+
     <div class="header">
-      <div class="gold-title" style="font-size:17px;">Super <span>Mini</span></div>
-      <div style="font-size:11px; color:#34d399; font-weight:bold;">● متصل بالسيرفر</div>
+      <div class="brand">Super <span>Mini</span></div>
+      <a href="javascript:void(0)" onclick="alert('📲 التطبيق متوفر قريباً عبر متجر التطبيقات!')" class="app-dl">📲 تنزيل التطبيق</a>
     </div>
 
     <!-- تبويب الرئيسية -->
     <div id="tabHome">
-      <div class="acc-card">
-        <div style="display:flex; justify-content:space-between; font-size:12px;">
-          <span>الحساب: <strong id="uPhone">--</strong></span>
-          <span style="color:var(--gold); font-weight:bold;" id="uBadge">VIP</span>
+      <div class="slider">
+        <div class="slides" id="slideTrack">
+          <div class="slide"><img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=800&q=80"><div class="slide-txt"><h4 style="color:var(--gold);">تداول رقمي واحترافي</h4><p style="font-size:10px; color:#ccc;">أعلى عوائد استثمارية بخطط 90 يوماً</p></div></div>
+          <div class="slide"><img src="https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&w=800&q=80"><div class="slide-txt"><h4 style="color:var(--gold);">نمو الأرباح اليومية</h4><p style="font-size:10px; color:#ccc;">عوائد تنزل تلقائياً في محفظتك</p></div></div>
+          <div class="slide"><img src="https://images.unsplash.com/photo-1618042164219-62c820f10723?auto=format&fit=crop&w=800&q=80"><div class="slide-txt"><h4 style="color:var(--gold);">إدارة أصول آمنة</h4><p style="font-size:10px; color:#ccc;">أمان مالي مشفر بنسبة 100%</p></div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <span style="font-size:12.5px;">الحساب: <strong id="uDisplay">--</strong></span>
+          <span class="pkg-tag" id="vipTag">حساب VIP</span>
         </div>
         <div style="margin-top:12px;">
-          <span style="font-size:11px; color:#94a3b8;">الرصيد المتاح:</span>
-          <div class="balance-tag" id="uBal">0 IQD</div>
+          <span style="font-size:11px; color:var(--muted);">رصيد المحفظة الحالي:</span>
+          <div class="bal-val" id="uBal">0 IQD</div>
         </div>
       </div>
 
-      <!-- لوحة الأدمن (10 مميزات كاملة) -->
-      <div id="adminPanel" style="display:none; margin:16px; background:#090d16; border:2px solid var(--gold); border-radius:22px; padding:16px;">
+      <!-- لوحة تحكم الأدمن (10 مميزات كاملة) -->
+      <div id="adminCard" class="card" style="display:none; border:2px solid var(--gold); background:rgba(11,17,32,0.99);">
         <div style="font-weight:900; color:var(--gold); text-align:center; margin-bottom:10px;">👑 لوحة تحكم الأدمن (التحكم بالزبائن)</div>
-        <button class="btn btn-green" style="font-size:12px; padding:10px; margin-bottom:12px;" onclick="distributeProfitsNow()">⚡ ضخ وتوزيع أرباح اليوم يدوياً</button>
-        <div id="adminUsers"></div>
+        <button class="btn-lux btn-green" style="font-size:11.5px; padding:10px; margin-bottom:12px;" onclick="distributeProfitsManual()">⚡ ضخ وتوزيع أرباح اليوم يدوياً الآن</button>
+        <div id="adminList"></div>
       </div>
 
-      <div style="padding:10px 18px; font-weight:bold; color:var(--gold);">باقات الاستثمار المتاحة:</div>
-      <div id="pkgs"></div>
+      <div style="padding:10px 16px; font-weight:900; color:var(--gold); font-size:14px;">🔥 أقوى باقات الاستثمار (عائد 90 يوماً):</div>
+      <div id="pkgListContainer"></div>
     </div>
 
     <!-- تبويب السحب -->
-    <div id="tabWithdraw" style="display:none; padding:16px;">
-      <div class="card" style="max-width:100%; text-align:right;">
-        <h3 style="color:var(--gold); text-align:center; margin-bottom:12px;">طلب سحب الأرباح</h3>
-        <div class="input-box"><label>طريقة السحب</label>
-          <select class="select-box" id="wMethod"><option>زين كاش</option><option>كي كارد</option></select>
+    <div id="tabWithdraw" style="display:none;">
+      <div class="card" style="border-color:var(--gold);">
+        <h3 style="color:var(--gold); text-align:center; margin-bottom:12px; font-size:16px;">💸 طلب سحب الأرباح والأموال</h3>
+        <div class="input-grp"><label>طريقة الاستلام</label>
+          <select class="select-css" id="wMethod"><option>زين كاش (ZainCash)</option><option>كي كارد (Qi Card)</option></select>
         </div>
-        <div class="input-box"><label>رقم المحفظة / البطاقة</label><input type="text" id="wNum"></div>
-        <div class="input-box"><label>المبلغ (الحد الأدنى 10,000 IQD)</label><input type="number" id="wAmt"></div>
-        <button class="btn btn-gold" onclick="requestWithdraw()">تأكيد طلب السحب</button>
+        <div class="input-grp"><label>رقم المحفظة أو البطاقة</label><input type="text" id="wNum" placeholder="أدخل رقم الاستلام"></div>
+        <div class="input-grp"><label>المبلغ المراد سحبه (IQD)</label><input type="number" id="wAmt" placeholder="الحد الأدنى 10,000"></div>
+        <button class="btn-lux btn-gold" onclick="requestWithdraw()">تأكيد وإرسال طلب السحب</button>
       </div>
-      <div style="font-weight:bold; color:var(--gold); margin:18px 0 10px 0;">سجل طلبات السحب الخاصة بك:</div>
-      <div id="wHistory"></div>
+
+      <div style="padding:0 16px; font-weight:800; color:var(--gold); margin:16px 0 8px;">سجل طلبات السحب الخاصة بك:</div>
+      <div style="padding:0 16px;" id="wHistoryBox"></div>
     </div>
 
     <!-- تبويب المالية -->
-    <div id="tabFinance" style="display:none; padding:16px;">
-      <div class="acc-card">
-        <h3>طرق الدفع الرسمية</h3>
-        <p style="font-size:12px; color:#94a3b8; margin:8px 0;">رقم بطاقة كي كارد: <strong>5143617453</strong></p>
-        <button class="btn btn-gold" onclick="navigator.clipboard.writeText('5143617453'); alert('تم نسخ الرقم!');">نسخ رقم البطاقة</button>
+    <div id="tabFinance" style="display:none;">
+      <div class="card">
+        <h4 style="color:var(--gold); margin-bottom:8px;">طرق الدفع والإيداع المعتمدة</h4>
+        <p style="font-size:12px; color:var(--muted); margin-bottom:6px;">رقم بطاقة كي كارد: <strong style="color:#fff;">5143617453</strong></p>
+        <button class="btn-lux btn-gold" style="padding:10px; font-size:12px;" onclick="navigator.clipboard.writeText('5143617453'); alert('تم نسخ رقم بطاقة كي كارد بنجاح!');">نسخ رقم البطاقة</button>
       </div>
-      <div class="acc-card" style="text-align:center;">
-        <h4>تأكيد الإيداع عبر تليجرام</h4>
-        <button class="btn btn-green" onclick="window.open('https://t.me/oosbsu', '_blank')">إرسال صورة الإشعار للدعم</button>
+      <div class="card" style="text-align:center;">
+        <h4 style="color:var(--green); margin-bottom:8px;">تأكيد وتفعيل الإيداع</h4>
+        <p style="font-size:11.5px; color:var(--muted); margin-bottom:14px;">أرسل صورة إشعار التحويل المالي للدعم المباشر لتفعيل الرصيد فوراً</p>
+        <button class="btn-lux btn-green" onclick="window.open('https://t.me/oosbsu', '_blank')">إرسال إشعار التحويل عبر تليجرام</button>
       </div>
     </div>
 
     <!-- تبويب حسابي -->
-    <div id="tabProfile" style="display:none; padding:16px; text-align:center;">
-      <div class="acc-card">
-        <div style="font-size:40px;">👤</div>
-        <h3 id="pPhone" style="margin:10px 0;"></h3>
-        <button class="btn btn-red" onclick="logout()">تسجيل الخروج</button>
+    <div id="tabProfile" style="display:none; text-align:center;">
+      <div class="card" style="padding:28px 18px;">
+        <div style="width:70px; height:70px; background:linear-gradient(135deg, var(--gold), #92400e); border-radius:50%; margin:0 auto 12px; display:flex; align-items:center; justify-content:center; font-size:28px;">👤</div>
+        <h3 id="pUser">--</h3>
+        <p style="color:var(--green); font-size:11px; font-weight:bold; margin-top:4px;">عضوية استثمارية موثقة ✓</p>
+        <button class="btn-lux btn-red" style="margin-top:22px;" onclick="logout()">تسجيل الخروج</button>
       </div>
     </div>
 
-    <!-- النافبار السفلي -->
+    <!-- شريط التنقل السفلي -->
     <div class="nav">
-      <button class="active" onclick="showTab('tabHome', this)">الرئيسية</button>
-      <button onclick="showTab('tabWithdraw', this)">السحب</button>
-      <button onclick="showTab('tabFinance', this)">المالية</button>
-      <button onclick="showTab('tabProfile', this)">حسابي</button>
+      <button class="nav-btn active" onclick="switchNav('tabHome', this)"><span>🏠</span><span>الرئيسية</span></button>
+      <button class="nav-btn" onclick="switchNav('tabWithdraw', this)"><span>💸</span><span>السحب</span></button>
+      <button class="nav-btn" onclick="switchNav('tabFinance', this)"><span>💳</span><span>المالية</span></button>
+      <button class="nav-btn" onclick="switchNav('tabProfile', this)"><span>👤</span><span>حسابي</span></button>
     </div>
   </div>
 
   <script>
-    const DB = "https://superminiapp-55204-default-rtdb.firebaseio.com";
-    const ADMIN = "IJinsi_$97kb##ins";
-    let user = null;
+    const DB_URL = "https://superminiapp-55204-default-rtdb.firebaseio.com";
+    const ADMIN_KEY = "IJinsi_$97kb##ins";
+    let activeUser = null;
 
-    const PKG_MAP = {
+    const PKG_CONFIG = {
       30000: 10000, 50000: 35000, 75000: 55000, 150000: 80000, 250000: 122000, 750000: 189000, 1000000: 380000
     };
 
-    function setAlert(txt, ok) {
-      const b = document.getElementById('loginAlert');
+    function getTodayKey() {
+      const d = new Date();
+      return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+    }
+
+    function setMsg(txt, ok) {
+      const b = document.getElementById('loginMsg');
       b.style.display = 'block';
-      b.style.background = ok ? 'rgba(16,185,129,0.2)' : 'rgba(239,68,68,0.2)';
-      b.style.border = ok ? '1px solid #10b981' : '1px solid #ef4444';
+      b.style.background = ok ? 'rgba(16,185,129,0.18)' : 'rgba(239,68,68,0.18)';
+      b.style.border = ok ? '1px solid var(--green)' : '1px solid var(--red)';
       b.style.color = ok ? '#6ee7b7' : '#fca5a5';
       b.innerText = txt;
     }
 
-    // دالة الدخول المباشرة الخالية من أي تعليق
-    async function executeLogin(btn) {
+    /* تسجيل الدخول السريع المباشر */
+    async function doLogin() {
       const u = document.getElementById('userInput').value.trim();
       const p = document.getElementById('passInput').value.trim();
+      const btn = document.getElementById('loginBtn');
 
-      if (!u || !p) { setAlert("⚠️ أدخل رقم الهاتف وكلمة السر أولاً!", false); return; }
+      if (!u || !p) { setMsg("⚠️ أدخل رقم الهاتف وكلمة السر أولاً!", false); return; }
 
-      // حساب الأدمن الفوري
-      if (u === ADMIN && p === ADMIN) {
-        user = ADMIN;
-        openDashboard();
+      // دخول الأدمن الفوري وتجاوز أي قفل
+      if (u === ADMIN_KEY && p === ADMIN_KEY) {
+        activeUser = ADMIN_KEY;
+        completeSession();
         return;
       }
 
@@ -197,71 +290,74 @@
       btn.innerText = "⏳ جاري فحص الحساب...";
 
       try {
-        const res = await fetch(`${DB}/users.json`);
+        const res = await fetch(`${DB_URL}/users.json`);
         const data = await res.json();
         btn.disabled = false;
         btn.innerText = "تسجيل الدخول الآمن";
 
         if (data && data.error) {
-          setAlert("⚠️ قاعدة البيانات مقفلة! اضغط زر نشر القواعد الأزرق في Firebase.", false);
+          setMsg("⚠️ قاعدة البيانات مقفلة! اضغط زر نشر القواعد الأزرق في Firebase.", false);
           return;
         }
 
         const clean = u.replace(/\s+/g, '');
         const noZero = clean.replace(/^0+/, '');
-        const key = Object.keys(data || {}).find(k => k === clean || k.replace(/^0+/, '') === noZero || ('0' + k) === clean);
+        const found = Object.keys(data || {}).find(k => k === clean || k.replace(/^0+/, '') === noZero || ('0' + k) === clean);
 
-        if (!key) { setAlert("⚠️ هذا الرقم غير مسجل! اضغط فتح حساب استثماري جديد.", false); return; }
-        if (String(data[key].pass).trim() !== String(p).trim()) { setAlert("⚠️ كلمة السر غير صحيحة!", false); return; }
-        if (data[key].status === 'banned') { showBan(data[key].banReason); return; }
+        if (!found) { setMsg("⚠️ رقم الهاتف غير مسجل! اضغط فتح حساب جديد.", false); return; }
+        if (String(data[found].pass).trim() !== String(p).trim()) { setMsg("⚠️ كلمة السر غير صحيحة!", false); return; }
+        if (data[found].status === 'banned') { showBan(data[found].banReason); return; }
 
-        user = key;
-        setAlert("🎉 تم تسجيل الدخول بنجاح!", true);
-        setTimeout(openDashboard, 300);
+        activeUser = found;
+        setMsg("🎉 تم تسجيل الدخول بنجاح!", true);
+        setTimeout(completeSession, 300);
       } catch (e) {
         btn.disabled = false;
         btn.innerText = "تسجيل الدخول الآمن";
-        setAlert("⚠️ تعذر الاتصال بالخادم. تحقق من الإنترنت!", false);
+        setMsg("⚠️ تعذر الاتصال بالخادم. تحقق من الإنترنت!", false);
       }
     }
 
-    async function executeRegister() {
+    async function doRegister() {
       const u = document.getElementById('rUser').value.trim();
-      const p = document.getElementById('rPass').value.trim();
-      if (!u || !p) { alert("أدخل البيانات كاملة!"); return; }
+      const p1 = document.getElementById('rPass').value.trim();
+      const p2 = document.getElementById('rPassC').value.trim();
 
-      await fetch(`${DB}/users/${encodeURIComponent(u)}.json`, {
+      if (!u || !p1 || !p2) { alert("أدخل كافة البيانات!"); return; }
+      if (p1 !== p2) { alert("كلمات السر غير متطابقة!"); return; }
+
+      await fetch(`${DB_URL}/users/${encodeURIComponent(u)}.json`, {
         method: 'PUT',
-        body: JSON.stringify({ pass: p, balance: 0, status: 'active', sub: 0, banReason: '' })
+        body: JSON.stringify({ pass: p1, balance: 0, status: 'active', sub: 0, banReason: '', createdAt: new Date().toLocaleDateString('ar-IQ') })
       });
-      user = u;
+      activeUser = u;
       toggleRegister(false);
-      openDashboard();
+      completeSession();
     }
 
-    function openDashboard() {
-      // حفظ الجلسة لمدة ساعة كاملة (60 دقيقة)
-      localStorage.setItem('sm_user', user);
+    function completeSession() {
+      // حفظ الجلسة لمدة ساعة كاملة (60 دقيقة) حتى لا يخرج الزبون عند التحديث
+      localStorage.setItem('sm_u', activeUser);
       localStorage.setItem('sm_exp', Date.now() + 3600000);
 
       document.getElementById('loginModal').style.display = 'none';
       document.getElementById('app').classList.add('logged-in');
 
-      if (user === ADMIN) {
-        document.getElementById('adminPanel').style.display = 'block';
-        document.getElementById('uBadge').innerText = "المشرف العام";
-        document.getElementById('uPhone').innerText = "ADMIN";
+      if (activeUser === ADMIN_KEY) {
+        document.getElementById('adminCard').style.display = 'block';
+        document.getElementById('vipTag').innerText = "المشرف العام";
+        document.getElementById('uDisplay').innerText = "ADMIN";
         loadAdmin();
       } else {
-        document.getElementById('uPhone').innerText = user;
-        document.getElementById('pPhone').innerText = "الحساب: " + user;
-        loadUser();
+        document.getElementById('uDisplay').innerText = activeUser;
+        document.getElementById('pUser').innerText = activeUser;
+        loadUserData();
       }
-      renderPkgs();
+      renderPackages();
     }
 
-    async function loadUser() {
-      const res = await fetch(`${DB}/users/${encodeURIComponent(user)}.json`);
+    async function loadUserData() {
+      const res = await fetch(`${DB_URL}/users/${encodeURIComponent(activeUser)}.json`);
       const d = await res.json() || {};
       if (d.status === 'banned') { showBan(d.banReason); return; }
 
@@ -269,157 +365,185 @@
       renderHistory(d.withdraws || []);
     }
 
-    // إدارة الأدمن (10 مميزات كاملة)
+    /* لوحة الأدمن (10 مميزات كاملة) */
     async function loadAdmin() {
-      const res = await fetch(`${DB}/users.json`);
+      const res = await fetch(`${DB_URL}/users.json`);
       const users = await res.json() || {};
-      const box = document.getElementById('adminUsers');
+      const box = document.getElementById('adminList');
       box.innerHTML = '';
+      const keys = Object.keys(users).filter(k => k !== ADMIN_KEY && k !== 'error');
 
-      Object.keys(users).forEach(ph => {
-        if (ph === ADMIN) return;
+      box.innerHTML = `<div style="font-size:11.5px; color:var(--gold); margin-bottom:8px; text-align:center;">إجمالي المشتركين: ${keys.length} مستخدم</div>`;
+
+      keys.forEach(ph => {
         const u = users[ph];
-        const isBanned = u.status === 'banned';
+        const isB = u.status === 'banned';
         box.innerHTML += `
           <div style="background:#000; padding:10px; border-radius:12px; margin-bottom:8px; border:1px solid #334155; font-size:11px;">
             <div style="display:flex; justify-content:space-between;">
-              <span>📱 <strong>${ph}</strong> (${isBanned ? '🚫 محظور' : '✓ نشط'})</span>
+              <span>📱 <strong>${ph}</strong> (${isB ? '🚫 محظور' : '✓ نشط'})</span>
               <span style="color:var(--green); font-weight:bold;">${Number(u.balance || 0).toLocaleString()} IQD</span>
             </div>
-            <div style="display:flex; gap:6px; margin-top:8px;">
-              <input type="number" id="amt_${ph}" placeholder="المبلغ" style="width:70px; padding:4px; font-size:11px; background:#1e293b; color:#fff; border:1px solid #475569; border-radius:6px;">
-              <button onclick="adminMod('${ph}', 'add')" style="background:#10b981; color:#fff; border:none; padding:4px 8px; border-radius:6px; font-weight:bold;">شحن (+)</button>
-              <button onclick="adminMod('${ph}', 'sub')" style="background:#ef4444; color:#fff; border:none; padding:4px 8px; border-radius:6px; font-weight:bold;">خصم (-)</button>
-              <button onclick="adminBan('${ph}', '${u.status}')" style="background:#f59e0b; color:#fff; border:none; padding:4px 8px; border-radius:6px; font-weight:bold;">${isBanned ? 'فك حظر' : 'حظر'}</button>
+            <div style="font-size:10px; color:#aaa; margin:3px 0;">الباقة: ${u.sub ? Number(u.sub).toLocaleString() + ' IQD' : 'لا يوجد'}</div>
+            <div style="display:flex; gap:5px; margin-top:6px;">
+              <input type="number" id="amt_${ph}" placeholder="المبلغ" style="width:65px; padding:3px; font-size:10.5px; background:#1e293b; color:#fff; border:1px solid #475569; border-radius:6px;">
+              <button onclick="adminBalance('${ph}', 'add')" style="background:#10b981; color:#fff; border:none; padding:4px 7px; border-radius:6px; font-weight:bold;">شحن (+)</button>
+              <button onclick="adminBalance('${ph}', 'sub')" style="background:#ef4444; color:#fff; border:none; padding:4px 7px; border-radius:6px; font-weight:bold;">خصم (-)</button>
+              <button onclick="adminBan('${ph}', '${u.status}')" style="background:#f59e0b; color:#fff; border:none; padding:4px 7px; border-radius:6px; font-weight:bold;">${isB ? 'فك حظر' : 'حظر'}</button>
+              <button onclick="adminDelete('${ph}')" style="background:#475569; color:#fff; border:none; padding:4px 6px; border-radius:6px;">حذف</button>
             </div>
             ${u.withdraws && u.withdraws.length ? `
-              <div style="margin-top:8px; padding:6px; background:#0f172a; border-radius:8px;">
+              <div style="margin-top:6px; padding:6px; background:#0f172a; border-radius:8px;">
                 سحب: ${Number(u.withdraws[0].amount).toLocaleString()} IQD (${u.withdraws[0].status})
-                <button onclick="adminSetW('${ph}', 'تم التحويل بنجاح 🟢')" style="background:#10b981; color:#fff; border:none; padding:2px 6px; border-radius:4px; font-size:10px;">🟢 تحويل</button>
-                <button onclick="adminSetW('${ph}', 'قيد التدقيق 🔴')" style="background:#ef4444; color:#fff; border:none; padding:2px 6px; border-radius:4px; font-size:10px;">🔴 تدقيق</button>
+                <button onclick="adminSetStatus('${ph}', 'تم التحويل بنجاح 🟢')" style="background:#10b981; color:#fff; border:none; padding:2px 6px; border-radius:4px; font-size:10px; margin-right:4px;">🟢 تحويل</button>
+                <button onclick="adminSetStatus('${ph}', 'قيد التدقيق 🔴')" style="background:#ef4444; color:#fff; border:none; padding:2px 6px; border-radius:4px; font-size:10px;">🔴 تدقيق</button>
               </div>
             ` : ''}
           </div>`;
       });
     }
 
-    async function adminMod(ph, act) {
+    async function adminBalance(ph, act) {
       const v = parseFloat(document.getElementById(`amt_${ph}`).value);
       if (!v || v <= 0) { alert("أدخل مبلغاً!"); return; }
-      const res = await fetch(`${DB}/users/${encodeURIComponent(ph)}.json`);
+      const res = await fetch(`${DB_URL}/users/${encodeURIComponent(ph)}.json`);
       const u = await res.json() || {};
       const newB = act === 'add' ? (u.balance || 0) + v : Math.max(0, (u.balance || 0) - v);
-      await fetch(`${DB}/users/${encodeURIComponent(ph)}.json`, { method: 'PATCH', body: JSON.stringify({ balance: newB }) });
+      await fetch(`${DB_URL}/users/${encodeURIComponent(ph)}.json`, { method: 'PATCH', body: JSON.stringify({ balance: newB }) });
       loadAdmin();
     }
 
     async function adminBan(ph, st) {
-      const reason = st === 'banned' ? '' : (prompt("سبب الحظر:") || "مخالفة الشروط");
-      await fetch(`${DB}/users/${encodeURIComponent(ph)}.json`, {
+      const reason = st === 'banned' ? '' : (prompt("اكتب سبب الحظر الذي سيظهر للزبون:") || "مخالفة الشروط والأحكام");
+      await fetch(`${DB_URL}/users/${encodeURIComponent(ph)}.json`, {
         method: 'PATCH',
         body: JSON.stringify({ status: st === 'banned' ? 'active' : 'banned', banReason: reason })
       });
       loadAdmin();
     }
 
-    async function adminSetW(ph, s) {
-      const res = await fetch(`${DB}/users/${encodeURIComponent(ph)}.json`);
-      const u = await res.json() || {};
-      if (u.withdraws) {
-        u.withdraws[0].status = s;
-        await fetch(`${DB}/users/${encodeURIComponent(ph)}.json`, { method: 'PATCH', body: JSON.stringify({ withdraws: u.withdraws }) });
+    async function adminDelete(ph) {
+      if (confirm(`هل أنت متأكد من حذف الحساب ${ph} نهائياً؟`)) {
+        await fetch(`${DB_URL}/users/${encodeURIComponent(ph)}.json`, { method: 'DELETE' });
         loadAdmin();
       }
     }
 
-    async function distributeProfitsNow() {
-      const res = await fetch(`${DB}/users.json`);
+    async function adminSetStatus(ph, status) {
+      const res = await fetch(`${DB_URL}/users/${encodeURIComponent(ph)}.json`);
+      const u = await res.json() || {};
+      if (u.withdraws) {
+        u.withdraws[0].status = status;
+        await fetch(`${DB_URL}/users/${encodeURIComponent(ph)}.json`, { method: 'PATCH', body: JSON.stringify({ withdraws: u.withdraws }) });
+        loadAdmin();
+      }
+    }
+
+    /* توزيع الأرباح التلقائي واليدوي 12:00 ليلاً */
+    async function distributeProfitsManual() {
+      const res = await fetch(`${DB_URL}/users.json`);
       const users = await res.json() || {};
+      const today = getTodayKey();
+      let count = 0;
+
       for (let ph of Object.keys(users)) {
-        if (ph === ADMIN) continue;
+        if (ph === ADMIN_KEY) continue;
         const u = users[ph];
-        const profit = PKG_MAP[u.sub] || 0;
-        if (u.status !== 'banned' && profit > 0) {
-          await fetch(`${DB}/users/${encodeURIComponent(ph)}.json`, {
+        const profit = PKG_CONFIG[u.sub] || 0;
+        if (u.status !== 'banned' && profit > 0 && u.lastProfitDate !== today) {
+          await fetch(`${DB_URL}/users/${encodeURIComponent(ph)}.json`, {
             method: 'PATCH',
-            body: JSON.stringify({ balance: (u.balance || 0) + profit })
+            body: JSON.stringify({ balance: (u.balance || 0) + profit, lastProfitDate: today })
           });
+          count++;
         }
       }
-      alert("تم توزيع الأرباح على المشتركين بنجاح!");
+      alert(`تم ضخ أرباح اليوم بنجاح لـ ${count} مشترك!`);
       loadAdmin();
     }
 
-    // جدولة تلقائية 12 ليلاً
     setInterval(() => {
       const now = new Date();
-      if (now.getHours() === 0 && now.getMinutes() === 0) distributeProfitsNow();
+      if (now.getHours() === 0 && now.getMinutes() === 0) distributeProfitsManual();
     }, 60000);
 
+    /* السحب الخاص بالزبون */
     async function requestWithdraw() {
       const m = document.getElementById('wMethod').value;
       const n = document.getElementById('wNum').value.trim();
       const a = parseFloat(document.getElementById('wAmt').value);
-      if (!n || !a || a < 10000) { alert("أدخل بيانات صحيحة (أقل سحب 10,000)!"); return; }
 
-      const res = await fetch(`${DB}/users/${encodeURIComponent(user)}.json`);
+      if (!n || !a || a < 10000) { alert("أدخل بيانات صحيحة (الحد الأدنى للسحب 10,000 IQD)!"); return; }
+
+      const res = await fetch(`${DB_URL}/users/${encodeURIComponent(activeUser)}.json`);
       const u = await res.json() || {};
-      if ((u.balance || 0) < a) { alert("رصيدك غير كافٍ!"); return; }
+      if ((u.balance || 0) < a) { alert("عذراً، رصيدك الحالي غير كافٍ لإتمام السحب!"); return; }
 
       const ws = u.withdraws || [];
       ws.unshift({ amount: a, method: m, num: n, status: 'قيد التدقيق 🔴', date: new Date().toLocaleDateString('ar-IQ') });
 
-      await fetch(`${DB}/users/${encodeURIComponent(user)}.json`, {
+      await fetch(`${DB_URL}/users/${encodeURIComponent(activeUser)}.json`, {
         method: 'PATCH',
         body: JSON.stringify({ balance: (u.balance || 0) - a, withdraws: ws })
       });
-      alert("تم إرسال طلب السحب بنجاح!");
-      loadUser();
+
+      document.getElementById('wNum').value = '';
+      document.getElementById('wAmt').value = '';
+      document.getElementById('withdrawNoticeModal').style.display = 'flex';
+      loadUserData();
     }
 
     function renderHistory(ws) {
-      const box = document.getElementById('wHistory');
-      if (!ws.length) { box.innerHTML = "<p style='font-size:11px; color:#64748b;'>لا توجد سحوبات حالياً</p>"; return; }
+      const box = document.getElementById('wHistoryBox');
+      if (!ws.length) { box.innerHTML = "<p style='font-size:11px; color:var(--muted); text-align:center;'>لا توجد عمليات سحب حالياً</p>"; return; }
       box.innerHTML = ws.map(w => `
-        <div class="history-item">
-          <div><div>${Number(w.amount).toLocaleString()} IQD</div><div style="font-size:10px; color:#64748b;">${w.method} • ${w.date}</div></div>
-          <span class="${w.status.includes('تم التحويل') ? 'status-green' : 'status-red'}">${w.status}</span>
+        <div class="w-row">
+          <div><div style="font-weight:bold;">${Number(w.amount).toLocaleString()} IQD</div><div style="font-size:10px; color:var(--muted);">${w.method} • ${w.date}</div></div>
+          <span class="${w.status.includes('تم التحويل') ? 'st-green' : 'st-red'}">${w.status}</span>
         </div>`).join('');
     }
 
-    function renderPkgs() {
+    /* باقات الاستثمار */
+    function renderPackages() {
       const pkgs = [
         { c: 30000, d: 10000 }, { c: 50000, d: 35000 }, { c: 75000, d: 55000 },
         { c: 150000, d: 80000 }, { c: 250000, d: 122000 }, { c: 750000, d: 189000 }, { c: 1000000, d: 380000 }
       ];
-      document.getElementById('pkgs').innerHTML = pkgs.map(p => `
-        <div class="pkg">
-          <div style="font-size:20px; font-weight:900;">${p.c.toLocaleString()} IQD</div>
-          <div style="color:var(--green); font-size:13px; margin:6px 0;">ربح يومي: ${p.d.toLocaleString()} IQD لمدة 90 يوماً</div>
-          <button class="btn btn-gold" onclick="buyPkg(${p.c})">اشتراك وتفعيل الأرباح</button>
+      document.getElementById('pkgListContainer').innerHTML = pkgs.map(p => `
+        <div class="pkg-item">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div style="font-size:22px; font-weight:900;">${p.c.toLocaleString()} <span style="font-size:13px; color:var(--gold);">IQD</span></div>
+            <span class="pkg-tag">خطة 90 يوماً</span>
+          </div>
+          <div class="pkg-grid">
+            <div><div style="font-size:10px; color:var(--muted);">الربح اليومي</div><div style="color:var(--green); font-weight:900;">${p.d.toLocaleString()} IQD</div></div>
+            <div><div style="font-size:10px; color:var(--muted);">إجمالي الأرباح</div><div style="color:var(--gold); font-weight:900;">${(p.d * 90).toLocaleString()} IQD</div></div>
+          </div>
+          <button class="btn-lux btn-gold" onclick="buyPkg(${p.c})">اشتراك وتفعيل الباقة الآن</button>
         </div>`).join('');
     }
 
     async function buyPkg(cost) {
-      const res = await fetch(`${DB}/users/${encodeURIComponent(user)}.json`);
+      const res = await fetch(`${DB_URL}/users/${encodeURIComponent(activeUser)}.json`);
       const u = await res.json() || {};
       if ((u.balance || 0) >= cost) {
-        await fetch(`${DB}/users/${encodeURIComponent(user)}.json`, {
+        await fetch(`${DB_URL}/users/${encodeURIComponent(activeUser)}.json`, {
           method: 'PATCH',
-          body: JSON.stringify({ balance: (u.balance || 0) - cost, sub: cost })
+          body: JSON.stringify({ balance: (u.balance || 0) - cost, sub: cost, lastProfitDate: getTodayKey() })
         });
         alert("🎉 تم تفعيل الباقة بنجاح!");
-        loadUser();
+        loadUserData();
       } else {
-        alert("رصيدك غير كافٍ! اذهب لقسم المالية لشحن الحساب.");
+        alert("⚠️ عذراً، لا يوجد رصيد كافٍ! يرجى شحن حسابك من قسم (المالية) أولاً.");
       }
     }
 
-    function showTab(id, b) {
-      ['tabHome', 'tabWithdraw', 'tabFinance', 'tabProfile'].forEach(t => document.getElementById(t).style.display = 'none');
-      document.querySelectorAll('.nav button').forEach(btn => btn.classList.remove('active'));
-      document.getElementById(id).style.display = 'block';
-      if (b) b.classList.add('active');
+    function switchNav(tabId, btn) {
+      ['tabHome', 'tabWithdraw', 'tabFinance', 'tabProfile'].forEach(id => document.getElementById(id).style.display = 'none');
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById(tabId).style.display = 'block';
+      if (btn) btn.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function showBan(r) {
@@ -427,22 +551,25 @@
       document.getElementById('banModal').style.display = 'flex';
     }
 
-    function toggleRegister(show) {
-      document.getElementById('regModal').style.display = show ? 'flex' : 'none';
-    }
+    function toggleRegister(show) { document.getElementById('regModal').style.display = show ? 'flex' : 'none'; }
+    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+    function logout() { localStorage.clear(); location.reload(); }
 
-    function logout() {
-      localStorage.clear();
-      location.reload();
-    }
-
-    // استعادة الجلسة لمدة ساعة
-    const savedU = localStorage.getItem('sm_user');
+    /* فحص استمرار الجلسة لمدة ساعة كاملة */
+    const savedUser = localStorage.getItem('sm_u');
     const savedExp = localStorage.getItem('sm_exp');
-    if (savedU && savedExp && Date.now() < parseInt(savedExp)) {
-      user = savedU;
-      openDashboard();
+    if (savedUser && savedExp && Date.now() < parseInt(savedExp)) {
+      activeUser = savedUser;
+      completeSession();
     }
+
+    /* حركة السلايدر التلقائي */
+    let sIdx = 0;
+    setInterval(() => {
+      sIdx = (sIdx + 1) % 3;
+      const t = document.getElementById('slideTrack');
+      if (t) t.style.transform = `translateX(${sIdx * 100}%)`;
+    }, 4000);
   </script>
 </body>
 </html>
