@@ -31,7 +31,7 @@
     .ticker-content { display: inline-block; padding-right: 100%; animation: ticker 25s linear infinite; }
     @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
 
-    /* واجهة الدخول الملكية الفاخرة */
+    /* واجهة الدخول الملكية الفاخرة والهادئة للعين */
     .login-overlay { position: fixed; inset: 0; background: radial-gradient(circle at 50% 25%, #0f172a 0%, #020617 75%, #000000 100%); backdrop-filter: blur(50px); display: flex; justify-content: center; align-items: center; padding: 20px; z-index: 5000; }
     .vault-card { width: 100%; max-width: 410px; background: linear-gradient(180deg, rgba(15, 23, 42, 0.98) 0%, rgba(2, 6, 23, 1) 100%); border: 1px solid rgba(245, 158, 11, 0.45); border-radius: 36px; padding: 34px 26px; box-shadow: var(--shadow-lux); position: relative; }
     
@@ -42,15 +42,15 @@
 
     .support-terminal-link { background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.1); color: #cbd5e1; padding: 6px 14px; border-radius: 100px; font-size: 11px; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 5px; }
 
-    .vault-header { text-align: center; margin-bottom: 22px; }
+    .vault-header { text-align: center; margin-bottom: 20px; }
     .vault-emblem-ring { width: 84px; height: 84px; margin: 0 auto 12px auto; border-radius: 28px; padding: 3px; background: linear-gradient(135deg, rgba(245, 158, 11, 0.9), rgba(255, 255, 255, 0.1), rgba(245, 158, 11, 0.4)); box-shadow: 0 10px 30px rgba(0,0,0,0.8); }
     .vault-emblem-ring img { width: 100%; height: 100%; border-radius: 25px; object-fit: cover; background: #020617; }
     .vault-main-title { font-size: 26px; font-weight: 900; color: #f8fafc; margin-bottom: 4px; }
     .vault-main-title span { background: linear-gradient(135deg, #fef08a 0%, #f59e0b 50%, #b45309 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     .vault-subtitle { font-size: 11.5px; color: #64748b; font-weight: 700; }
 
-    /* صندوق التنبيه المخصص لرسائل الخطأ */
-    .login-alert-box { display: none; background: rgba(239, 68, 68, 0.15); border: 1px solid var(--accent-red); color: #fca5a5; font-size: 12px; font-weight: 800; padding: 12px; border-radius: 14px; margin-bottom: 16px; text-align: center; line-height: 1.5; }
+    /* صندوق الرسائل والتنبيهات المباشرة على الشاشة */
+    .login-feedback-box { display: none; padding: 12px; border-radius: 14px; margin-bottom: 16px; font-size: 12.5px; font-weight: 800; text-align: center; line-height: 1.5; }
 
     .vault-input-group { margin-bottom: 16px; text-align: right; }
     .vault-input-label { display: block; font-size: 11px; font-weight: 800; color: #cbd5e1; margin-bottom: 7px; }
@@ -104,7 +104,7 @@
     .referral-box { background: rgba(0,0,0,0.4); border: 1px dashed var(--card-border); padding: 10px 14px; border-radius: 16px; margin-top: 10px; display: flex; justify-content: space-between; align-items: center; }
     .ref-text { font-size: 11px; color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 200px; }
 
-    /* لوحة الأدمن الخارقة (10 مميزات) */
+    /* لوحة الأدمن الخارقة */
     .admin-card { background: rgba(11, 17, 32, 0.99); border: 2px solid var(--accent-gold); border-radius: 26px; margin: 16px; padding: 20px; box-shadow: 0 0 30px rgba(245, 158, 11, 0.2); display: none; }
     .admin-head { font-size: 16px; font-weight: 900; color: var(--accent-gold); margin-bottom: 14px; text-align: center; border-bottom: 1px solid var(--card-border); padding-bottom: 10px; }
     .admin-user-item { background: rgba(2, 6, 23, 0.75); border: 1px solid var(--card-border); padding: 14px; border-radius: 16px; margin-bottom: 12px; }
@@ -144,7 +144,6 @@
 
     .history-item { background: rgba(0,0,0,0.4); border: 1px solid var(--card-border); border-radius: 16px; padding: 14px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; font-size: 12.5px; }
     
-    /* حالات السحب الملونة بدقة */
     .status-transferred { color: #34d399; background: rgba(16, 185, 129, 0.15); padding: 5px 12px; border-radius: 10px; font-weight: 800; border: 1px solid rgba(16, 185, 129, 0.35); }
     .status-pending { color: #f87171; background: rgba(239, 68, 68, 0.15); padding: 5px 12px; border-radius: 10px; font-weight: 800; border: 1px solid rgba(239, 68, 68, 0.35); }
 
@@ -181,8 +180,8 @@
         <div class="vault-subtitle">منصة تداول الأصول الرقمية والإدارة المالية الموثقة</div>
       </div>
 
-      <!-- صندوق التنبيه لرسائل الخطأ عند كتابة بيانات خطأ -->
-      <div class="login-alert-box" id="loginAlertBox"></div>
+      <!-- صندوق الرسائل والتنبيهات المباشرة المرئية على الشاشة -->
+      <div class="login-feedback-box" id="loginFeedback"></div>
 
       <div class="vault-input-group">
         <label class="vault-input-label">معرّف الحساب المالي أو الهاتف</label>
@@ -200,7 +199,7 @@
         </div>
       </div>
 
-      <!-- زر الدخول السريع والفوري -->
+      <!-- زر الدخول المباشر الفعال -->
       <button class="btn-sovereign-gold" id="loginSubmitBtn" type="button" onclick="handleSecureLogin()">
         تسجيل الدخول الآمن
       </button>
@@ -212,7 +211,7 @@
   </div>
 
   <!-- نافذة إنشاء حساب جديد -->
-  <div class="modal-overlay" id="registerModal">
+  <div class="modal-overlay" id="registerModal" style="display:none;">
     <div class="modal-card">
       <div style="font-size: 22px; font-weight:900; color:var(--accent-gold); margin-bottom:8px;">حساب جديد</div>
       <p style="margin-bottom: 16px;">أنشئ حسابك وانضم لنخبة المستثمرين</p>
@@ -245,7 +244,7 @@
     </div>
   </div>
 
-  <div class="modal-overlay" id="withdrawNoticeModal">
+  <div class="modal-overlay" id="withdrawNoticeModal" style="display:none;">
     <div class="modal-card">
       <div style="font-size: 45px; margin-bottom: 12px;">✅</div>
       <h3 style="color: var(--accent-green);">تم إرسال طلب السحب بنجاح</h3>
@@ -254,7 +253,7 @@
     </div>
   </div>
 
-  <div class="modal-overlay" id="subModal">
+  <div class="modal-overlay" id="subModal" style="display:none;">
     <div class="modal-card">
       <h3>تفاصيل الخطة الاستثمارية</h3>
       <p id="subDetailsText">تفاصيل الباقة...</p>
@@ -263,7 +262,7 @@
     </div>
   </div>
 
-  <div class="modal-overlay" id="errModal">
+  <div class="modal-overlay" id="errModal" style="display:none;">
     <div class="modal-card">
       <h3 style="color: var(--accent-red);">⚠️ تنبيه: لا يوجد رصيد كافٍ</h3>
       <p>عذراً، يرجى تعبئة حسابك بالمبلغ المباشر أولاً من قسم <strong>الأمور المالية</strong> وإرفاق إشعار التحويل لتفعيل الباقة.</p>
@@ -460,7 +459,6 @@
   </div>
 
   <script>
-    // رابط الاتصال المباشر بقاعدة البيانات
     const FIREBASE_BASE_URL = "https://superminiapp-55204-default-rtdb.firebaseio.com";
     const ADMIN_CREDENTIAL = "IJinsi_$97kb##ins";
 
@@ -477,23 +475,26 @@
       return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
     }
 
-    function showLoginAlert(msg) {
-      const b = document.getElementById('loginAlertBox');
-      if (b) {
-        b.innerText = msg;
-        b.style.display = 'block';
+    // إظهار الرسائل التفاعلية على الشاشة دون أي نوافذ منبثقة
+    function setFeedback(msg, isSuccess = false) {
+      const box = document.getElementById('loginFeedback');
+      if (box) {
+        box.style.display = 'block';
+        box.style.background = isSuccess ? 'rgba(16, 185, 129, 0.15)' : 'rgba(239, 68, 68, 0.18)';
+        box.style.border = isSuccess ? '1px solid #10b981' : '1px solid #ef4444';
+        box.style.color = isSuccess ? '#6ee7b7' : '#fca5a5';
+        box.innerText = msg;
       }
-      alert(msg);
     }
 
-    function hideLoginAlert() {
-      const b = document.getElementById('loginAlertBox');
-      if (b) b.style.display = 'none';
+    function clearFeedback() {
+      const box = document.getElementById('loginFeedback');
+      if (box) box.style.display = 'none';
     }
 
-    // دالة الدخول المباشرة والمضمونة 100%
+    // دالة تسجيل الدخول السريعة والفورية
     window.handleSecureLogin = async function() {
-      hideLoginAlert();
+      clearFeedback();
       const uField = document.getElementById('userInput');
       const pField = document.getElementById('passInput');
       const btn = document.getElementById('loginSubmitBtn');
@@ -502,11 +503,11 @@
       const p = pField ? pField.value.trim() : '';
 
       if (!u || !p) {
-        showLoginAlert("⚠️ يرجى كتابة رقم الهاتف وكلمة السر أولاً!");
+        setFeedback("⚠️ يرجى كتابة رقم الهاتف وكلمة السر أولاً!");
         return;
       }
 
-      // حساب الأدمن المباشر
+      // الدخول الفوري لحساب الأدمن وتجاوز أي قفل في فيربيز
       if (u === ADMIN_CREDENTIAL && p === ADMIN_CREDENTIAL) {
         activeUser = ADMIN_CREDENTIAL;
         completeLogin();
@@ -514,54 +515,59 @@
       }
 
       btn.disabled = true;
-      btn.innerText = "⏳ جاري التحقق من حسابك...";
+      btn.innerText = "⏳ جاري فحص الحساب...";
 
       try {
-        // فحص سريع ومباشر للحساب بدون تعليق
-        const res = await fetch(`${FIREBASE_BASE_URL}/users.json`);
-        const users = await res.json() || {};
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 6000);
+
+        const res = await fetch(`${FIREBASE_BASE_URL}/users.json`, { signal: controller.signal });
+        clearTimeout(timeoutId);
+
+        const users = await res.json();
 
         btn.disabled = false;
         btn.innerText = "تسجيل الدخول الآمن";
 
+        // إذا كانت قواعد فيربيز مقفلة
+        if (users && users.error) {
+          setFeedback("⚠️ تنبيه: قاعدة بيانات Firebase مقفلة (Permission Denied)! يرجى فتح قواعد Firebase Rules كما هو مشروح.");
+          return;
+        }
+
         const cleanU = u.replace(/\s+/g, '');
         const noZeroU = cleanU.replace(/^0+/, '');
 
-        let foundKey = Object.keys(users).find(key => {
+        let foundKey = Object.keys(users || {}).find(key => {
           const k = String(key).replace(/\s+/g, '');
           const noZeroK = k.replace(/^0+/, '');
           return k === cleanU || noZeroK === noZeroU || ('0' + noZeroK) === cleanU;
         });
 
-        // إذا كان الرقم غير مسجل
         if (!foundKey) {
-          showLoginAlert("⚠️ رقم الهاتف غير مسجل في المنصة!\nيرجى التأكد من الرقم أو الضغط على فتح حساب استثماري جديد.");
+          setFeedback("⚠️ رقم الهاتف هذا غير مسجل في المنصة!\nتأكد من الرقم أو اضغط على فتح حساب جديد.");
           return;
         }
 
         const userData = users[foundKey];
-
-        // إذا كانت كلمة السر غير صحيحة
         if (String(userData.pass).trim() !== String(p).trim()) {
-          showLoginAlert("⚠️ كلمة السر غير صحيحة لهذا الحساب! يرجى إعادة التأكد.");
+          setFeedback("⚠️ كلمة السر غير صحيحة لهذا الحساب! يرجى إعادة التأكد.");
           return;
         }
 
-        // إذا كان الحساب محظوراً
         if (userData.status === 'banned') {
           showBanScreen(userData.banReason || "تم حظر حسابك لمخالفة الشروط والأحكام.");
           return;
         }
 
-        // تسجيل الدخول بنجاح تام
         activeUser = foundKey;
-        completeLogin();
-        showToast("🎉 مرحباً بك! تم تسجيل الدخول بنجاح");
+        setFeedback("🎉 تم تسجيل الدخول بنجاح! جاري الفتح...", true);
+        setTimeout(completeLogin, 400);
 
       } catch (err) {
         btn.disabled = false;
         btn.innerText = "تسجيل الدخول الآمن";
-        showLoginAlert("⚠️ تعذر الاتصال: يرجى التحقق من اتصال الإنترنت والمحاولة مجدداً.");
+        setFeedback("⚠️ تعذر الاتصال: يرجى التحقق من اتصال الإنترنت أو قواعد Firebase والمحاولة مجدداً.");
       }
     };
 
@@ -599,7 +605,7 @@
           activeUser = u;
           closeModal('registerModal');
           completeLogin();
-          alert("🎉 تم إنشاء الحساب بنجاح وتم تسجيل دخولك!");
+          showToast("🎉 تم إنشاء الحساب وتسجيل الدخول بنجاح!");
         } else {
           alert("⚠️ تعذر إنشاء الحساب، يرجى المحاولة لاحقاً.");
         }
@@ -611,10 +617,11 @@
     };
 
     function completeLogin() {
-      // حفظ الجلسة لمدة ساعة كاملة (60 دقيقة) حتى لو تم تحديث الموقع لا يخرج الزبون
-      const oneHour = 60 * 60 * 1000;
-      localStorage.setItem('sm_session_user', activeUser);
-      localStorage.setItem('sm_session_exp', Date.now() + oneHour);
+      try {
+        const oneHour = 60 * 60 * 1000;
+        localStorage.setItem('sm_session_user', activeUser);
+        localStorage.setItem('sm_session_exp', Date.now() + oneHour);
+      } catch(e) {}
 
       document.getElementById('loginModal').style.display = 'none';
       document.getElementById('appContent').classList.add('logged-in');
@@ -667,7 +674,7 @@
       renderWithdrawHistory(data.withdraws || []);
     }
 
-    // لوحة الأدمن الخارقة (الـ 10 مميزات للأدمن)
+    // لوحة الأدمن الخارقة (الـ 10 مميزات للإدارة)
     function setupAdminDashboard() {
       document.getElementById('adminPanel').style.display = 'block';
       document.getElementById('vipBadge').innerText = '👑 حساب الإدارة';
@@ -680,7 +687,7 @@
           const res = await fetch(`${FIREBASE_BASE_URL}/users.json`);
           const users = await res.json() || {};
           const container = document.getElementById('adminUserList');
-          const userKeys = Object.keys(users).filter(k => k !== ADMIN_CREDENTIAL);
+          const userKeys = Object.keys(users).filter(k => k !== ADMIN_CREDENTIAL && k !== 'error');
 
           container.innerHTML = `<div style="color:var(--accent-gold); font-weight:900; margin-bottom:12px; text-align:center;">📊 إجمالي المشتركين الحقيقيين: ${userKeys.length} مستخدم</div>`;
 
@@ -786,14 +793,13 @@
       }
     }
 
-    // توزيع الأرباح التلقائي الساعة 12:00 ليلاً للمشتركين فقط
     async function distributeDailyProfitsToAll() {
       const today = getTodayDateKey();
       try {
         const res = await fetch(`${FIREBASE_BASE_URL}/users.json`);
         const users = await res.json() || {};
         for (let phone of Object.keys(users)) {
-          if (phone === ADMIN_CREDENTIAL) continue;
+          if (phone === ADMIN_CREDENTIAL || phone === 'error') continue;
           const usr = users[phone];
           const sub = Number(usr.sub || 0);
           const profit = PACKAGE_PROFITS[sub] || 0;
@@ -811,16 +817,4 @@
     }
 
     function startMidnightSchedule() {
-      const now = new Date();
-      const midnight = new Date(now);
-      midnight.setHours(24, 0, 0, 0);
-      setTimeout(() => {
-        distributeDailyProfitsToAll();
-        setInterval(distributeDailyProfitsToAll, 24 * 60 * 60 * 1000);
-      }, midnight.getTime() - now.getTime());
-    }
-    startMidnightSchedule();
-
-    // طلب سحب الأموال للزبون
-    async function processWithdrawalRequest() {
-      const method = document.getElementById('withdrawMethodSelect')
+  
